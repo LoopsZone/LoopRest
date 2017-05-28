@@ -1,5 +1,6 @@
 {
   "require": {
-    "firebase/php-jwt": "3.*"
+    "firebase/php-jwt": "3.*",
+    "geoip/geoip": "~1.16"
   }
 }

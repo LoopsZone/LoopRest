@@ -5,10 +5,9 @@ require_once DIR . '/staticFiles/Views.class.php';
 
 class Input extends Manager
 {
-    public $ip;
-    protected $client;
-
-    protected $device;
+    private $ip;
+    private $client;
+    private $device;
     private $method;
 
     /**
@@ -30,8 +29,10 @@ class Input extends Manager
 
             $this->ip = $this->validateData($_SERVER['REMOTE_ADDR'], 'ip');
         }
-
-
+        
+        Manager::$ip = $this->ip;
+        Manager::$client = $this->client;
+        Manager::$device = $this->device;
     }
 
     /**

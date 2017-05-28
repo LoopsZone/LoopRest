@@ -4,6 +4,19 @@ require_once DIR . '/auth/Auth.class.php';
 
 class Manager extends Auth
 {
+    protected static $ip;
+    protected static $client;
+    protected static $device;
+    protected static $method;
+
+    /**
+     * Manager constructor.
+     */
+    function __construct()
+    {
+
+    }
+    
     public function output($response)
     {
 

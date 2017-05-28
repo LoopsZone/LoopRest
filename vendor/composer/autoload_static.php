@@ -6,6 +6,12 @@ namespace Composer\Autoload;
 
 class ComposerStaticInit5aff6f1366ee8dc383321adc4d009a3a
 {
+    public static $files = array(
+        'a7cee959d5f14eb7484e7f8e7182e03d' => __DIR__ . '/..' . '/geoip/geoip/src/geoip.inc',
+        '8cf74b4cf02ad0591c257dcfb7edbc8d' => __DIR__ . '/..' . '/geoip/geoip/src/geoipcity.inc',
+        'd114bd5194e69687495c9150ff6be780' => __DIR__ . '/..' . '/geoip/geoip/src/timezone.php',
+    );
+
     public static $prefixLengthsPsr4 = array(
         'F' =>
             array(
