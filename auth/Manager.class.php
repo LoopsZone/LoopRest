@@ -4,11 +4,6 @@ require_once DIR . '/auth/Auth.class.php';
 
 class Manager extends Auth
 {
-    protected static $ip;
-    protected static $client;
-    protected static $device;
-    protected static $method;
-
     /**
      * Manager constructor.
      */
@@ -19,9 +14,8 @@ class Manager extends Auth
     
     public function output($response)
     {
-
         $result = json_encode($response);
-        return ($_GET["callback"] . "({$result});");//Response data type JSON cross domain
+        return ("({$result});");//Response data type JSON cross domain
     }
 
     /**
@@ -29,7 +23,6 @@ class Manager extends Auth
      */
     protected function action($method, $data)
     {
-
         switch ($method) {
 
             case 'GET':
@@ -40,7 +33,7 @@ class Manager extends Auth
                 return $this->update($data['tk'], $data['request']);
             case 'DELETE':
                 return $this->delete($data['tk'], $data['request']);
-            case 'auth':
+            case 'AUTH':
                 return $this->auth($data['fbId'], $data['name']);
             default:
                 return 'Action selected no valid';
@@ -55,7 +48,6 @@ class Manager extends Auth
      */
     private function request($tk, $request)
     {
-
         $checkTK = Auth::check($tk);
 
         if ($checkTK === 'access') {
@@ -81,7 +73,6 @@ class Manager extends Auth
      */
     private function auth($id, $name)
     {
-
         $result = Auth::signIn([
             'access' => 0,
             'id' => $id,

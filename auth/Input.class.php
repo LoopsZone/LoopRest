@@ -1,6 +1,7 @@
 <?php
 
 require_once DIR . '/auth/Manager.class.php';
+require_once DIR . '/auth/RequestRoute.class.php';
 require_once DIR . '/staticFiles/Views.class.php';
 
 class Input extends Manager
@@ -22,17 +23,13 @@ class Input extends Manager
         if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
 
             $this->ip = $this->validateData($_SERVER['HTTP_CLIENT_IP'], 'ip');
-        } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+        } else if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
 
             $this->ip = $this->validateData($_SERVER['HTTP_X_FORWARDED_FOR'], 'ip');
         } else {
 
             $this->ip = $this->validateData($_SERVER['REMOTE_ADDR'], 'ip');
         }
-        
-        Manager::$ip = $this->ip;
-        Manager::$client = $this->client;
-        Manager::$device = $this->device;
     }
 
     /**
@@ -46,25 +43,39 @@ class Input extends Manager
     private static function validateData($data, $format)
     {
         switch ($format) {
-            case 'int' :
-                return filter_var($data, FILTER_VALIDATE_INT) || is_int($data);
-            case 'varchar' :
-                return filter_var($data, FILTER_SANITIZE_STRIPPED);
+            case 'numeric' :
+                if (is_numeric($data)) {
+                    return filter_var($data, FILTER_SANITIZE_NUMBER_INT);
+                }
+                return false;
             case 'char' :
-
                 if (preg_match('/[0-9]/', $data)) {
                     return false;
                 }
                 return filter_var($data, FILTER_SANITIZE_SPECIAL_CHARS);
-            case 'numeric' :
-                return is_numeric($data) || filter_var($data, FILTER_SANITIZE_NUMBER_INT);
-            case 'birthday' :
-                $birthday = strtotime($data);
-                return date('Y-m-d', $birthday);
             case 'email' :
                 return filter_var($data, FILTER_VALIDATE_EMAIL);
+            case 'date' :
+                $date = explode('-', $data);
+                if (checkdate($date[2], $date[1], $date[0])) {
+                    $birthday = strtotime($data);
+                    if ($birthday) {
+                        return date('Y-m-d', $birthday);
+                    }
+                }
+                return false;
             case 'request' :
+                if (property_exists('Request_Route', $data)) {
+                    return filter_var($data, FILTER_SANITIZE_STRIPPED);
+                }
+                return false;
+            case 'varchar' :
                 return filter_var($data, FILTER_SANITIZE_STRIPPED);
+            case 'int' :
+                if (is_int($data)) {
+                    return filter_var($data, FILTER_VALIDATE_INT);
+                }
+                return false;
             case 'bool' :
                 return filter_var($data, FILTER_VALIDATE_BOOLEAN);
             case 'float' :
@@ -103,12 +114,11 @@ class Input extends Manager
     /**
      * In request and generate sets to check variables
      *
-     * @param $in
+     * @param $request
      * @return array|bool|string
      */
     private function in($request)
     {
-
         $contReq = count($request);
         $method = array_keys($request);
         $parameter = array_values($request);
@@ -128,7 +138,6 @@ class Input extends Manager
      */
     private function checkInput($contReq, $method, $parameter)
     {
-
         if ($contReq > 0) {
 
             /**
@@ -164,9 +173,9 @@ class Input extends Manager
                 $auth ['fbId'] = $this->validateData($fbId, 'numeric');
                 $auth ['email'] = $this->validateData($email, 'email');
                 $auth ['name'] = $this->validateData($name, 'char');
-                $auth ['birthday'] = $this->validateData($birthday, 'birthday');
+                $auth ['birthday'] = $this->validateData($birthday, 'date');
 
-                $this->method = 'auth';
+                $this->method = 'AUTH';
 
                 return $this->validate($auth);
             }
@@ -197,7 +206,7 @@ class Input extends Manager
             return ['error' => $req];
         }
 
-        $managerAction = parent::action($this->method, $data);
+        $managerAction = Manager::action($this->method, $data);
 
         return $managerAction;
     }
