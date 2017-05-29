@@ -60,7 +60,7 @@ class Token
         } catch (\Firebase\JWT\SignatureInvalidException $e) {
             return 'Corrupted sign';
         } catch (\Exception $e) {
-            return 'error';
+            return 'Security error token';
         }
     }
 

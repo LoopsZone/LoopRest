@@ -86,7 +86,7 @@ class Input extends Manager
                 return filter_var($data, FILTER_VALIDATE_IP);
         }
 
-        return false;
+        return 'Invalid format';
     }
 
     /**
@@ -162,8 +162,8 @@ class Input extends Manager
             //Check if set request variables
             if (!empty($request) AND !empty($tk)) {
 
-                $req['request'] = $this->validateData($request, 'request');
                 $req['tk'] = $this->validateData($tk, 'varchar');
+                $req['request'] = $this->validateData($request, 'request');
 
                 return $this->validate($req);
 
