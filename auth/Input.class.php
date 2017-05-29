@@ -43,6 +43,13 @@ class Input extends Manager
     private static function validateData($data, $format)
     {
         switch ($format) {
+            case 'varchar' :
+                return filter_var($data, FILTER_SANITIZE_STRIPPED);
+            case 'request' :
+                if (property_exists('Request_Route', $data)) {
+                    return filter_var($data, FILTER_SANITIZE_STRIPPED);
+                }
+                return false;
             case 'numeric' :
                 if (is_numeric($data)) {
                     return filter_var($data, FILTER_SANITIZE_NUMBER_INT);
@@ -64,13 +71,6 @@ class Input extends Manager
                     }
                 }
                 return false;
-            case 'request' :
-                if (property_exists('Request_Route', $data)) {
-                    return filter_var($data, FILTER_SANITIZE_STRIPPED);
-                }
-                return false;
-            case 'varchar' :
-                return filter_var($data, FILTER_SANITIZE_STRIPPED);
             case 'int' :
                 if (is_int($data)) {
                     return filter_var($data, FILTER_VALIDATE_INT);
