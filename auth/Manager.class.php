@@ -15,7 +15,7 @@ class Manager extends Auth
     public function output($response)
     {
         $result = json_encode($response);
-        return ("({$result});");//Response data type JSON cross domain
+        return ($_GET["callback"] . "({$result});");//Response data type JSON cross domain
     }
 
     /**
