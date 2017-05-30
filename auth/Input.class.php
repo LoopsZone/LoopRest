@@ -33,63 +33,6 @@ class Input extends Manager
     }
 
     /**
-     * Validate data to data into request array and is certificated if is right format
-     *
-     * @param $data
-     * @param $format
-     * @return bool|mixed
-     * @returner array to request but a value not is valid replace this with false (no certificate)
-     */
-    private static function validateData($data, $format)
-    {
-        switch ($format) {
-            case 'varchar' :
-                return filter_var($data, FILTER_SANITIZE_STRIPPED);
-            case 'request' :
-                if (property_exists('Request_Route', $data)) {
-                    return filter_var($data, FILTER_SANITIZE_STRIPPED);
-                }
-                return false;
-            case 'numeric' :
-                if (is_numeric($data)) {
-                    return filter_var($data, FILTER_SANITIZE_NUMBER_INT);
-                }
-                return false;
-            case 'char' :
-                if (preg_match('/[0-9]/', $data)) {
-                    return false;
-                }
-                return filter_var($data, FILTER_SANITIZE_SPECIAL_CHARS);
-            case 'email' :
-                return filter_var($data, FILTER_VALIDATE_EMAIL);
-            case 'date' :
-                $date = explode('-', $data);
-                if (checkdate($date[2], $date[1], $date[0])) {
-                    $birthday = strtotime($data);
-                    if ($birthday) {
-                        return date('Y-m-d', $birthday);
-                    }
-                }
-                return false;
-            case 'int' :
-                if (is_int($data)) {
-                    return filter_var($data, FILTER_VALIDATE_INT);
-                }
-                return false;
-            case 'bool' :
-                return filter_var($data, FILTER_VALIDATE_BOOLEAN);
-            case 'float' :
-                return filter_var($data, FILTER_VALIDATE_FLOAT);
-            case 'url' :
-                return filter_var($data, FILTER_VALIDATE_URL);
-            case 'ip' :
-                return filter_var($data, FILTER_VALIDATE_IP);
-        }
-
-        return 'Invalid format';
-    }
-
-    /**
      * Route action to execute set to params
      *
      * @return array|bool|string
@@ -184,6 +127,63 @@ class Input extends Manager
         }
 
         return Views::REST_HOME;
+    }
+    
+    /**
+     * Validate data to data into request array and is certificated if is right format
+     *
+     * @param $data
+     * @param $format
+     * @return bool|mixed
+     * @returner array to request but a value not is valid replace this with false (no certificate)
+     */
+    private static function validateData($data, $format)
+    {
+        switch ($format) {
+            case 'varchar' :
+                return filter_var($data, FILTER_SANITIZE_STRIPPED);
+            case 'request' :
+                if (property_exists('Request_Route', $data)) {
+                    return filter_var($data, FILTER_SANITIZE_STRIPPED);
+                }
+                return false;
+            case 'numeric' :
+                if (is_numeric($data)) {
+                    return filter_var($data, FILTER_SANITIZE_NUMBER_INT);
+                }
+                return false;
+            case 'char' :
+                if (preg_match('/[0-9]/', $data)) {
+                    return false;
+                }
+                return filter_var($data, FILTER_SANITIZE_SPECIAL_CHARS);
+            case 'email' :
+                return filter_var($data, FILTER_VALIDATE_EMAIL);
+            case 'date' :
+                $date = explode('-', $data);
+                if (checkdate($date[2], $date[1], $date[0])) {
+                    $birthday = strtotime($data);
+                    if ($birthday) {
+                        return date('Y-m-d', $birthday);
+                    }
+                }
+                return false;
+            case 'int' :
+                if (is_int($data)) {
+                    return filter_var($data, FILTER_VALIDATE_INT);
+                }
+                return false;
+            case 'bool' :
+                return filter_var($data, FILTER_VALIDATE_BOOLEAN);
+            case 'float' :
+                return filter_var($data, FILTER_VALIDATE_FLOAT);
+            case 'url' :
+                return filter_var($data, FILTER_VALIDATE_URL);
+            case 'ip' :
+                return filter_var($data, FILTER_VALIDATE_IP);
+        }
+
+        return 'Invalid format';
     }
 
     /**
