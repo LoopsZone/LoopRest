@@ -6,9 +6,9 @@ require_once DIR . '/auth/WhiteList.class.php';
 
 class Auth extends Access
 {
-    protected static function signIn($data)
+    protected static function check($Token)
     {
-        return Token::signIn($data);
+        return Token::check($Token);
     }
 
     protected static function getData($Token, $request)
@@ -16,28 +16,13 @@ class Auth extends Access
         $user = Token::getData($Token);
         return $user;//$this->auth->search($request.'/'.$user->id,TRUE);
     }
-
-    protected static function check($Token)
+    
+    protected static function signIn($data)
     {
-        return Token::check($Token);
+        return Token::signIn($data);
     }
-
-    private function getCountryByIp()
-    {
-
-    }
-
-    private function watchClient()
-    {
-
-    }
-
-    private function banClient()
-    {
-
-    }
-
-    private function washClient()
+    
+    private function checkClient()
     {
 
     }
@@ -57,12 +42,27 @@ class Auth extends Access
 
     }
 
-    private function checkClient()
+    private function giveAccess()
+    {
+
+    }
+    
+    private function getCountryByIp()
     {
 
     }
 
-    private function giveAccess()
+    private function watchClient()
+    {
+
+    }
+
+    private function banClient()
+    {
+
+    }
+
+    private function washClient()
     {
 
     }
