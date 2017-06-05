@@ -1,14 +1,14 @@
 <?php
 require_once DIR . '/vendor/autoload.php';
+require_once DIR . '/auth/Expected.class.php';
 
 use Firebase\JWT\JWT;
 
-class Token
+class Token extends Expected
 {
-
-    private static $secret_key = 'Sdw1s9x8@adjnA@#Sjs#dAsdg*$*S&D&nja';
-    private static $encrypt = ['HS256'];
     private static $aud = null;
+    private static $encrypt = ['HS256'];
+    private static $secret_key = 'Sdw1s9x8@adjnA@#Sjs#dAsdg*$*S&D&nja';
     Protected $auth;
 
     public static function signIn($data)

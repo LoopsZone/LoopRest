@@ -6,11 +6,6 @@ require_once DIR . '/staticFiles/Views.class.php';
 
 class Input extends Manager
 {
-    private $ip;
-    private $client;
-    private $device;
-    private $method;
-
     /**
      * INPUT constructor.
      */
@@ -33,108 +28,11 @@ class Input extends Manager
     }
 
     /**
-     * Route action to execute set to params
-     *
-     * @return array|bool|string
-     */
-    public function request()
-    {
-        switch ($this->method) {
-
-            case 'GET' || 'get':
-                return $this->in($_GET);
-            case 'POST' || 'POST':
-                return $this->in($_POST);
-            case 'PUT' || 'put':
-                return $this->in($_PUT);
-            case 'DELETE' || 'delete':
-                return $this->in($_DELETE);
-            default:
-                return ['error' => 'Action selected no valid'];
-        }
-    }
-
-    /**
-     * In request and generate sets to check variables
-     *
-     * @param $request
-     * @return array|bool|string
-     */
-    private function in($request)
-    {
-        $contReq = count($request);
-        $method = array_keys($request);
-        $parameter = array_values($request);
-
-        $out = $this->checkInput($contReq, $method, $parameter);
-
-        return $out;
-    }
-
-    /**
-     * Check input to request and generate sets variable for found to system
-     *
-     * @param $contReq
-     * @param $method
-     * @param $parameter
-     * @return array|bool|string
-     */
-    private function checkInput($contReq, $method, $parameter)
-    {
-        if ($contReq > 0) {
-
-            /**
-             * generate variables to found system
-             *
-             * Set Request
-             *  $Request
-             *  $tk
-             *  = $response request
-             *
-             * Set Auth
-             *  $fbId
-             *  $email
-             *  $name
-             *  $birthday
-             *  = $response token
-             */
-            for ($i = 0; $i < $contReq; $i++) {
-                ${$method[$i]} = $parameter[$i];
-            }
-
-            //Check if set request variables
-            if (!empty($request) AND !empty($tk)) {
-
-                $req['tk'] = $this->validateData($tk, 'varchar');
-                $req['request'] = $this->validateData($request, 'request');
-
-                return $this->validate($req);
-
-            } else if (!empty($fbId) AND !empty($email) AND !empty($name) AND !empty($birthday)) {
-
-                //Check if set auth variables
-                $auth ['fbId'] = $this->validateData($fbId, 'numeric');
-                $auth ['email'] = $this->validateData($email, 'email');
-                $auth ['name'] = $this->validateData($name, 'char');
-                $auth ['birthday'] = $this->validateData($birthday, 'date');
-
-                $this->method = 'AUTH';
-
-                return $this->validate($auth);
-            }
-
-            return 'Error to set request or auth variables';
-        }
-
-        return Views::REST_HOME;
-    }
-    
-    /**
      * Validate data to data into request array and is certificated if is right format
      *
      * @param $data
      * @param $format
-     * @return bool|mixed
+     * @return bool|mixed|string
      * @returner array to request but a value not is valid replace this with false (no certificate)
      */
     private static function validateData($data, $format)
@@ -187,27 +85,104 @@ class Input extends Manager
     }
 
     /**
+     * Route action to execute set to params
+     *
+     * @return array|bool|string
+     */
+    public function request()
+    {
+        switch ($this->method) {
+
+            case 'GET' || 'get':
+                return $this->in($_GET);
+            case 'POST' || 'post':
+                return $this->in($_POST);
+            case 'PUT' || 'put':
+                return $this->in($_PUT);
+            case 'DELETE' || 'delete':
+                return $this->in($_DELETE);
+            default:
+                return ['error' => 'Action selected no valid or implemented'];
+        }
+    }
+
+    /**
+     * In request and generate sets to check variables
+     *
+     * @param $request
+     * @return array|bool|string
+     */
+    private function in($method)
+    {
+        $contReq = count($method);
+        $parameters = array_keys($method);
+        $values = array_values($method);
+
+        $out = $this->checkInput($contReq, $parameters, $values);
+
+        return $out;
+    }
+
+    /**
+     * Check input to request and generate sets variable for found to system
+     *
+     * @param $contReq
+     * @param $parameter
+     * @param $value
+     * @return array
+     */
+    private function checkInput($countParams, $parameter, $value)
+    {
+        if ($countParams > 0) {
+
+            $result = array();
+            // Generate set to variables that need request
+            foreach (Request_Route::$setVariables as $set => $variable) {
+                foreach ($variable as $param => $format) {
+                    for ($i = 0; $i < $countParams; $i++) {
+                        if ($param == $parameter[$i]) {
+                            $result[$set][$param] = $this->validateData($value[$i], $format);
+                        }
+                    }
+                }
+            }
+            // Check if new set is equal to expected set
+            $this->set = key($result);
+            if (count($result[$this->set]) > $countParams) {
+                return [
+                    'error' => [
+                        'description' => 'Error to set params'
+                    ]
+                ];
+            }
+
+            return $this->validate($result);
+        }
+
+        return ['view' => 'home'];
+    }
+
+    /**
      * Validate data in request array
      *
      * @param $data
-     * @return array|bool|string
+     * @return array
      */
     private function validate($data)
     {
-        $req = array();
+        $error = array();
         //Validate if value to key in data is false or no valid and return
         foreach ($data as $key => $value) {
             if ($value == false) {
-                $req[$key] = "Invalid value in {$key} key to this request";
+                $error[$key] = "Invalid value in {$key} key to this request";
             }
         }
         // If request array is set return error list in this request
-        if (count($req) > 0) {
-            return ['error' => $req];
+        if (count($error) > 0) {
+            $this->set = 'error';
+            return ['error' => $error];
         }
 
-        $managerAction = Manager::action($this->method, $data);
-
-        return $managerAction;
+        return $data;
     }
 }
