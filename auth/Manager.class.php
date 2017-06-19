@@ -1,6 +1,7 @@
 <?php
 
 require_once DIR . '/auth/Auth.class.php';
+require_once DIR . '/auth/Output.class.php';
 
 class Manager extends Auth
 {
@@ -11,29 +12,10 @@ class Manager extends Auth
 
     public function output($request)
     {
-        if (key($request) != $this->set) {
-            if (key_exists($this->set, Request_Route::$trigger)) {
-                $this->set = key($request);
-            }
-        }
-
-        //If this data have a trigger, change next action execute
-        if (key_exists($this->set, Request_Route::$trigger)) {
-
-            $this->set = Request_Route::$trigger[$this->set];
-
-            if ($this->set != $this->method) {
-                if ($this->set != 'AUTH' && $this->set != 'ERROR') {
-                    $response = ['error', 'Please send the data in the method established by the implemented security'];
-                }
-            }
-
-            $response = $this->action($this->set);
-
-        } else {
-            $response = ['error' => 'Selected action invalid'];
-        }
-
+        $this->route = Output::checkRoute($request);
+        $execute = Output::executeAction($this->route, $this->method);
+        $this->setParams($request);
+        $response = $this->action($execute);
         if (is_array($response)) {
             $result = json_encode($response);
             $response = ($_GET["callback"] . "({$result});");//Response data type JSON cross domain
@@ -42,12 +24,23 @@ class Manager extends Auth
         return $response;
     }
 
+    protected function setParams($data)
+    {
+        if (key_exists($this->route, $data)) {
+            $this->variables = $data[$this->route];
+
+            return true;
+        }
+
+        return false;
+    }
+
     /**
      * @return bool|string|array
      */
-    protected function action($set)
+    protected function action($route)
     {
-        switch ($set) {
+        switch ($route) {
 
             case 'GET':
                 return $this->request();
@@ -77,15 +70,16 @@ class Manager extends Auth
     private function request()
     {
         $checkTK = Auth::check();
-        $request = $this->setParam(Request_Route::$expectedRequest);
 
         if ($checkTK === 'access') {
 
+            $request = $this->setParam(Request_Route::$expectedRequest);
+            
             if ($request != 'access') {
 
                 $response = Auth::getData(
-                    $this->setVariables[Token::$expectToken],
-                    $this->setVariables[Request_Route::$expectedRequest]
+                    $this->routes[Token::$expectToken],
+                    $this->routes[Request_Route::$expectedRequest]
                 );
 
                 return $response;
@@ -145,14 +139,5 @@ class Manager extends Auth
     private function views()
     {
 
-    }
-
-    protected function setVariable($data)
-    {
-        if (key_exists($this->set, $data)) {
-            return $data[$this->set];
-        }
-
-        return ['error', 'Corrupt chronological time'];
     }
 }

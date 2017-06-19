@@ -93,13 +93,13 @@ class Input extends Manager
     {
         switch ($this->method) {
 
-            case 'GET' || 'get':
+            case 'GET':
                 return $this->in($_GET);
-            case 'POST' || 'post':
+            case 'POST':
                 return $this->in($_POST);
-            case 'PUT' || 'put':
+            case 'PUT':
                 return $this->in($_PUT);
-            case 'DELETE' || 'delete':
+            case 'DELETE':
                 return $this->in($_DELETE);
             default:
                 return ['error' => 'Action selected no valid or implemented'];
@@ -137,8 +137,8 @@ class Input extends Manager
 
             $result = array();
             // Generate set to variables that need request
-            foreach (Request_Route::$setVariables as $set => $variable) {
-                foreach ($variable as $param => $format) {
+            foreach (Request_Route::$routes as $set => $route) {
+                foreach ($route as $param => $format) {
                     for ($i = 0; $i < $countParams; $i++) {
                         if ($param == $parameter[$i]) {
                             $result[$set][$param] = $this->validateData($value[$i], $format);
@@ -147,8 +147,8 @@ class Input extends Manager
                 }
             }
             // Check if new set is equal to expected set
-            $this->set = key($result);
-            if (count($result[$this->set]) > $countParams) {
+            $route = key($result);
+            if (count($result[$route]) > $countParams) {
                 return [
                     'error' => [
                         'description' => 'Error to set params'
@@ -173,13 +173,27 @@ class Input extends Manager
         $error = array();
         //Validate if value to key in data is false or no valid and return
         foreach ($data as $key => $value) {
+
+            if (is_array($value)) {
+
+                $validArray = $this->validate($value);
+
+                if (key($validArray) == 'error') {
+                    $error = $validArray;
+                }
+            }
+            
             if ($value == false) {
                 $error[$key] = "Invalid value in {$key} key to this request";
             }
         }
         // If request array is set return error list in this request
         if (count($error) > 0) {
-            $this->set = 'error';
+
+            if (key($error) == 'error') {
+                $error = $error['error'];
+            }
+            
             return ['error' => $error];
         }
 

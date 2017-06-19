@@ -2,7 +2,7 @@
 
 class Request_Route extends Expected
 {
-    public static $setVariables = [
+    public static $routes = [
         //AUTH action
         'auth' => [
             'id' => 'numeric',
@@ -14,8 +14,9 @@ class Request_Route extends Expected
         'request' => [
             'tk' => 'varchar',
             'request' => 'request'
-        ]
+        ],
     ];
+    //
     public static $trigger = [
         'request' => 'GET',
         'auth' => 'AUTH',

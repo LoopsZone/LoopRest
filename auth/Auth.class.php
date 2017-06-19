@@ -6,8 +6,10 @@ require_once DIR . '/auth/WhiteList.class.php';
 
 class Auth extends Access
 {
-    protected $set;
-    protected $setVariables;
+    protected $route;
+    protected $routes;
+    protected $trigger;
+    protected $variables;
 
     protected static function getData($token, $request)
     {
@@ -28,12 +30,12 @@ class Auth extends Access
 
     protected function setParam($expect)
     {
-        if (key_exists($expect, $this->setVariables)) {
-            return $this->setVariables[$expect];
+        if (key_exists($expect, $this->variables)) {
+            return $this->variables[$expect];
         }
 
-        $this->set = 'ERROR';
-        return ['error' => "Failed to set expected parameter {$expect} of {$this->set} variable set"];
+        $this->route = 'ERROR';
+        return ['error' => "Failed to set expected parameter {$expect} of {$this->route} variable set"];
     }
     
     private function checkClient()

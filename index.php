@@ -15,8 +15,8 @@ define('DIR', __DIR__);
 require_once DIR . '/auth/Input.class.php';
 
 $http = new Input();
-$data = $http->request();//Input data type JSON in the system
-$response = $http->output($data);
+$validate = $http->request();//Input data type JSON in the system
+$response = $http->output($validate);
 echo $response;
 /**
  * Loop PHP platform for the organization
