@@ -1,6 +1,8 @@
 <?php
 
-class Output
+require_once DIR . '/auth/RequestRoute.class.php';
+
+class Output extends Request_Route
 {
 
     public static function checkRoute($request)

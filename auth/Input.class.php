@@ -1,8 +1,8 @@
 <?php
 
-require_once DIR . '/auth/Manager.class.php';
-require_once DIR . '/auth/RequestRoute.class.php';
-require_once DIR . '/staticFiles/Views.class.php';
+//require_once DIR . '/auth/Manager.class.php';
+//require_once DIR . '/auth/RequestRoute.class.php';
+//require_once DIR . '/staticFiles/Views.class.php';
 
 class Input extends Manager
 {

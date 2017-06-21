@@ -1,7 +1,7 @@
 <?php
 
-require_once DIR . '/auth/Auth.class.php';
-require_once DIR . '/auth/Output.class.php';
+//require_once DIR . '/auth/Auth.class.php';
+//require_once DIR . '/auth/Output.class.php';
 
 class Manager extends Auth
 {

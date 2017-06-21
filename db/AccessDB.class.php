@@ -1,6 +1,6 @@
 <?php
 
-require_once DIR . '/db/db.class.php';
+//require_once DIR . '/db/db.class.php';
 
 class AccessDB extends db
 {

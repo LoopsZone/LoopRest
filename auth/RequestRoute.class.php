@@ -1,5 +1,7 @@
 <?php
 
+require_once DIR . '/auth/Expected.class.php';
+
 class Request_Route extends Expected
 {
     public static $routes = [

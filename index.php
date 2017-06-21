@@ -11,13 +11,13 @@
 |	|DELETE: |Type of input data in JSON to use Web services to delete data
 |___________________________________________________________________________
 */
-define('DIR', __DIR__);
-require_once DIR . '/auth/Input.class.php';
+require_once "autoload.php";
 
 $http = new Input();
-$validate = $http->request();//Input data type JSON in the system
+$validate = $http->request();
 $response = $http->output($validate);
 echo $response;
+
 /**
  * Loop PHP platform for the organization
  *
