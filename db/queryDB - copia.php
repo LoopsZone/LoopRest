@@ -2,7 +2,7 @@
 
 class db
 {
-    //constructor de la clase$server,$userDB,$passUdb,$db
+    //constructor de la clase $server,$userDB,$passUdb,$db
     public function tables($table)
     {
         $this->dbConnect();

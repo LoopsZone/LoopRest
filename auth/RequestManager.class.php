@@ -1,6 +1,6 @@
 <?php
 
-class Request_Manager
+class RequestManager
 {
 
 }

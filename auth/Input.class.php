@@ -1,9 +1,5 @@
 <?php
 
-//require_once DIR . '/auth/Manager.class.php';
-//require_once DIR . '/auth/RequestRoute.class.php';
-//require_once DIR . '/staticFiles/Views.class.php';
-
 class Input extends Manager
 {
     /**
@@ -41,7 +37,7 @@ class Input extends Manager
             case 'varchar' :
                 return filter_var($data, FILTER_SANITIZE_STRIPPED);
             case 'request' :
-                if (property_exists('Request_Route', $data)) {
+                if (property_exists('RequestRoute', $data)) {
                     return filter_var($data, FILTER_SANITIZE_STRIPPED);
                 }
                 return false;
@@ -137,7 +133,7 @@ class Input extends Manager
 
             $result = array();
             // Generate set to variables that need request
-            foreach (Request_Route::$routes as $set => $route) {
+            foreach (RequestRoute::$routes as $set => $route) {
                 foreach ($route as $param => $format) {
                     for ($i = 0; $i < $countParams; $i++) {
                         if ($param == $parameter[$i]) {
@@ -149,6 +145,7 @@ class Input extends Manager
             // Check if new set is equal to expected set
             $route = key($result);
             if (count($result[$route]) > $countParams) {
+
                 return [
                     'error' => [
                         'description' => 'Error to set params'
@@ -159,7 +156,7 @@ class Input extends Manager
             return $this->validate($result);
         }
 
-        return ['view' => 'home'];
+        return ['views' => 'home'];
     }
 
     /**

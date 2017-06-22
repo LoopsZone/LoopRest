@@ -1,6 +1,6 @@
 <?php
 
-class whiteList extends DB
+class whiteList extends db
 {
 
 }

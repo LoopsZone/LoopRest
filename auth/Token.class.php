@@ -1,6 +1,6 @@
 <?php
+
 require_once DIR . '/vendor/autoload.php';
-require_once DIR . '/auth/Expected.class.php';
 
 use Firebase\JWT\JWT;
 

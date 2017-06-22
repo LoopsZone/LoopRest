@@ -1,9 +1,5 @@
 <?php
 
-//require_once DIR . '/auth/Access.class.php';
-//require_once DIR . '/auth/Token.class.php';
-//require_once DIR . '/auth/WhiteList.class.php';
-
 class Auth extends Access
 {
     protected $route;

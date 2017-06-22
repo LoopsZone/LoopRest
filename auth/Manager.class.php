@@ -1,8 +1,5 @@
 <?php
 
-//require_once DIR . '/auth/Auth.class.php';
-//require_once DIR . '/auth/Output.class.php';
-
 class Manager extends Auth
 {
     protected $ip;
@@ -16,6 +13,7 @@ class Manager extends Auth
         $execute = Output::executeAction($this->route, $this->method);
         $this->setParams($request);
         $response = $this->action($execute);
+        
         if (is_array($response)) {
             $result = json_encode($response);
             $response = ($_GET["callback"] . "({$result});");//Response data type JSON cross domain
@@ -73,13 +71,13 @@ class Manager extends Auth
 
         if ($checkTK === 'access') {
 
-            $request = $this->setParam(Request_Route::$expectedRequest);
+            $request = $this->setParam(RequestRoute::$expectedRequest);
             
             if ($request != 'access') {
 
                 $response = Auth::getData(
                     $this->routes[Token::$expectToken],
-                    $this->routes[Request_Route::$expectedRequest]
+                    $this->routes[RequestRoute::$expectedRequest]
                 );
 
                 return $response;
@@ -117,10 +115,10 @@ class Manager extends Auth
      */
     private function auth()
     {
-        $id = $this->setParam(Request_Route::$expectedId);
-        $name = $this->setParam(Request_Route::$expectedName);
-        $email = $this->setParam(Request_Route::$expectedEmail);
-        $birthday = $this->setParam(Request_Route::$expectedBirthday);
+        $id = $this->setParam(RequestRoute::$expectedId);
+        $name = $this->setParam(RequestRoute::$expectedName);
+        $email = $this->setParam(RequestRoute::$expectedEmail);
+        $birthday = $this->setParam(RequestRoute::$expectedBirthday);
 
         $result = Auth::signIn([
             'access' => 0,

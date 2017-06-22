@@ -1,15 +1,13 @@
 <?php
 
-require_once DIR . '/auth/RequestRoute.class.php';
-
-class Output extends Request_Route
+class Output extends RequestRoute
 {
 
     public static function checkRoute($request)
     {
         $route = key($request);
 
-        if (key_exists($route, Request_Route::$trigger)) {
+        if (key_exists($route, RequestRoute::$trigger)) {
             return $route;
         }
 
@@ -19,9 +17,9 @@ class Output extends Request_Route
     public static function executeAction($route, $method)
     {
         //If this data have a trigger, change next action execute
-        if (key_exists($route, Request_Route::$trigger)) {
+        if (key_exists($route, RequestRoute::$trigger)) {
 
-            $route = Request_Route::$trigger[$route];
+            $route = RequestRoute::$trigger[$route];
 
             if ($route != $method) {
                 if ($route != 'AUTH' && $route != 'ERROR' && $route != 'VIEWS') {
