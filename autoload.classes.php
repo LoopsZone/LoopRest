@@ -17,7 +17,7 @@ class AutoLoader
 
     if (file_exists($filenameClass))
     {
-      require_once($filenameClass);
+      require($filenameClass);
       return true;
     }
 
