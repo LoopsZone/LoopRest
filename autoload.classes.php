@@ -15,8 +15,7 @@ class AutoLoad
 
     $filenameClass = str_replace('\\', '/', DIR . '/' .  $dir . $className . ".class.php");
 
-    if (file_exists($filenameClass))
-    {
+    if (file_exists($filenameClass)) {
       require($filenameClass);
       return true;
     }
