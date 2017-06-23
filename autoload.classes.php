@@ -2,7 +2,7 @@
 
 define('DIR', __DIR__);
 
-class AutoLoader
+class AutoLoad
 {
 
   static public function LoadClasses($className, $directory = DIR) {
@@ -21,6 +21,8 @@ class AutoLoader
       return true;
     }
 
+    $found = false;
+
     $dir = scandir($directory);
 
     foreach($dir as $check) {
@@ -30,13 +32,18 @@ class AutoLoader
         $ignoreDir = preg_match('[^\.|vendor]', $check);
 
         if(!$ignoreDir){
-          self::LoadClasses($className, $check);
+
+          $found = self::LoadClasses($className, $check);
+
+          if ($found) {
+            break;
+          }
         }
       }
     }
 
-    return false;
+    return $found;
   }
 }
 
-spl_autoload_register('AutoLoader::LoadClasses');
+spl_autoload_register('AutoLoad::LoadClasses');
