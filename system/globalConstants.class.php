@@ -4,6 +4,7 @@ class globalConstants
 {
     protected static $directoriesToIgnore = [
         'vendor',
-        'sql'
+        'sql',
+        'system'
     ];
 }
