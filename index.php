@@ -16,8 +16,8 @@ require_once "autoload.classes.php";
 $http = new Input();
 $validate = $http->request();
 $response = $http->output($validate);
-echo $response;
 
+echo $response;
 /**
  * Loop PHP platform for the organization
  *
