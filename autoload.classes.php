@@ -1,34 +1,37 @@
 <?php
 
-define('DIR', __DIR__);
+define('DIRECTORY', __DIR__ . '/');
+require_once DIRECTORY . 'system/globalSystem.class.php';
 
 class AutoLoad
 {
+  public static $ignore = null;
 
-  static public function LoadClasses($className, $directory = DIR) {
+  static public function LoadClasses($className, $directory = DIRECTORY)
+  {
 
-    if($directory == DIR){
-      $dir = '';
+    if ($directory == DIRECTORY) {
+      $folder = '';
     } else {
-      $dir = $directory . '/';
+      $folder = $directory . '/';
     }
 
-    $filenameClass = str_replace('\\', '/', DIR . '/' .  $dir . $className . ".class.php");
+    $filePath = str_replace('\\', '/', DIRECTORY . $folder . $className . '.class.php');
 
-    if (file_exists($filenameClass)) {
-      require($filenameClass);
+    if (file_exists($filePath)) {
+      require($filePath);
       return true;
     }
 
     $found = false;
 
-    $dir = scandir($directory);
+    $folder = scandir($directory);
 
-    foreach($dir as $check) {
+    foreach ($folder as $check) {
 
       if (is_dir($check)) {
-        
-        $ignoreDir = preg_match('[^\.|vendor]', $check);
+
+        $ignoreDir = preg_match('[^\.' . globalSystem::$ignoreDirectories . ']', $check);
 
         if(!$ignoreDir){
 

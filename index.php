@@ -11,7 +11,7 @@
 |	|DELETE: |Type of input data in JSON to use Web services to delete data
 |___________________________________________________________________________
 */
-require_once "autoLoad.classes.php";
+require_once 'autoLoad.classes.php';
 
 $http = new Input();
 $validate = $http->request();
