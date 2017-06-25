@@ -10,6 +10,7 @@ class Expected
     //Set system variables expected keys
     const ExpSetVariables = 'variables';
     const ExpSetVariableIp = 'ip';
+    const ExpectedVariables = 'Expected variables';
     const ExpSetVariableClient = 'client';
     const ExpSetVariableDevice = 'device';
     const ExpSetVariableHeaders = 'headers';
@@ -22,7 +23,7 @@ class Expected
 
     //Set Update route expected names
     const ExpRoutePut = 'update';
-    
+
     //Set Post route expected names
     const ExpRoutePost = 'insert';
 

@@ -39,7 +39,7 @@ class Access extends AccessDB
                 if (key_exists($routeName, RequestRoute::$routes)) {
 
                     $setData = array_keys($data[$routeName]);
-                    $setRoute = array_keys(RequestRoute::$routes[$routeName][globalSystem::ExpRouteKeyParams]);
+                    $setRoute = array_keys(RequestRoute::$routes[$routeName][GlobalSystem::ExpRouteKeyParams]);
 
                     if ($setData == $setRoute) {
 
@@ -63,11 +63,11 @@ class Access extends AccessDB
                 // Generate set to variables that need request
 
                 $setData = array_keys($data);
-                $setVariables = array_keys(RequestRoute::$variables);
+                $setVariables = array_keys(ExpectVariables::$variables);
 
                 if ($setData == $setVariables) {
 
-                    foreach (RequestRoute::$variables as $param => $format) {
+                    foreach (ExpectVariables::$variables as $param => $format) {
                         $this->setVariables[$param] = $this->validateData($data[$param], $format);
                     }
 
@@ -87,7 +87,7 @@ class Access extends AccessDB
      */
     protected static function validateData($data, $format)
     {
-        return globalSystem::validateData($data, $format);
+        return GlobalSystem::validateData($data, $format);
     }
 
     /**
@@ -135,7 +135,7 @@ class Access extends AccessDB
     {
         if (key_exists($this->routeName, RequestRoute::$routes)) {
 
-            $this->trigger = RequestRoute::$routes[$this->routeName][globalSystem::ExpRouteKeyTrigger];
+            $this->trigger = RequestRoute::$routes[$this->routeName][GlobalSystem::ExpRouteKeyTrigger];
         }
     }
 
@@ -146,7 +146,7 @@ class Access extends AccessDB
             $this->route = array();
             // Generate set to variables that need request
             foreach (RequestRoute::$routes as $set => $route) {
-                foreach ($route[globalSystem::ExpRouteKeyParams] as $param => $format) {
+                foreach ($route[GlobalSystem::ExpRouteKeyParams] as $param => $format) {
                     for ($i = 0; $i < $countParams; $i++) {
                         if ($param == $parameter[$i]) {
                             $this->routeName = $set;
@@ -175,7 +175,7 @@ class Access extends AccessDB
     {
         if (key_exists($this->routeName, RequestRoute::$routes)) {
 
-            $this->route = RequestRoute::$routes[$this->routeName][globalSystem::ExpRouteKeyTrigger];
+            $this->route = RequestRoute::$routes[$this->routeName][GlobalSystem::ExpRouteKeyTrigger];
         }
     }
 
@@ -234,7 +234,12 @@ class Access extends AccessDB
             return $this->variables[$expect];
         }
 
-        throw new Exception('Error al obtener valor');
+        $mapRequest = array();
+        $mapRequest[ExpectVariables::ExpSetVariables] = $this->setVariables;
+        $mapRequest[ExpectVariables::ExpectedVariables] = ExpectVariables::$variables;
+        $mapRequest[ExpectVariables::ExpSetVariableRoute] = RequestRoute::$routes[$this->route];
+
+        throw new ExceptionGetProperties($mapRequest);
     }
 
     protected static function signIn($data)

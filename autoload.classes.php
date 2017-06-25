@@ -1,8 +1,8 @@
 <?php
 
-define('DIRECTORY', __DIR__ . '/');
-require_once DIRECTORY . 'system/CoreConfig.php';
-require_once DIRECTORY . 'system/globalSystem.class.php';
+define('DIRECTORY', str_replace('\\', '/', __DIR__ . '/'));
+require_once DIRECTORY . 'system/config/CoreConfig.php';
+require_once DIRECTORY . 'system/GlobalSystem.class.php';
 
 /**
  * Class AutoLoad
@@ -19,15 +19,17 @@ class AutoLoad
   static public function LoadClasses($className, $directory = DIRECTORY)
   {
 
+    $directory = str_replace('\\', '/', $directory);
+
     if ($directory == DIRECTORY) {
-      $folder = '';
+
+      $filePath = DIRECTORY . $className;
     } else {
-      $folder = $directory . '/';
+      $filePath = $directory . $className;
     }
 
-    $filePath = str_replace('\\', '/', DIRECTORY . $folder . $className . '.class.php');
-
-    if (file_exists($filePath)) {
+    if (file_exists($filePath . '.class.php')) {
+      $filePath .= '.class.php';
       require($filePath);
       return true;
     }
@@ -38,13 +40,13 @@ class AutoLoad
 
     foreach ($folders as $check) {
 
-      if (is_dir($check)) {
+      if (is_dir($directory . $check)) {
 
-        $ignoreDirectory = preg_match('[^\.' . globalSystem::$ignoreDirectories . ']', $check);
+        $ignoreDirectory = preg_match('[^\.' . GlobalSystem::$ignoreDirectories . ']', $check);
 
         if (!$ignoreDirectory) {
 
-          $found = self::LoadClasses($className, $check);
+          $found = self::LoadClasses($className, $directory . $check . '/');
 
           if ($found) {
             break;
