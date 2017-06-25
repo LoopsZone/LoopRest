@@ -45,12 +45,16 @@ class RequestRoute extends Expected
         ]
     ];
 
-
-    public static $variables = [
-        self::ExpSetVariableIp => self::ExpFormatIp,
-        self::ExpSetVariableDevice => self::ExpFormatDevices,
-        self::ExpSetVariableClient => self::ExpFormatClients,
-        self::ExpSetVariableMethod => self::ExpFormatMethods,
-        self::ExpSetVariableHeaders => self::ExpFormatHeaders
-    ];
+    /**
+     *  //AUTH action
+     * self::ExpRouteAuth => [
+     * self::ExpRouteKeyParams => [
+     * self::ExpAuthId => self::ExpFormatNumeric,
+     * self::ExpAuthEmail => self::ExpFormatEmail,
+     * self::ExpAuthName => self::ExpFormatChar,
+     * self::ExpAuthBirthday => self::ExpFormatDate
+     * ],
+     * self::ExpRouteKeyTrigger => self::ExpAuthTrigger,
+     * ],
+     */
 }
