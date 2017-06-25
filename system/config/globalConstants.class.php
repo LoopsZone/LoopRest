@@ -7,7 +7,7 @@ require_once DIRECTORY . 'Expected.class.php';
  *
  * @author   Mario Henmanuel Vargas Ugalde <hemma.hvu@gmail.com>
  */
-class globalConstants extends Expected
+class GlobalConstants extends Expected
 {
     protected static $directoriesToIgnore = [
         'vendor',

@@ -1,9 +1,5 @@
 <?php
 
-/**
- * Gustavo Granados
- * code is poetry
- */
 class Log
 {
 

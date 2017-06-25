@@ -23,29 +23,19 @@ class ExceptionManager
      */
     public static function handleException($exception)
     {
-        if (Util::isDEV() && defined('CoreConfig::PRINT_EXCEPTIONS') && CoreConfig::PRINT_EXCEPTIONS) {
-            echo Util::getNewLine();
-            echo Util::getNewLine();
-            echo Util::isCli() ? $exception : nl2br($exception);
-            echo Util::getNewLine();
-            echo Util::getNewLine();
-        }
+        if (CoreConfig::PRINT_EXCEPTIONS) {
 
-        //*
+        }
+        
         $data = array();
         $data['exception'] = Encrypt::pack($exception);
-        $r = MQueue::push(MQueue::TYPE_EXCEPTION, $data);
-        //*/
 
-        //*
         $notify = !Log::logExists(Log::LEVEL_EXCEPTION);
         Log::exception($exception);
         if ($notify) {
             //notify by email since this might be the first exception due to the file doesnt exists.
             MailManager::sendCriticalErrorEmail("Event Notification (ExceptionEvent)", nl2br($exception));
         }
-
-        //*/
 
         return true;
     }

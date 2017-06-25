@@ -45,22 +45,6 @@ class RequestRoute extends Expected
         ]
     ];
 
-    /**
-     * Copy and paste into $routes array to add new route
-     * Start select
-     * ,
-     * //AUTH action
-     * self::ExpRouteAuth => [
-     * self::ExpRouteKeyParams => [
-     * self::ExpAuthId       => self::ExpFormatNumeric,
-     * self::ExpAuthEmail    => self::ExpFormatEmail,
-     * self::ExpAuthName     => self::ExpFormatChar,
-     * self::ExpAuthBirthday => self::ExpFormatDate
-     * ],
-     * self::ExpRouteKeyTrigger => self::ExpAuthTrigger,
-     * ],
-     * End Select
-     */
 
     public static $variables = [
         self::ExpSetVariableIp => self::ExpFormatIp,
