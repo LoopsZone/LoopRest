@@ -1,13 +1,13 @@
 <?php
 
-require_once DIRECTORY . 'system/globalConstants.class.php';
+require_once DIRECTORY . 'system/config/GlobalConstants.class.php';
 
 /**
  * Class globalSystem
  *
  * @author   Mario Henmanuel Vargas Ugalde <hemma.hvu@gmail.com>
  */
-class globalSystem extends globalConstants
+class GlobalSystem extends GlobalConstants
 {
     public static $expFormatRoutes;
     public static $expFormatClients;
