@@ -3,10 +3,18 @@
 define('DIRECTORY', __DIR__ . '/');
 require_once DIRECTORY . 'system/globalSystem.class.php';
 
+/**
+ * Class AutoLoad
+ *
+ * @author   Mario Henmanuel Vargas Ugalde <hemma.hvu@gmail.com>
+ */
 class AutoLoad
 {
-  public static $ignore = null;
-
+  /**
+   * @param $className
+   * @param string $directory
+   * @return bool
+   */
   static public function LoadClasses($className, $directory = DIRECTORY)
   {
 
@@ -25,15 +33,15 @@ class AutoLoad
 
     $found = false;
 
-    $folder = scandir($directory);
+    $folders = scandir($directory);
 
-    foreach ($folder as $check) {
+    foreach ($folders as $check) {
 
       if (is_dir($check)) {
 
-        $ignoreDir = preg_match('[^\.' . globalSystem::$ignoreDirectories . ']', $check);
+        $ignoreDirectory = preg_match('[^\.' . globalSystem::$ignoreDirectories . ']', $check);
 
-        if(!$ignoreDir){
+        if (!$ignoreDirectory) {
 
           $found = self::LoadClasses($className, $check);
 

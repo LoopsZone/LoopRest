@@ -1,112 +1,72 @@
 <?php
 
+/**
+ * Class Input
+ *
+ * @author   Mario Henmanuel Vargas Ugalde <hemma.hvu@gmail.com>
+ */
 class Input extends Manager
 {
     /**
      * INPUT constructor.
      */
-    function __construct()
+    public function __construct()
     {
-        $this->method = $this->validateData($_SERVER['REQUEST_METHOD'], 'char');
-        $this->client = $this->validateData($_SERVER['HTTP_HOST'], 'varchar');
-        $this->device = $this->validateData($_SERVER['HTTP_USER_AGENT'], 'varchar');
-
         if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
 
-            $this->ip = $this->validateData($_SERVER['HTTP_CLIENT_IP'], 'ip');
+            $this->setVariables[globalSystem::ExpSetVariableIp] = $_SERVER['HTTP_CLIENT_IP'];
         } else if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
 
-            $this->ip = $this->validateData($_SERVER['HTTP_X_FORWARDED_FOR'], 'ip');
+            $this->setVariables[globalSystem::ExpSetVariableIp] = $_SERVER['HTTP_X_FORWARDED_FOR'];
         } else {
 
-            $this->ip = $this->validateData($_SERVER['REMOTE_ADDR'], 'ip');
-        }
-    }
-
-    /**
-     * Validate data to data into request array and is certificated if is right format
-     *
-     * @param $data
-     * @param $format
-     * @return bool|mixed|string
-     * @returner array to request but a value not is valid replace this with false (no certificate)
-     */
-    private static function validateData($data, $format)
-    {
-        switch ($format) {
-            case 'varchar' :
-                return filter_var($data, FILTER_SANITIZE_STRIPPED);
-            case 'request' :
-                if (property_exists('RequestRoute', $data)) {
-                    return filter_var($data, FILTER_SANITIZE_STRIPPED);
-                }
-                return false;
-            case 'numeric' :
-                if (is_numeric($data)) {
-                    return filter_var($data, FILTER_SANITIZE_NUMBER_INT);
-                }
-                return false;
-            case 'char' :
-                if (preg_match('/[0-9]/', $data)) {
-                    return false;
-                }
-                return filter_var($data, FILTER_SANITIZE_SPECIAL_CHARS);
-            case 'email' :
-                return filter_var($data, FILTER_VALIDATE_EMAIL);
-            case 'date' :
-                $date = explode('-', $data);
-                if (checkdate($date[2], $date[1], $date[0])) {
-                    $birthday = strtotime($data);
-                    if ($birthday) {
-                        return date('Y-m-d', $birthday);
-                    }
-                }
-                return false;
-            case 'int' :
-                if (is_int($data)) {
-                    return filter_var($data, FILTER_VALIDATE_INT);
-                }
-                return false;
-            case 'bool' :
-                return filter_var($data, FILTER_VALIDATE_BOOLEAN);
-            case 'float' :
-                return filter_var($data, FILTER_VALIDATE_FLOAT);
-            case 'url' :
-                return filter_var($data, FILTER_VALIDATE_URL);
-            case 'ip' :
-                return filter_var($data, FILTER_VALIDATE_IP);
+            $this->setVariables[globalSystem::ExpSetVariableIp] = $_SERVER['REMOTE_ADDR'];
         }
 
-        return 'Invalid format';
+        $this->setVariables[globalSystem::ExpSetVariableDevice] = $_SERVER['HTTP_USER_AGENT'];
+        $this->setVariables[globalSystem::ExpSetVariableClient] = $_SERVER['HTTP_HOST'];
+        $this->setVariables[globalSystem::ExpSetVariableMethod] = $_SERVER['REQUEST_METHOD'];
+        $this->setVariables[globalSystem::ExpSetVariableHeaders] = headers_list();
+
+        $this->setVariables($this->setVariables);
     }
 
     /**
      * Route action to execute set to params
-     *
+     * 
      * @return array|bool|string
      */
     public function request()
     {
-        switch ($this->method) {
+        try {
 
-            case 'GET':
-                return $this->in($_GET);
-            case 'POST':
-                return $this->in($_POST);
-            case 'PUT':
-                return $this->in($_PUT);
-            case 'DELETE':
-                return $this->in($_DELETE);
-            default:
-                return ['error' => 'Action selected no valid or implemented'];
+            $method = $this->getProperty(globalSystem::ExpSetVariableMethod);
+
+            switch ($method) {
+
+                case globalSystem::ExpMethodGet:
+                    return $this->in($_GET);
+                case globalSystem::ExpMethodPost:
+                    return $this->in($_POST);
+                case globalSystem::ExpMethodPut:
+                    return $this->in($_PUT);
+                case globalSystem::ExpMethodDelete:
+                    return $this->in($_DELETE);
+                default:
+                    return ['error' => 'Action selected no valid or implemented'];
+            }
+
+        } catch (Exception $e) {
+
+            return $e->getMessage();
         }
     }
 
     /**
      * In request and generate sets to check variables
      *
-     * @param $request
-     * @return array|bool|string
+     * @param $method
+     * @return array
      */
     private function in($method)
     {
@@ -114,86 +74,25 @@ class Input extends Manager
         $parameters = array_keys($method);
         $values = array_values($method);
 
-        $out = $this->checkInput($contReq, $parameters, $values);
-
-        return $out;
+        $this->checkInput($contReq, $parameters, $values);
     }
 
     /**
      * Check input to request and generate sets variable for found to system
      *
-     * @param $contReq
+     * @param $countParams
      * @param $parameter
      * @param $value
      * @return array
      */
     private function checkInput($countParams, $parameter, $value)
     {
-        if ($countParams > 0) {
-
-            $result = array();
-            // Generate set to variables that need request
-            foreach (RequestRoute::$routes as $set => $route) {
-                foreach ($route as $param => $format) {
-                    for ($i = 0; $i < $countParams; $i++) {
-                        if ($param == $parameter[$i]) {
-                            $result[$set][$param] = $this->validateData($value[$i], $format);
-                        }
-                    }
-                }
-            }
-            // Check if new set is equal to expected set
-            $route = key($result);
-            if (count($result[$route]) > $countParams) {
-
-                return [
-                    'error' => [
-                        'description' => 'Error to set params'
-                    ]
-                ];
-            }
-
-            return $this->validate($result);
-        }
-
-        return ['views' => 'home'];
-    }
-
-    /**
-     * Validate data in request array
-     *
-     * @param $data
-     * @return array
-     */
-    private function validate($data)
-    {
-        $error = array();
-        //Validate if value to key in data is false or no valid and return
-        foreach ($data as $key => $value) {
-
-            if (is_array($value)) {
-
-                $validArray = $this->validate($value);
-
-                if (key($validArray) == 'error') {
-                    $error = $validArray;
-                }
-            }
-            
-            if ($value == false) {
-                $error[$key] = "Invalid value in {$key} key to this request";
+        foreach ($this->getProperty(globalSystem::ExpSetVariableHeaders) as $headerValue) {
+            if (globalSystem::ExpHeaderFrom == $headerValue) {
+                return $this->checkInputMerchant($countParams, $parameter, $value);
             }
         }
-        // If request array is set return error list in this request
-        if (count($error) > 0) {
 
-            if (key($error) == 'error') {
-                $error = $error['error'];
-            }
-            
-            return ['error' => $error];
-        }
-
-        return $data;
+        return $this->checkInputSystem($countParams, $parameter, $value);
     }
 }

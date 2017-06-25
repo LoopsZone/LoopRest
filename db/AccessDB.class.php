@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Class AccessDB
+ *
+ * @author   Mario Henmanuel Vargas Ugalde <hemma.hvu@gmail.com>
+ */
 class AccessDB extends db
 {
     protected $host;
@@ -7,6 +12,14 @@ class AccessDB extends db
     protected $password;
     protected $db;
     protected $auth;
+
+    /**
+     * INPUT constructor.
+     */
+    function __construct()
+    {
+
+    }
 
     public function db($host, $user, $password, $db)
     {

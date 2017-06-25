@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Class db
+ *
+ * @author   Mario Henmanuel Vargas Ugalde <hemma.hvu@gmail.com>
+ */
 class db
 {
     public function __construct($host, $user, $password, $db)

@@ -1,20 +1,24 @@
 <?php
 
+/**
+ * Class Manager
+ *
+ * @author   Mario Henmanuel Vargas Ugalde <hemma.hvu@gmail.com>
+ */
 class Manager extends Auth
 {
-    protected $ip;
-    protected $client;
-    protected $device;
-    protected $method;
-
-    public function output($request)
+    /**
+     * Format response to output
+     *
+     * @param $request
+     * @return array|bool|string
+     */
+    public function output()
     {
-        $this->route = Output::checkRoute($request);
-        $execute = Output::executeAction($this->route, $this->method);
-        $this->setParams($request);
-        $response = $this->action($execute);
-        
-        if (is_array($response)) {
+        $this->checkRoute();
+        $response = $this->action();
+
+        if (is_array($response) || is_object($response)) {
             $result = json_encode($response);
             $response = ($_GET["callback"] . "({$result});");//Response data type JSON cross domain
         }
@@ -22,40 +26,38 @@ class Manager extends Auth
         return $response;
     }
 
-    protected function setParams($data)
-    {
-        if (key_exists($this->route, $data)) {
-            $this->variables = $data[$this->route];
-
-            return true;
-        }
-
-        return false;
-    }
-
     /**
-     * @return bool|string|array
+     * @param $route
+     * @return array
      */
-    protected function action($route)
+    protected function action()
     {
-        switch ($route) {
+        try {
 
-            case 'GET':
-                return $this->request();
-            case 'POST':
-                return $this->insert();
-            case 'PUT':
-                return $this->update();
-            case 'DELETE':
-                return $this->delete();
-            case 'AUTH':
-                return $this->auth();
-            case 'ERROR':
-                return $this->error();
-            case 'VIEWS':
-                return $this->views();
-            default:
-                return 'Action selected no valid';
+            $route = $this->getProperty(globalSystem::ExpSetVariableRoute);
+
+            switch ($route) {
+
+                case 'GET':
+                    return $this->request();
+                case 'POST':
+                    return $this->insert();
+                case 'PUT':
+                    return $this->update();
+                case 'DELETE':
+                    return $this->delete();
+                case 'AUTH':
+                    return $this->auth();
+                case 'ERROR':
+                    return $this->error();
+                case 'VIEWS':
+                    return $this->views();
+                default:
+                    return ['error' => 'Action selected no valid'];
+            }
+
+        } catch (Exception $e) {
+            return $e->getMessage();
         }
     }
 
@@ -71,19 +73,28 @@ class Manager extends Auth
 
         if ($checkTK === 'access') {
 
-            $request = $this->setParam(RequestRoute::$expectedRequest);
-            
-            if ($request != 'access') {
+            $request[Token::ExpRequestToken] = $this->getProperty(Token::ExpRequestToken);
+            $request[RequestRoute::ExpRequestRequest] = $this->getProperty(RequestRoute::ExpRequestRequest);
+            $this->validate($request);
 
-                $response = Auth::getData(
-                    $this->routes[Token::$expectToken],
-                    $this->routes[RequestRoute::$expectedRequest]
-                );
+            $trigger = $this->getProperty(globalSystem::ExpRouteKeyTrigger);
 
-                return $response;
+            if (!$trigger) {
+
+                if ($request[RequestRoute::ExpRequestRequest] == 'access') {
+
+                    return 'access to web services';
+
+                } else {
+
+                    return Auth::getData(
+                        $request[Token::ExpRequestToken],
+                        $request[RequestRoute::ExpRequestRequest]
+                    );
+                }
             }
 
-            return 'access to web services';
+            return $this->validateTrigger();
         }
 
         return ['error' => $checkTK];
@@ -100,41 +111,6 @@ class Manager extends Auth
     }
 
     private function delete()
-    {
-
-    }
-
-    /**
-     * @param $id
-     * @param $email
-     * @param $name
-     * @param $birthday
-     * @param $cellphone
-     *
-     * @return string
-     */
-    private function auth()
-    {
-        $id = $this->setParam(RequestRoute::$expectedId);
-        $name = $this->setParam(RequestRoute::$expectedName);
-        $email = $this->setParam(RequestRoute::$expectedEmail);
-        $birthday = $this->setParam(RequestRoute::$expectedBirthday);
-
-        $result = Auth::signIn([
-            'access' => 0,
-            'id' => $id,
-            'name' => $name
-        ]);
-
-        return $result;
-    }
-
-    private function error()
-    {
-
-    }
-
-    private function views()
     {
 
     }

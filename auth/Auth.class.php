@@ -1,39 +1,21 @@
 <?php
 
+/**
+ * Class Auth
+ *
+ * @author   Mario Henmanuel Vargas Ugalde <hemma.hvu@gmail.com>
+ */
 class Auth extends Access
 {
-    protected $route;
-    protected $routes;
-    protected $trigger;
-    protected $variables;
-
-    protected static function getData($token, $request)
+    protected function checkInputMerchant($countParams, $parameter, $value)
     {
-        $user = Token::getData($token);
-        return $user;//$this->auth->search($request.'/'.$user->id,TRUE);
-    }
-    
-    protected static function signIn($data)
-    {
-        return Token::signIn($data);
-    }
-
-    protected function check()
-    {
-        $token = $this->setParam(Token::$expectToken);
-        return Token::check($token);
-    }
-
-    protected function setParam($expect)
-    {
-        if (key_exists($expect, $this->variables)) {
-            return $this->variables[$expect];
+        if ($countParams > 0) {
+            return 'Merchant Access';
         }
 
-        $this->route = 'ERROR';
-        return ['error' => "Failed to set expected parameter {$expect} of {$this->route} variable set"];
+        return ['views' => 'home'];
     }
-    
+
     private function checkClient()
     {
 

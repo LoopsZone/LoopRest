@@ -13,17 +13,70 @@ class ComposerStaticInit5aff6f1366ee8dc383321adc4d009a3a
     );
 
     public static $prefixLengthsPsr4 = array(
+        'P' =>
+            array(
+                'Psr\\SimpleCache\\' => 16,
+                'Psr\\Log\\' => 8,
+                'Psr\\Cache\\' => 10,
+            ),
+        'L' =>
+            array(
+                'League\\Flysystem\\' => 17,
+            ),
         'F' =>
             array(
                 'Firebase\\JWT\\' => 13,
             ),
+        'D' =>
+            array(
+                'Doctrine\\Common\\Cache\\' => 22,
+            ),
+        'C' =>
+            array(
+                'Cache\\' => 6,
+            ),
     );
 
     public static $prefixDirsPsr4 = array(
+        'Psr\\SimpleCache\\' =>
+            array(
+                0 => __DIR__ . '/..' . '/psr/simple-cache/src',
+            ),
+        'Psr\\Log\\' =>
+            array(
+                0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
+            ),
+        'Psr\\Cache\\' =>
+            array(
+                0 => __DIR__ . '/..' . '/psr/cache/src',
+            ),
+        'League\\Flysystem\\' =>
+            array(
+                0 => __DIR__ . '/..' . '/league/flysystem/src',
+            ),
         'Firebase\\JWT\\' =>
             array(
                 0 => __DIR__ . '/..' . '/firebase/php-jwt/src',
             ),
+        'Doctrine\\Common\\Cache\\' =>
+            array(
+                0 => __DIR__ . '/..' . '/doctrine/cache/lib/Doctrine/Common/Cache',
+            ),
+        'Cache\\' =>
+            array(
+                0 => __DIR__ . '/..' . '/cache/cache/src',
+            ),
+    );
+
+    public static $classMap = array(
+        'EasyPeasyICS' => __DIR__ . '/..' . '/phpmailer/phpmailer/extras/EasyPeasyICS.php',
+        'PHPMailer' => __DIR__ . '/..' . '/phpmailer/phpmailer/class.phpmailer.php',
+        'PHPMailerOAuth' => __DIR__ . '/..' . '/phpmailer/phpmailer/class.phpmaileroauth.php',
+        'PHPMailerOAuthGoogle' => __DIR__ . '/..' . '/phpmailer/phpmailer/class.phpmaileroauthgoogle.php',
+        'POP3' => __DIR__ . '/..' . '/phpmailer/phpmailer/class.pop3.php',
+        'SMTP' => __DIR__ . '/..' . '/phpmailer/phpmailer/class.smtp.php',
+        'ntlm_sasl_client_class' => __DIR__ . '/..' . '/phpmailer/phpmailer/extras/ntlm_sasl_client.php',
+        'phpmailerException' => __DIR__ . '/..' . '/phpmailer/phpmailer/class.phpmailer.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
@@ -31,6 +84,7 @@ class ComposerStaticInit5aff6f1366ee8dc383321adc4d009a3a
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInit5aff6f1366ee8dc383321adc4d009a3a::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInit5aff6f1366ee8dc383321adc4d009a3a::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit5aff6f1366ee8dc383321adc4d009a3a::$classMap;
 
         }, null, ClassLoader::class);
     }

@@ -14,8 +14,8 @@
 require_once 'autoLoad.classes.php';
 
 $http = new Input();
-$validate = $http->request();
-$response = $http->output($validate);
+$http->request();
+$response = $http->output();
 
 echo $response;
 /**

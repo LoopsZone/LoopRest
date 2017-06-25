@@ -1,6 +1,8 @@
 {
   "require": {
     "firebase/php-jwt": "3.*",
-    "geoip/geoip": "~1.16"
+    "geoip/geoip": "~1.16",
+    "phpmailer/phpmailer": "^5.2",
+    "cache/cache": "^0.4.0"
   }
 }
