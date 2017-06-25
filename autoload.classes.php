@@ -1,6 +1,7 @@
 <?php
 
 define('DIRECTORY', __DIR__ . '/');
+require_once DIRECTORY . 'system/CoreConfig.php';
 require_once DIRECTORY . 'system/globalSystem.class.php';
 
 /**

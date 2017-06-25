@@ -1,9 +1,5 @@
 <?php
 
-/**
- * Gustavo Granados
- * code is poetry
- */
 class Util
 {
 
@@ -1288,8 +1284,11 @@ class Util
 
     /**
      * If possible retrieves the phone area code from the complete phone.
-     * @param unknown_type $phone
-     * @param unknown_type $countrySmallCode
+     *
+     * @param $phone
+     * @param string $countrySmallCode
+     * @param string $default
+     * @return string
      */
     public static function getAreaCodeFrom($phone, $countrySmallCode = '', $default = '000')
     {

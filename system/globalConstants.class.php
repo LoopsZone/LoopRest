@@ -1,6 +1,6 @@
 <?php
 
-require_once DIRECTORY . 'auth/Expected.class.php';
+require_once DIRECTORY . 'Expected.class.php';
 
 /**
  * Class globalConstants
