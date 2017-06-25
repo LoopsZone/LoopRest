@@ -17,9 +17,9 @@ class Expected
     const ExpSetVariableDevice = 'device';
 
     const ExpSetVariableHeaders = 'headers';
-    //
     //Set expected header name
     const ExpHeaderFrom = 'From';
+    //
     //
 
     const ExpSetVariableRoute = 'route';
@@ -52,6 +52,7 @@ class Expected
     const ExpAuthName = 'name';
     const ExpAuthEmail = 'email';
     const ExpAuthBirthday = 'birthday';
+    //
 
     //Set trigger route name
     const ExpAuthTrigger = 'AUTH';
@@ -59,8 +60,6 @@ class Expected
 
     //Set Delete route expected names
     const ExpRouteDelete = 'delete';
-    //
-
     //
 
     //Set Request route expected names
@@ -83,13 +82,11 @@ class Expected
 
     //Set trigger route name
     const ExpErrorTrigger = 'ERROR';
-    //
-    //
-
     //Set Keys name to expected routes params
     const ExpRouteKeyParams = 'params';
     const ExpRouteKeyTrigger = 'trigger';
     const ExpErrorKeyException = 'exception';
+    //
     //
 
     const ExpSetVariableMethod = 'method';
@@ -99,7 +96,6 @@ class Expected
     const ExpMethodPut = 'PUT';
     const ExpMethodPost = 'POST';
     const ExpMethodDelete = 'DELETE';
-    //
     //
 
     //Set format options keys
