@@ -8,7 +8,8 @@
 class Expected
 {
     //Set system variables expected keys
-    const ExpSetVariables = 'variables';
+    const ExpVariables = 'variables';
+    const ExpSetVariables = 'set variables';
     const ExpSetVariableIp = 'ip';
     const ExpectedVariables = 'Expected variables';
     const ExpSetVariableClient = 'client';

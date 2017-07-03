@@ -94,4 +94,4 @@ class GlobalSystem extends GlobalConstants
     }
 }
 
-globalSystem::$ignoreDirectories = globalSystem::ignoreDirectories();
+GlobalSystem::$ignoreDirectories = GlobalSystem::ignoreDirectories();

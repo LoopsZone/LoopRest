@@ -34,7 +34,7 @@ class Manager extends Auth
     {
         try {
 
-            $route = $this->getProperty(globalSystem::ExpSetVariableRoute);
+            $route = $this->getProperty(GlobalSystem::ExpSetVariableRoute);
 
             switch ($route) {
 

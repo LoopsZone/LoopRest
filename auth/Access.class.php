@@ -228,16 +228,16 @@ class Access extends AccessDB
                     }
                 }
 
-                throw new Exception('Error al obtener valor');
+                throw new GeneralException('Error al obtener valor');
             }
 
             return $this->variables[$expect];
         }
 
         $mapRequest = array();
-        $mapRequest[ExpectVariables::ExpSetVariables] = $this->setVariables;
-        $mapRequest[ExpectVariables::ExpectedVariables] = ExpectVariables::$variables;
-        $mapRequest[ExpectVariables::ExpSetVariableRoute] = RequestRoute::$routes[$this->route];
+        $mapRequest[$expect] = $this->variables;
+        $mapRequest[$expect][ExpectVariables::ExpSetVariables] = $this->setVariables;
+        $mapRequest[$expect][ExpectVariables::ExpSetVariableRoute] = RequestRoute::$routes[$this->route];
 
         throw new ExceptionGetProperties($mapRequest);
     }

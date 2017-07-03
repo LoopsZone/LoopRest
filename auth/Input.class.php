@@ -38,27 +38,20 @@ class Input extends Manager
      */
     public function request()
     {
-        try {
+        $method = $this->getProperty(ExpectVariables::ExpSetVariableMethod);
 
-            $method = $this->getProperty(ExpectVariables::ExpSetVariableMethod);
+        switch ($method) {
 
-            switch ($method) {
-
-                case GlobalSystem::ExpMethodGet:
-                    return $this->in($_GET);
-                case GlobalSystem::ExpMethodPost:
-                    return $this->in($_POST);
-                case GlobalSystem::ExpMethodPut:
-                    return $this->in($_PUT);
-                case GlobalSystem::ExpMethodDelete:
-                    return $this->in($_DELETE);
-                default:
-                    return ['error' => 'Action selected no valid or implemented'];
-            }
-
-        } catch (Exception $e) {
-
-            return $e->getMessage();
+            case GlobalSystem::ExpMethodGet:
+                return $this->in($_GET);
+            case GlobalSystem::ExpMethodPost:
+                return $this->in($_POST);
+            case GlobalSystem::ExpMethodPut:
+                return $this->in($_PUT);
+            case GlobalSystem::ExpMethodDelete:
+                return $this->in($_DELETE);
+            default:
+                return ['error' => 'Action selected no valid or implemented'];
         }
     }
 

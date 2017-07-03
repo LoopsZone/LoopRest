@@ -9,6 +9,21 @@ class CoreConfig
      * @var bool
      */
     const DEV = true;
+
+    /**
+     * define if we must print the exception or not.
+     * DEV must be in true
+     *
+     * @var bool
+     */
+    const PRINT_EXCEPTIONS = true;
+
+    /**
+     * path where all system logs will be stored
+     *
+     * @var string
+     */
+    const LOG_PATH = DIRECTORY . 'Logs';
 }
 
 ?>

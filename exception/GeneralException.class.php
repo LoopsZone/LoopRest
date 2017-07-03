@@ -34,14 +34,14 @@ class GeneralException extends Exception
      */
     public function __construct($message, $description = null)
     {
-        parent::__construct($message, -1);
+        parent::__construct($message);
 
         if ($description) {
             $this->description = $description;
         }
 
-        $this->request = Security::scratchArray(array_merge($_REQUEST, array()));
-        $this->session = is_array($_SESSION) ? array_merge($_SESSION, array()) : array();
+        //$this->request = Security::scratchArray(array_merge($_REQUEST, array()));
+        //$this->session = is_array($_SESSION) ? array_merge($_SESSION, array()) : array();
         $this->serverSettings = array_merge($_SERVER, array());
     }
 
@@ -60,7 +60,7 @@ class GeneralException extends Exception
         $representation .= $this->getStack();
         $representation .= $this->getRequestDetails();
 
-        return Security::scratchStr($representation);
+        return $representation;//Security::scratchStr();
     }
 
     /**
@@ -150,22 +150,27 @@ class GeneralException extends Exception
         $details .= $newLine;
         $details .= "Session: $newLine";
         $details .= $newLine;
+
         if ($this->session && is_array($this->session) && count($this->session) > 0) {
             foreach ($this->session as $key => $value) {
+
                 if (is_object($value) && !method_exists($value, '__toString')) {
                     $details .= "$key = " . get_class($value) . $newLine;
-                } else
+                } else {
+
                     if (is_object($value) && method_exists($value, '__toString')) {
                         $details .= "$key = " . get_class($value) . $newLine;
                     } else {
                         $details .= "$key = unknown value type $newLine";
                     }
+                }
             }
         }
 
         $details .= $newLine;
         $details .= "Server:$newLine";
         $details .= $newLine;
+
         if ($this->serverSettings && is_array($this->serverSettings) && count($this->serverSettings) > 0) {
             $details .= "HTTP_HOST = " . $this->serverSettings['HTTP_HOST'] . $newLine;
             $details .= "SERVER_NAME = " . $this->serverSettings['SERVER_NAME'] . $newLine;

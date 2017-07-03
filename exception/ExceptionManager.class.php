@@ -1,6 +1,6 @@
 <?php
 
-class ExceptionManager
+class ExceptionManager extends Exception
 {
 
     /**
@@ -26,15 +26,16 @@ class ExceptionManager
         if (CoreConfig::PRINT_EXCEPTIONS) {
 
         }
-        
+
         $data = array();
         $data['exception'] = Encrypt::pack($exception);
 
         $notify = !Log::logExists(Log::LEVEL_EXCEPTION);
         Log::exception($exception);
+
         if ($notify) {
             //notify by email since this might be the first exception due to the file doesnt exists.
-            MailManager::sendCriticalErrorEmail("Event Notification (ExceptionEvent)", nl2br($exception));
+            //MailManager::sendCriticalErrorEmail("Event Notification (ExceptionEvent)", nl2br($exception));
         }
 
         return true;
