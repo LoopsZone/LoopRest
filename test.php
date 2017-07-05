@@ -46,12 +46,12 @@ function go_To($tracker, $target){
   if ($trackerAxes == $targetAxes) {
     foreach ($targetAxes as $axis) {
 
-      $targetDecision = $target[$axis];
-      $trackerDecision = $tracker[$axis];
+      $targetPosition = $target[$axis];
+      $trackerPosition = $tracker[$axis];
 
-      $decision = ($trackerDecision > $targetDecision);
+      $decision = ($trackerPosition > $targetPosition);
       $step = ($decision) ? 'true' : 'false';
-      $steps = abs($trackerDecision - $targetDecision);
+      $steps = abs($trackerPosition - $targetPosition);
       for ($i = 0; $i < $steps; $i++)
       {
         if ($axis == 'X') {
