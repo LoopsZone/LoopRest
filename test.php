@@ -26,6 +26,7 @@ function findCharacter($character, $grid){
   return $coords;
 }
 
+
 function go_To($tracker, $target){
   $execute = '';
   $xSteps['true'] = 'UP,';
