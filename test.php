@@ -1,70 +1,83 @@
 <?php
 
 function displayPathtoPrincess($grid){
-  $princes = findCharacter("p", $grid);
-  $mario = findCharacter("m", $grid);
+  $princes = findPosition("p", $grid);
+  $mario = findPosition("m", $grid);
   $result = go_To($mario, $princes);
 
-  echo $result;
+  var_dump($result);
   var_dump($mario);
   var_dump($princes);
 }
 
-function findCharacter($character, $grid){
+function findPosition($find, $grid)
+{
   $x = 0;
-  $coords = array();
-  foreach($grid as $rows => $find){
-    $scan = str_split($find);
-    $found = array_search($character, $scan);
-    if($found){
-      $coords['X'] = $x;
-      $coords['Y'] = $found;
+  $axes = array();
+  foreach ($grid as $rows => $yAxis) {
+
+    if (!is_array($yAxis)) {
+      $yAxis = str_split($yAxis);
+    }
+
+    $y = array_search($find, $yAxis);
+    if ($y) {
+      $axes['X'] = $x;
+      $axes['Y'] = $y;
       break;
     }
     $x++;
   }
-  return $coords;
+  return $axes;
 }
 
 
 function go_To($tracker, $target){
+
   $execute = '';
-  $xSteps['true'] = 'UP,';
-  $xSteps['false'] = 'DONW,';
-  $ySteps['true'] = 'LEFT,';
-  $ySteps['false'] = 'RIGHT,';
+  $xSteps['true'] = 'UP' . "\n";
+  $xSteps['false'] = 'DOWN' . "\n";
+  $ySteps['true'] = 'LEFT' . "\n";
+  $ySteps['false'] = 'RIGHT' . "\n";
 
-  $tr = array_keys($tracker);
-  $ta = array_keys($target);
+  $trackerAxes = array_keys($tracker);
+  $targetAxes = array_keys($target);
 
-  if($tr == $ta){
-    foreach($ta as $axis){
-      $taAxis = $target[$axis];
-      $trAxis = $tracker[$axis];
+  if ($trackerAxes == $targetAxes) {
+    foreach ($targetAxes as $axis) {
 
-      $step = ($trAxis > $taAxis);
-      $j = abs($trAxis - $taAxis);
-      for($i = 0; $i < $j; $i++)
+      $targetDecision = $target[$axis];
+      $trackerDecision = $tracker[$axis];
+
+      $decision = ($trackerDecision > $targetDecision);
+      $step = ($decision) ? 'true' : 'false';
+      $steps = abs($trackerDecision - $targetDecision);
+      for ($i = 0; $i < $steps; $i++)
       {
-        if($axis = 'X'){
+        if ($axis == 'X') {
           $exe = $xSteps;
         } else {
           $exe = $ySteps;
         }
 
-        $execute .= $exe["{$step}"];
+        $execute .= $exe[$step];
       }
     }
 
-    return rtrim($execute, ',') ;
+    return $execute;
   }
 
   return 'Space - time error';
 }
 
 $grid[] = "---";
-$grid[] = "-m-";
 $grid[] = "--p";
+$grid[] = "---";
+$grid[] = "---";
+$grid[] = "-m-";
+$grid[] = "---";
+$grid[] = "---";
+
 
 
 displayPathtoPrincess($grid);
