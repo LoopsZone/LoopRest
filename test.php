@@ -5,15 +5,13 @@ function displayPathtoPrincess($grid){
   $mario = findPosition("m", $grid);
   $result = go_To($mario, $princes);
 
-  var_dump($result);
-  var_dump($mario);
-  var_dump($princes);
+  echo($result);
 }
 
-function findPosition($find, $grid)
-{
+function findPosition($find, $grid){
   $x = 0;
   $axes = array();
+
   foreach ($grid as $rows => $yAxis) {
 
     if (!is_array($yAxis)) {
@@ -21,16 +19,17 @@ function findPosition($find, $grid)
     }
 
     $y = array_search($find, $yAxis);
-    if ($y) {
+
+    if ($y !== false) {
       $axes['X'] = $x;
       $axes['Y'] = $y;
       break;
     }
+
     $x++;
   }
   return $axes;
 }
-
 
 function go_To($tracker, $target){
 
@@ -74,12 +73,9 @@ $grid[] = "---";
 $grid[] = "--p";
 $grid[] = "---";
 $grid[] = "---";
-$grid[] = "-m-";
+$grid[] = "--m";
 $grid[] = "---";
 $grid[] = "---";
-
-
 
 displayPathtoPrincess($grid);
-
 ?>
