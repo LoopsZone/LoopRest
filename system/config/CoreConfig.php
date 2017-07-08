@@ -23,7 +23,7 @@ class CoreConfig
      *
      * @var string
      */
-    const LOG_PATH = DIRECTORY . 'Logs';
+    const LOG_PATH = DIRECTORY . 'logs';
 }
 
 ?>

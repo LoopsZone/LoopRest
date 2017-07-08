@@ -24,7 +24,11 @@ class ExceptionManager extends Exception
     public static function handleException($exception)
     {
         if (CoreConfig::PRINT_EXCEPTIONS) {
-
+            echo Util::getNewLine();
+            echo Util::getNewLine();
+            echo Util::isCli() ? $exception : nl2br($exception);
+            echo Util::getNewLine();
+            echo Util::getNewLine();
         }
 
         $data = array();
