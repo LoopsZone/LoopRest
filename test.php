@@ -28,6 +28,7 @@ function findPosition($find, $grid){
 
     $x++;
   }
+
   return $axes;
 }
 

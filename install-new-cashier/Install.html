@@ -1,0 +1,77 @@
+<html>
+    <head>
+        <script src="jquery-3.2.1.min.js"></script>
+        <title>New Cashier Install</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=8" />
+    </head>
+
+    <body>
+        <input type="text">
+        <input type="text">
+        
+        <a href="file:bin/install-windows7.bat">Instalar dependencia Windows7</a>
+        <a href="file:bin/install-windows10.bat">Instalar dependencia Windows 8 / 10</a>
+        <a href="file:bin/localSetUp.bat">Configurar Entorno local</a>
+        <a href="file:bin/virtualSetUp.sh">Configurar Entorno Maquina Virtual</a>
+        
+        
+        <input type="button" id="boton-txt" value="Descargar TXT" />
+        <script language="JavaScript">
+            function downloadFile(contenidoEnBlob, nombreArchivo) {
+                var reader = new FileReader();
+                reader.onload = function (event) {
+                    var save = document.createElement('a');
+                    save.href = event.target.result;
+                    save.target = '_blank';
+                    save.download = nombreArchivo || 'archivo.dat';
+
+                    save.dispatchEvent(
+                        new MouseEvent('click', {
+                            'view': window,
+                            'bubbles': true,
+                            'cancelable': true
+                        })
+                    );
+                    (window.URL || window.webkitURL).revokeObjectURL(save.href);
+                };
+                reader.readAsDataURL(contenidoEnBlob);
+            }
+            
+            function genFile(datos) {
+                
+                var texto = [];
+                
+                texto.push('Datos Personales:\n');
+                texto.push('Nombre: ');
+                texto.push('\n');
+                texto.push('Teléfono: ');
+                texto.push('\n');
+                texto.push('Fecha: ');
+                texto.push('\n');
+                //El contructor de Blob requiere un Array en el primer parámetro
+                //así que no es necesario usar toString. el segundo parámetro
+                //es el tipo MIME del archivo
+                return new Blob(texto, {
+                    type: 'application/x-bat'
+                });
+            }
+
+            function WriteFile()
+            {
+                var fso  = new ActiveXObject("Scripting.FileSystemObject");
+                var fh = fso.CreateTextFile("c:\\Test.txt", true);
+                fh.WriteLine("Some text goes here...");
+                fh.Close();
+            }
+
+            $( document ).ready(function() {
+                $('#boton-txt').click(function() {
+                    var actual = window.location;
+                    actual.replace(/Install\.html/g, " ");
+                    alert(actual);
+                });
+            });
+        </script>
+    </body>
+
+</html>

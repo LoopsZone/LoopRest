@@ -1,0 +1,29 @@
+echo 'deb http://www.rabbitmq.com/debian/ testing main' |
+     sudo tee /etc/apt/sources.list.d/rabbitmq.list
+
+wget -O- https://www.rabbitmq.com/rabbitmq-release-signing-key.asc |
+     sudo apt-key add -
+
+sudo apt-get update
+
+sudo apt-get install rabbitmq-server
+
+service rabbitmq-server start.
+
+rabbitmqctl status
+
+sudo rabbitmq-plugins list
+
+sudo rabbitmq-plugins enable rabbitmq_management
+
+php cashier_admin.php start customer:1 process:1 transaction:1 bonus:1 backend:1
+
+php cashier_admin.php setup
+
+npm install
+
+npm run build
+
+rabbitmqctl add_user test test
+rabbitmqctl set_user_tags test administrator
+rabbitmqctl set_permissions -p / test ".*" ".*" ".*"
