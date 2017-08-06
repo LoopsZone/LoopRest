@@ -56,7 +56,8 @@ class Input extends Manager
                     return $this->output();//['error' => 'Action selected no valid or implemented'];
             }
 
-        } catch (Exception $e) {
+        } catch (ExceptionGetProperties $e) {
+            $this->setVariables($e->getMessageResponse(), GlobalSystem::ExpRouteError);
             return $this->output();
         }
     }

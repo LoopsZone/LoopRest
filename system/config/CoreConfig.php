@@ -16,7 +16,7 @@ class CoreConfig
      *
      * @var bool
      */
-    const PRINT_EXCEPTIONS = true;
+    const PRINT_EXCEPTIONS = false;
 
     /**
      * path where all system logs will be stored

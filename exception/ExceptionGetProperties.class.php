@@ -1,7 +1,9 @@
 <?php
 
-class ExceptionGetProperties extends ExceptionManager
+class ExceptionGetProperties extends Error
 {
+    private $errorType = 'GetProperties';
+    
     function __construct($errorMap)
     {
         $expected = key($errorMap);
@@ -20,6 +22,16 @@ class ExceptionGetProperties extends ExceptionManager
 
                     $value = $settingValues[$error];
 
+                    if (is_array($value)) {
+                        $multiValue = '';
+
+                        foreach ($value as $key => $val) {
+                            $multiValue .= "{$val} ";
+                        }
+
+                        $value = $multiValue;
+                    }
+
                     if ($error == $expected) {
                         $helpMessage = "The key {$error} have a problem when this set in the setVariables, the value setting is {$value}.";
                     } else {
@@ -31,7 +43,11 @@ class ExceptionGetProperties extends ExceptionManager
                 $message[] = $helpMessage;
                 $message[] = $secondMessage;
 
-                parent::handleException($message);
+                parent::handleException($this->errorType, $message);
+
+                $messageResponse = array();
+                $messageResponse[GlobalSystem::ExpRouteError] = $mistakes;
+                $this->messageResponse = $messageResponse;
 
                 return $mistakes;
             }

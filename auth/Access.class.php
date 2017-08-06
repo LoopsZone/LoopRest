@@ -55,13 +55,12 @@ class Access extends AccessDB
                         }
                     }
 
-                    $this->variables[$this->routeName] = $this->route;
+                    $this->variables = $this->route;
                 }
 
             } else {
 
                 // Generate set to variables that need request
-
                 $setData = array_keys($data);
                 $setVariables = array_keys(ExpectVariables::$variables);
 
@@ -174,8 +173,7 @@ class Access extends AccessDB
     protected function checkRoute()
     {
         if (key_exists($this->routeName, RequestRoute::$routes)) {
-
-            $this->route = RequestRoute::$routes[$this->routeName][GlobalSystem::ExpRouteKeyTrigger];
+            $this->trigger = RequestRoute::$routes[$this->routeName][GlobalSystem::ExpRouteKeyTrigger];
         }
     }
 
@@ -226,6 +224,8 @@ class Access extends AccessDB
 
                         return $this->variables[$expect][$key];
                     }
+                } else {
+                    
                 }
 
                 throw new GeneralException('Error al obtener valor');
@@ -237,7 +237,10 @@ class Access extends AccessDB
         $mapRequest = array();
         $mapRequest[$expect] = $this->variables;
         $mapRequest[$expect][ExpectVariables::ExpSetVariables] = $this->setVariables;
-        $mapRequest[$expect][ExpectVariables::ExpSetVariableRoute] = RequestRoute::$routes[$this->route];
+
+        if ($this->route) {
+            $mapRequest[$expect][ExpectVariables::ExpSetVariableRoute] = RequestRoute::$routes[$this->route];
+        }
 
         throw new ExceptionGetProperties($mapRequest);
     }
@@ -264,7 +267,17 @@ class Access extends AccessDB
 
     protected function error()
     {
+        return $this->variables;
+    }
 
+    protected function getRoute()
+    {
+        return $this->routeName;
+    }
+
+    protected function getTrigger()
+    {
+        return $this->trigger;
     }
 
     protected function views()

@@ -15,7 +15,6 @@ class Manager extends Auth
      */
     public function output()
     {
-        $this->checkRoute();
         $response = $this->action();
 
         if (is_array($response) || is_object($response)) {
@@ -34,9 +33,9 @@ class Manager extends Auth
     {
         try {
 
-            $route = $this->getProperty(GlobalSystem::ExpSetVariableRoute);
+            $this->checkRoute();
 
-            switch ($route) {
+            switch ($this->getTrigger()) {
 
                 case 'GET':
                     return $this->request();
@@ -77,7 +76,7 @@ class Manager extends Auth
             $request[RequestRoute::ExpRequestRequest] = $this->getProperty(RequestRoute::ExpRequestRequest);
             $this->validate($request);
 
-            $trigger = $this->getProperty(globalSystem::ExpRouteKeyTrigger);
+            $trigger = $this->getProperty(GlobalSystem::ExpRouteKeyTrigger);
 
             if (!$trigger) {
 

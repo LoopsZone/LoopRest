@@ -21,7 +21,7 @@ class ExceptionManager extends Exception
      *
      * @return bool
      */
-    public static function handleException($exception)
+    public static function handleException($exceptionType, $exception)
     {
         if (CoreConfig::PRINT_EXCEPTIONS) {
             echo Util::getNewLine();
@@ -35,7 +35,8 @@ class ExceptionManager extends Exception
         $data['exception'] = Encrypt::pack($exception);
 
         $notify = !Log::logExists(Log::LEVEL_EXCEPTION);
-        Log::exception($exception);
+
+        self::printException($exceptionType, $exception);
 
         if ($notify) {
             //notify by email since this might be the first exception due to the file doesnt exists.
@@ -43,6 +44,17 @@ class ExceptionManager extends Exception
         }
 
         return true;
+    }
+
+    private static function printException($error, $exception)
+    {
+        foreach ($exception as $message) {
+            if (is_array($message)) {
+                self:: printException($error, $message);
+            } else {
+                Log::exception("Error: $error with message: $message");
+            }
+        }
     }
 
     /**
