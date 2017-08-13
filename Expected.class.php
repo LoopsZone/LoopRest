@@ -8,13 +8,13 @@
 class Expected
 {
     //Set system variables expected keys
-    const ExpVariables = 'variables';
-    const ExpSetVariables = 'set variables';
-    const ExpSetVariableIp = 'ip';
-    const ExpectedVariables = 'Expected variables';
-    const ExpSetVariableClient = 'client';
-    const ExpSetVariableDevice = 'device';
-    const ExpSetVariableHeaders = 'headers';
+    const ExpProperties = 'properties';
+    const ExpSetProperties = 'set properties';
+    const ExpSetPropertiesIp = 'ip';
+    const ExpectedProperties = 'Expected properties';
+    const ExpSetPropertiesClient = 'client';
+    const ExpSetPropertiesDevice = 'device';
+    const ExpSetPropertiesHeaders = 'headers';
     //Set expected header name
     const ExpHeaderFrom = 'From';
 
@@ -65,7 +65,7 @@ class Expected
     const ExpErrorKeyException = 'exception';
 
     //Set expected method implemented
-    const ExpSetVariableMethod = 'method';
+    const ExpSetPropertiesMethod = 'method';
     const ExpMethodGet = 'GET';
     const ExpMethodPut = 'PUT';
     const ExpMethodPost = 'POST';

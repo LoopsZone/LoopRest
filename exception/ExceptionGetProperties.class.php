@@ -3,6 +3,7 @@
 class ExceptionGetProperties extends Error
 {
     private $errorType = 'GetProperties';
+    private $triggerRoute = Expected::ExpRouteError;
     
     function __construct($errorMap)
     {
@@ -11,7 +12,7 @@ class ExceptionGetProperties extends Error
         if (key_exists(Expected::ExpRouteError, $errorMap[$expected])) {
 
             $mistakes = $errorMap[$expected][Expected::ExpRouteError];
-            $settingValues = $errorMap[$expected][ExpectVariables::ExpSetVariables];
+            $settingValues = $errorMap[$expected][ExpectVariables::ExpSetProperties];
 
             if ($mistakes) {
 
@@ -49,7 +50,7 @@ class ExceptionGetProperties extends Error
                 $messageResponse[GlobalSystem::ExpRouteError] = $mistakes;
                 $this->messageResponse = $messageResponse;
 
-                return $mistakes;
+                return true;
             }
         }
 

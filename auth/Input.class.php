@@ -14,21 +14,21 @@ class Input extends Manager
     {
         if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
 
-            $this->setVariables[ExpectVariables::ExpSetVariableIp] = $_SERVER['HTTP_CLIENT_IP'];
+            $this->setProperties[ExpectVariables::ExpSetPropertiesIp] = $_SERVER['HTTP_CLIENT_IP'];
         } else if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
 
-            $this->setVariables[ExpectVariables::ExpSetVariableIp] = $_SERVER['HTTP_X_FORWARDED_FOR'];
+            $this->setProperties[ExpectVariables::ExpSetPropertiesIp] = $_SERVER['HTTP_X_FORWARDED_FOR'];
         } else {
 
-            $this->setVariables[ExpectVariables::ExpSetVariableIp] = $_SERVER['REMOTE_ADDR'];
+            $this->setProperties[ExpectVariables::ExpSetPropertiesIp] = $_SERVER['REMOTE_ADDR'];
         }
 
-        $this->setVariables[ExpectVariables::ExpSetVariableDevice] = $_SERVER['HTTP_USER_AGENT'];
-        $this->setVariables[ExpectVariables::ExpSetVariableClient] = $_SERVER['HTTP_HOST'];
-        $this->setVariables[ExpectVariables::ExpSetVariableMethod] = $_SERVER['REQUEST_METHOD'];
-        $this->setVariables[ExpectVariables::ExpSetVariableHeaders] = headers_list();
+        $this->setProperties[ExpectVariables::ExpSetPropertiesDevice] = $_SERVER['HTTP_USER_AGENT'];
+        $this->setProperties[ExpectVariables::ExpSetPropertiesClient] = $_SERVER['HTTP_HOST'];
+        $this->setProperties[ExpectVariables::ExpSetPropertiesMethod] = $_SERVER['REQUEST_METHOD'];
+        $this->setProperties[ExpectVariables::ExpSetPropertiesHeaders] = headers_list();
 
-        $this->setVariables($this->setVariables);
+        $this->setProperties($this->setProperties);
     }
 
     /**
@@ -40,9 +40,7 @@ class Input extends Manager
     {
         try {
 
-            $method = $this->getProperty(ExpectVariables::ExpSetVariableMethod);
-
-            switch ($method) {
+            switch ($_SERVER['REQUEST_METHOD']) {
 
                 case GlobalSystem::ExpMethodGet:
                     return $this->in($_GET);
@@ -53,11 +51,12 @@ class Input extends Manager
                 case GlobalSystem::ExpMethodDelete:
                     return $this->in($_DELETE);
                 default:
-                    return $this->output();//['error' => 'Action selected no valid or implemented'];
+                    return; //['error' => 'Action selected no valid or implemented'];
             }
 
         } catch (ExceptionGetProperties $e) {
-            $this->setVariables($e->getMessageResponse(), GlobalSystem::ExpRouteError);
+
+            $this->setProperties($e->getMessageResponse());
             return $this->output();
         }
     }
@@ -87,7 +86,7 @@ class Input extends Manager
      */
     private function checkInput($countParams, $parameter, $value)
     {
-        foreach ($this->getProperty(GlobalSystem::ExpSetVariableHeaders) as $headerValue) {
+        foreach ($this->getProperty(Expected::ExpSetPropertiesHeaders) as $header => $headerValue) {
             if (GlobalSystem::ExpHeaderFrom == $headerValue) {
                 return $this->checkInputMerchant($countParams, $parameter, $value);
             }

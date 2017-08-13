@@ -17,7 +17,7 @@ class ExceptionManager extends Exception
     /**
      * Handle the exception
      *
-     * @param Exception $exception
+     * @param $exception
      *
      * @return bool
      */

@@ -7,16 +7,11 @@
  */
 class Access extends AccessDB
 {
-    protected $setVariables;
-    private $ip;
+    protected $setProperties;
     private $route;
-    private $client;
-    private $device;
-    private $method;
-    private $headers;
     private $trigger;
-    private $variables;
     private $routeName;
+    private $variables;
 
     protected static function getData($token, $request)
     {
@@ -30,53 +25,38 @@ class Access extends AccessDB
      * @param $data
      * @return bool
      */
-    protected function setVariables($data, $routeName = null)
+    protected function setProperties($data)
     {
         if (is_array($data) || is_object($data)) {
 
-            if ($routeName) {
+            // Generate set to variables that need request
+            $setDataKeys = array_keys($data);
+            $setProperties = array_keys(ExpectVariables::$properties);
 
-                if (key_exists($routeName, RequestRoute::$routes)) {
+            if ($setDataKeys == $setProperties) {
 
-                    $setData = array_keys($data[$routeName]);
-                    $setRoute = array_keys(RequestRoute::$routes[$routeName][GlobalSystem::ExpRouteKeyParams]);
+                $setDataKeys = array();
 
-                    if ($setData == $setRoute) {
+                foreach (ExpectVariables::$properties as $param => $format) {
 
-                        $this->route = array();
-
-                        foreach ($setRoute as $param) {
-                            foreach ($setData as $value) {
-
-                                if ($param == $value) {
-                                    $this->route[$routeName][$param] = $data[$routeName][$value];
-                                }
-                            }
+                    if (is_array($data[$param])) {
+                        foreach ($data[$param] as $arrayParam => $paramValue) {
+                            $setDataKeys[$param][$arrayParam] = $this->validateData($paramValue, $format);
                         }
+                    } else {
+                        $setDataKeys[$param] = $this->validateData($data[$param], $format);
                     }
-
-                    $this->variables = $this->route;
                 }
 
-            } else {
+                $this->validate($setDataKeys);
 
-                // Generate set to variables that need request
-                $setData = array_keys($data);
-                $setVariables = array_keys(ExpectVariables::$variables);
-
-                if ($setData == $setVariables) {
-
-                    foreach (ExpectVariables::$variables as $param => $format) {
-                        $this->setVariables[$param] = $this->validateData($data[$param], $format);
-                    }
-
-                    $this->validate($this->setVariables);
-                    $this->setVariables = $data;
-                }
+                return true;
             }
         }
-    }
 
+        return false;
+    }
+    
     /**
      * Validate data to data into request array and is certificated if is right format
      *
@@ -90,7 +70,7 @@ class Access extends AccessDB
     }
 
     /**
-     * Validate data in request array
+     * Validate data in request array and set data in $this->variables
      *
      * @param $data
      * @return array
@@ -103,24 +83,24 @@ class Access extends AccessDB
 
             if (is_array($value) || is_object($value)) {
 
-                $validArray = $this->validate($value);
-
-                if (key($validArray) == 'error') {
-                    $error = $validArray;
+                foreach ($value as $subKey => $subValue) {
+                    if ($subValue == false) {
+                        $error[$key][$subKey] = "Invalid value in {$subValue} key to this request";
+                    }
                 }
-            }
 
-            if ($value == false) {
-                $error[$key] = "Invalid value in {$key} key to this request";
+            } else {
+
+                if ($value == false) {
+                    $error[$key] = "Invalid value in {$key} key to this request";
+                }
             }
         }
         // If request array is set return error list in this request
         if (count($error) > 0) {
 
             $this->routeName = RequestRoute::ExpRouteError;
-            $this->checkTrigger();
-
-            $this->variables[$this->routeName] = $error;
+            $this->variables = $error;
 
             return false;
         }
@@ -130,44 +110,42 @@ class Access extends AccessDB
         return true;
     }
 
+    protected function checkInputSystem($countParams, $parameter, $value)
+    {
+        if ($countParams > 0) {
+
+            $request = null;
+            $routeName = null;
+
+            // Generate set to variables that need request
+            foreach (RequestRoute::$routes as $set => $route) {
+                foreach ($route[GlobalSystem::ExpRouteKeyParams] as $param => $format) {
+                    for ($i = 0; $i < $countParams; $i++) {
+                        if ($param == $parameter[$i]) {
+                            $routeName = $set;
+                            $request[$param] = $this->validateData($value[$i], $format);
+                        }
+                    }
+                }
+            }
+
+            $this->routeName = $routeName;
+            $this->variables[Expected::ExpFormatRequest] = $request;
+
+            return true;
+        }
+
+        $this->routeName = Expected::ExpRouteView;
+
+        return false;
+    }
+
     protected function checkTrigger()
     {
         if (key_exists($this->routeName, RequestRoute::$routes)) {
 
             $this->trigger = RequestRoute::$routes[$this->routeName][GlobalSystem::ExpRouteKeyTrigger];
         }
-    }
-
-    protected function checkInputSystem($countParams, $parameter, $value)
-    {
-        if ($countParams > 0) {
-
-            $this->route = array();
-            // Generate set to variables that need request
-            foreach (RequestRoute::$routes as $set => $route) {
-                foreach ($route[GlobalSystem::ExpRouteKeyParams] as $param => $format) {
-                    for ($i = 0; $i < $countParams; $i++) {
-                        if ($param == $parameter[$i]) {
-                            $this->routeName = $set;
-                            $this->route[$set][$param] = $this->validateData($value[$i], $format);
-                        }
-                    }
-                }
-            }
-
-            if (count($this->route[$this->routeName]) > $countParams) {
-
-                return [
-                    'error' => [
-                        'description' => 'Error to set params'
-                    ]
-                ];
-            }
-
-            return $this->validate($this->route);
-        }
-
-        return ['views' => 'home'];
     }
 
     protected function checkRoute()
@@ -188,58 +166,31 @@ class Access extends AccessDB
      */
     protected function auth()
     {
-        $auth = array();
+        $auth = $this->getProperty(Expected::ExpRequestRequest);
 
-        $auth[RequestRoute::ExpAuthId] = $this->getProperty(RequestRoute::ExpAuthId);
-        $auth[RequestRoute::ExpAuthName] = $this->getProperty(RequestRoute::ExpAuthName);
-        $auth[RequestRoute::ExpAuthEmail] = $this->getProperty(RequestRoute::ExpAuthEmail);
-        $auth[RequestRoute::ExpAuthBirthday] = $this->getProperty(RequestRoute::ExpAuthBirthday);
-        $this->validate($auth);
-
-        if (!$this->trigger) {
-
-            return Auth::signIn([
-                'access' => 0,
-                'id' => $auth[RequestRoute::ExpAuthId],
-                'name' => $auth[RequestRoute::ExpAuthName]
-            ]);
-        }
-
-        return $this->validateTrigger();
+        return Auth::signIn([
+            'access' => 0,
+            'id' => $auth[RequestRoute::ExpAuthId],
+            'name' => $auth[RequestRoute::ExpAuthName]
+        ]);
     }
 
     /**
      * @param $expect
      * @return bool
      */
-    protected function getProperty($expect, $key = null)
+    protected function getProperty($expect)
     {
         if (key_exists($expect, $this->variables)) {
-
-            if (is_array($this->variables[$expect]) || is_object($this->variables[$expect])) {
-
-                if ($key) {
-
-                    if (key_exists($key, $this->variables[$expect])) {
-
-                        return $this->variables[$expect][$key];
-                    }
-                } else {
-                    
-                }
-
-                throw new GeneralException('Error al obtener valor');
-            }
-
             return $this->variables[$expect];
         }
 
         $mapRequest = array();
         $mapRequest[$expect] = $this->variables;
-        $mapRequest[$expect][ExpectVariables::ExpSetVariables] = $this->setVariables;
+        $mapRequest[$expect][ExpectVariables::ExpSetProperties] = $this->setProperties;
 
-        if ($this->route) {
-            $mapRequest[$expect][ExpectVariables::ExpSetVariableRoute] = RequestRoute::$routes[$this->route];
+        if ($this->routeName) {
+            $mapRequest[$expect][ExpectVariables::ExpSetVariableRoute] = RequestRoute::$routes[$this->routeName];
         }
 
         throw new ExceptionGetProperties($mapRequest);
