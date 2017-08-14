@@ -100,7 +100,7 @@ class Access extends AccessDB
         if (count($error) > 0) {
 
             $this->routeName = RequestRoute::ExpRouteError;
-            $this->variables = $error;
+            $this->variables[Expected::ExpRouteError] = $error;
 
             return false;
         }
@@ -123,14 +123,14 @@ class Access extends AccessDB
                     for ($i = 0; $i < $countParams; $i++) {
                         if ($param == $parameter[$i]) {
                             $routeName = $set;
-                            $request[$param] = $this->validateData($value[$i], $format);
+                            $request[$set][$param] = $this->validateData($value[$i], $format);
                         }
                     }
                 }
             }
 
             $this->routeName = $routeName;
-            $this->variables[Expected::ExpFormatRequest] = $request;
+            $this->variables = $request;
 
             return true;
         }
