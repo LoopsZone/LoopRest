@@ -24,7 +24,7 @@ class Input extends Manager
         }
 
         $this->setProperties[ExpectVariables::ExpSetPropertiesDevice] = $_SERVER['HTTP_USER_AGENT'];
-        $this->setProperties[ExpectVariables::ExpSetPropertiesClient] = $_SERVER['HTTP_HOST'];
+        $this->setProperties[ExpectVariables::ExpSetPropertiesDomain] = $_SERVER['HTTP_HOST'];
         $this->setProperties[ExpectVariables::ExpSetPropertiesMethod] = $_SERVER['REQUEST_METHOD'];
         $this->setProperties[ExpectVariables::ExpSetPropertiesHeaders] = headers_list();
 
@@ -40,7 +40,7 @@ class Input extends Manager
     {
         try {
 
-            switch ($_SERVER['REQUEST_METHOD']) {
+            switch ($this->getProperty(Expected::ExpSetPropertiesMethod)) {
 
                 case GlobalSystem::ExpMethodGet:
                     return $this->in($_GET);

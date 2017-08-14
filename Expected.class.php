@@ -12,7 +12,7 @@ class Expected
     const ExpSetProperties = 'set properties';
     const ExpSetPropertiesIp = 'ip';
     const ExpectedProperties = 'Expected properties';
-    const ExpSetPropertiesClient = 'client';
+    const ExpSetPropertiesDomain = 'client';
     const ExpSetPropertiesDevice = 'device';
     const ExpSetPropertiesHeaders = 'headers';
     //Set expected header name
@@ -66,10 +66,12 @@ class Expected
 
     //Set expected method implemented
     const ExpSetPropertiesMethod = 'method';
-    const ExpMethodGet = 'GET';
-    const ExpMethodPut = 'PUT';
-    const ExpMethodPost = 'POST';
-    const ExpMethodDelete = 'DELETE';
+    const ExpAvailableMethods = [
+        0 => 'GET',
+        1 => 'PUT',
+        2 => 'POST',
+        3 => 'DELETE'
+    ];
 
     //Set format options keys
     const ExpFormatIp = 'ip';
@@ -84,8 +86,7 @@ class Expected
     const ExpFormatVarchar = 'varchar';
     const ExpFormatRequest = 'request';
     const ExpFormatNumeric = 'numeric';
-    const ExpFormatClients = 'clients';
-    const ExpFormatDevices = 'devices';
+    const ExpFormatDomain = 'domain';
     const ExpFormatMethods = 'methods';
     const ExpFormatHeaders = 'headers';
     const ExpFormatTriggers = 'triggers';
