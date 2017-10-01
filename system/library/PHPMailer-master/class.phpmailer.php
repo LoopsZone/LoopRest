@@ -287,23 +287,23 @@ class PHPMailer
      */
     public $Timeout = 300;
     /**
-     * SMTP class debug output mode.
-     * Debug output level.
+     * SMTP class debug response mode.
+     * Debug response level.
      * Options:
-     * * `0` No output
+     * * `0` No response
      * * `1` Commands
      * * `2` Data and commands
      * * `3` As 2 plus connection status
-     * * `4` Low-level data output
+     * * `4` Low-level data response
      * @var integer
      * @see SMTP::$do_debug
      */
     public $SMTPDebug = 0;
     /**
-     * How to handle debug output.
+     * How to handle debug response.
      * Options:
      * * `echo` Output plain-text as-is, appropriate for CLI
-     * * `html` Output escaped, line breaks converted to `<br>`, appropriate for browser output
+     * * `html` Output escaped, line breaks converted to `<br>`, appropriate for browser response
      * * `error_log` Output to error log as configured in php.ini
      *
      * Alternatively, you can provide a callable expecting two params: a message string and the debug level:
@@ -836,7 +836,7 @@ class PHPMailer
 
     /**
      * Output debugging info via user-defined method.
-     * Only generates output if SMTP debug output is enabled (@see SMTP::$do_debug).
+     * Only generates response if SMTP debug response is enabled (@see SMTP::$do_debug).
      * @see PHPMailer::$Debugoutput
      * @see PHPMailer::$SMTPDebug
      * @param string $str
@@ -853,11 +853,11 @@ class PHPMailer
         }
         switch ($this->Debugoutput) {
             case 'error_log':
-                //Don't output, just log
+                //Don't response, just log
                 error_log($str);
                 break;
             case 'html':
-                //Cleans up output a bit for a better looking, HTML-safe output
+                //Cleans up response a bit for a better looking, HTML-safe response
                 echo htmlentities(
                         preg_replace('/[\r\n]+/', '', $str),
                         ENT_QUOTES,
@@ -2715,7 +2715,7 @@ class PHPMailer
         }
 
         $maxlen = 75 - 7 - strlen($this->CharSet);
-        // Try to select the encoding which should produce the shortest output
+        // Try to select the encoding which should produce the shortest response
         if ($matchcount > strlen($str) / 3) {
             // More than a third of the content will need encoding, so B encoding will be most efficient
             $encoding = 'B';
@@ -3954,7 +3954,7 @@ class PHPMailer
 class phpmailerException extends Exception
 {
     /**
-     * Prettify error message output
+     * Prettify error message response
      * @return string
      */
     public function errorMessage()

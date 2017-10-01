@@ -51,7 +51,7 @@ class SMTP
     const MAX_LINE_LENGTH = 998;
 
     /**
-     * Debug level for no output
+     * Debug level for no response
      */
     const DEBUG_OFF = 0;
 
@@ -100,22 +100,22 @@ class SMTP
     public $CRLF = "\r\n";
 
     /**
-     * Debug output level.
+     * Debug response level.
      * Options:
-     * * self::DEBUG_OFF (`0`) No debug output, default
+     * * self::DEBUG_OFF (`0`) No debug response, default
      * * self::DEBUG_CLIENT (`1`) Client commands
      * * self::DEBUG_SERVER (`2`) Client commands and server responses
      * * self::DEBUG_CONNECTION (`3`) As DEBUG_SERVER plus connection status
-     * * self::DEBUG_LOWLEVEL (`4`) Low-level data output, all messages
+     * * self::DEBUG_LOWLEVEL (`4`) Low-level data response, all messages
      * @var integer
      */
     public $do_debug = self::DEBUG_OFF;
 
     /**
-     * How to handle debug output.
+     * How to handle debug response.
      * Options:
      * * `echo` Output plain-text as-is, appropriate for CLI
-     * * `html` Output escaped, line breaks converted to `<br>`, appropriate for browser output
+     * * `html` Output escaped, line breaks converted to `<br>`, appropriate for browser response
      * * `error_log` Output to error log as configured in php.ini
      *
      * Alternatively, you can provide a callable expecting two params: a message string and the debug level:
@@ -324,7 +324,7 @@ class SMTP
      * Output debugging info via a user-selected method.
      * @see SMTP::$Debugoutput
      * @see SMTP::$do_debug
-     * @param string $str Debug string to output
+     * @param string $str Debug string to response
      * @param integer $level The debug level of this message; see DEBUG_* constants
      * @return void
      */
@@ -340,11 +340,11 @@ class SMTP
         }
         switch ($this->Debugoutput) {
             case 'error_log':
-                //Don't output, just log
+                //Don't response, just log
                 error_log($str);
                 break;
             case 'html':
-                //Cleans up output a bit for a better looking, HTML-safe output
+                //Cleans up response a bit for a better looking, HTML-safe response
                 echo gmdate('Y-m-d H:i:s') . ' ' . htmlentities(
                         preg_replace('/[\r\n]+/', '', $str),
                         ENT_QUOTES,
@@ -1147,7 +1147,7 @@ class SMTP
     }
 
     /**
-     * Get debug output method.
+     * Get debug response method.
      * @return string
      */
     public function getDebugOutput()
@@ -1156,8 +1156,8 @@ class SMTP
     }
 
     /**
-     * Set debug output method.
-     * @param string|callable $method The name of the mechanism to use for debugging output, or a callable to handle it.
+     * Set debug response method.
+     * @param string|callable $method The name of the mechanism to use for debugging response, or a callable to handle it.
      */
     public function setDebugOutput($method = 'echo')
     {
@@ -1165,7 +1165,7 @@ class SMTP
     }
 
     /**
-     * Set debug output level.
+     * Set debug response level.
      * @param integer $level
      */
     public function setDebugLevel($level = 0)
@@ -1174,7 +1174,7 @@ class SMTP
     }
 
     /**
-     * Get debug output level.
+     * Get debug response level.
      * @return integer
      */
     public function getDebugLevel()

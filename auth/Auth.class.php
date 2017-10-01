@@ -5,15 +5,17 @@
  *
  * @author   Mario Henmanuel Vargas Ugalde <hemma.hvu@gmail.com>
  */
-class Auth extends Access
+class Auth extends AccessDB
 {
-    protected function checkInputMerchant($countParams, $parameter, $value)
+    protected static function getData($token, $request)
     {
-        if ($countParams > 0) {
-            return 'Merchant Access';
-        }
+        $user = Token::getData($token);
+        return $user;//$this->auth->search($request.'/'.$user->id,TRUE);
+    }
 
-        return ['views' => 'home'];
+    protected static function signIn($data)
+    {
+        return Token::signIn($data);
     }
 
     private function checkClient()

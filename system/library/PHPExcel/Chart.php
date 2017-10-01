@@ -572,7 +572,7 @@ class PHPExcel_Chart
         $rendererName = 'PHPExcel_Chart_Renderer_' . $libraryName;
         $renderer = new $rendererName($this);
 
-        if ($outputDestination == 'php://output') {
+        if ($outputDestination == 'php://response') {
             $outputDestination = null;
         }
         return $renderer->render($outputDestination);

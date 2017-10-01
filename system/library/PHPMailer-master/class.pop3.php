@@ -245,7 +245,7 @@ class POP3
 
     /**
      * Add an error to the internal error store.
-     * Also display debug output if it's enabled.
+     * Also display debug response if it's enabled.
      * @param $error
      * @access protected
      */

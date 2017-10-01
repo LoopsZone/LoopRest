@@ -2739,8 +2739,8 @@ class PHPExcel_Calculation
         $output = $stack->pop();
         $output = $output['value'];
 
-//		if ((is_array($output)) && (self::$returnArrayAsType != self::RETURN_ARRAY_AS_ARRAY)) {
-//			return array_shift(PHPExcel_Calculation_Functions::flattenArray($output));
+//		if ((is_array($response)) && (self::$returnArrayAsType != self::RETURN_ARRAY_AS_ARRAY)) {
+//			return array_shift(PHPExcel_Calculation_Functions::flattenArray($response));
 //		}
         return $output;
     }    //	function _calculateFormulaValue()
@@ -3415,7 +3415,7 @@ class PHPExcel_Calculation
                     ($o2 = $stack->last()) &&
                     isset(self::$_operators[$o2['value']]) &&
                     @(self::$_operatorAssociativity[$opCharacter] ? self::$_operatorPrecedence[$opCharacter] < self::$_operatorPrecedence[$o2['value']] : self::$_operatorPrecedence[$opCharacter] <= self::$_operatorPrecedence[$o2['value']])) {
-                    $output[] = $stack->pop();                                //	Swap operands and higher precedence operators from the stack to the output
+                    $output[] = $stack->pop();                                //	Swap operands and higher precedence operators from the stack to the response
                 }
                 $stack->push('Binary Operator', $opCharacter);    //	Finally put our current operator onto the stack
                 ++$index;
@@ -3441,8 +3441,8 @@ class PHPExcel_Calculation
 //} else {
 //	echo 'With '.$argumentCount.' arguments',PHP_EOL;
 //}
-                    $output[] = $d;                        //	Dump the argument count on the output
-                    $output[] = $stack->pop();            //	Pop the function and push onto the output
+                    $output[] = $d;                        //	Dump the argument count on the response
+                    $output[] = $stack->pop();            //	Pop the function and push onto the response
                     if (isset(self::$_controlFunctions[$functionName])) {
 //echo 'Built-in function '.$functionName,PHP_EOL;
                         $expectedArgumentCount = self::$_controlFunctions[$functionName]['argumentCount'];
@@ -3505,7 +3505,7 @@ class PHPExcel_Calculation
 //echo 'Element is a Function argument separator',PHP_EOL;
                 while (($o2 = $stack->pop()) && $o2['value'] != '(') {        //	Pop off the stack back to the last (
                     if ($o2 === NULL) return $this->_raiseFormulaError("Formula Error: Unexpected ,");
-                    else $output[] = $o2;    // pop the argument expression stuff and push onto the output
+                    else $output[] = $o2;    // pop the argument expression stuff and push onto the response
                 }
                 //	If we've a comma when we're expecting an operand, then what we actually have is a null operand;
                 //		so push a null onto the stack
@@ -3563,7 +3563,7 @@ class PHPExcel_Calculation
                         //	If we have a worksheet reference, then we're playing with a 3D reference
                         if ($matches[2] == '') {
                             //	Otherwise, we 'inherit' the worksheet reference from the start cell reference
-                            //	The start of the cell range reference should be the last entry in $output
+                            //	The start of the cell range reference should be the last entry in $response
                             $startCellRef = $output[count($output) - 1]['value'];
                             preg_match('/^' . self::CALCULATION_REGEXP_CELLREF . '$/i', $startCellRef, $startMatches);
                             if ($startMatches[2] > '') {
@@ -3683,7 +3683,7 @@ class PHPExcel_Calculation
                         ($o2 = $stack->last()) &&
                         isset(self::$_operators[$o2['value']]) &&
                         @(self::$_operatorAssociativity[$opCharacter] ? self::$_operatorPrecedence[$opCharacter] < self::$_operatorPrecedence[$o2['value']] : self::$_operatorPrecedence[$opCharacter] <= self::$_operatorPrecedence[$o2['value']])) {
-                        $output[] = $stack->pop();                                //	Swap operands and higher precedence operators from the stack to the output
+                        $output[] = $stack->pop();                                //	Swap operands and higher precedence operators from the stack to the response
                     }
                     $stack->push('Binary Operator', '|');    //	Put an Intersect Operator on the stack
                     $expectingOperator = FALSE;
@@ -3691,7 +3691,7 @@ class PHPExcel_Calculation
             }
         }
 
-        while (($op = $stack->pop()) !== NULL) {    // pop everything off the stack and push onto output
+        while (($op = $stack->pop()) !== NULL) {    // pop everything off the stack and push onto response
             if ((is_array($op) && $op['value'] == '(') || ($op === '('))
                 return $this->_raiseFormulaError("Formula Error: Expecting ')'");    // if there are any opening braces on the stack, then braces were unbalanced
             $output[] = $op;

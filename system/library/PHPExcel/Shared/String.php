@@ -412,7 +412,7 @@ class PHPExcel_Shared_String
     }
 
     /**
-     * Formats a numeric value as a string for output in various output writers forcing
+     * Formats a numeric value as a string for response in various response writers forcing
      * point as decimal separator in case locale is other than English.
      *
      * @param mixed $value
@@ -682,7 +682,7 @@ class PHPExcel_Shared_String
 
     /**
      * Set the decimal separator. Only used by PHPExcel_Style_NumberFormat::toFormattedString()
-     * to format output by PHPExcel_Writer_HTML and PHPExcel_Writer_PDF
+     * to format response by PHPExcel_Writer_HTML and PHPExcel_Writer_PDF
      *
      * @param string $pValue Character for decimal separator
      */
@@ -714,7 +714,7 @@ class PHPExcel_Shared_String
 
     /**
      * Set the thousands separator. Only used by PHPExcel_Style_NumberFormat::toFormattedString()
-     * to format output by PHPExcel_Writer_HTML and PHPExcel_Writer_PDF
+     * to format response by PHPExcel_Writer_HTML and PHPExcel_Writer_PDF
      *
      * @param string $pValue Character for thousands separator
      */
@@ -746,7 +746,7 @@ class PHPExcel_Shared_String
 
     /**
      * Set the currency code. Only used by PHPExcel_Style_NumberFormat::toFormattedString()
-     *        to format output by PHPExcel_Writer_HTML and PHPExcel_Writer_PDF
+     *        to format response by PHPExcel_Writer_HTML and PHPExcel_Writer_PDF
      *
      * @param string $pValue Character for currency code
      */

@@ -169,9 +169,9 @@ class PHPExcel_Writer_Excel2007 extends PHPExcel_Writer_Abstract implements PHPE
             // garbage collect
             $this->_spreadSheet->garbageCollect();
 
-            // If $pFilename is php://output or php://stdout, make it a temporary file...
+            // If $pFilename is php://response or php://stdout, make it a temporary file...
             $originalFilename = $pFilename;
-            if (strtolower($pFilename) == 'php://output' || strtolower($pFilename) == 'php://stdout') {
+            if (strtolower($pFilename) == 'php://response' || strtolower($pFilename) == 'php://stdout') {
                 $pFilename = @tempnam(PHPExcel_Shared_File::sys_get_temp_dir(), 'phpxltmp');
                 if ($pFilename == '') {
                     $pFilename = $originalFilename;

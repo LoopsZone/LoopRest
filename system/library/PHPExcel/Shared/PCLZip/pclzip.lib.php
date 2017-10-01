@@ -3353,11 +3353,11 @@ class PclZip
                     if ($v_result1 == 2) {
                         break;
                     }
-                } // ----- Look for extraction in standard output
+                } // ----- Look for extraction in standard response
                 elseif ((isset($p_options[PCLZIP_OPT_EXTRACT_IN_OUTPUT]))
                     && ($p_options[PCLZIP_OPT_EXTRACT_IN_OUTPUT])
                 ) {
-                    // ----- Extracting the file in standard output
+                    // ----- Extracting the file in standard response
                     $v_result1 = $this->privExtractFileInOutput($v_header, $p_options);
                     if ($v_result1 < 1) {
                         $this->privCloseFd();
@@ -3761,7 +3761,7 @@ class PclZip
                     // ----- Read the file in a buffer (one shot)
                     $v_buffer = @fread($this->zip_fd, $p_entry['compressed_size']);
 
-                    // ----- Send the file to the output
+                    // ----- Send the file to the response
                     echo $v_buffer;
                     unset($v_buffer);
                 } else {
@@ -3773,7 +3773,7 @@ class PclZip
                     $v_file_content = gzinflate($v_buffer);
                     unset($v_buffer);
 
-                    // ----- Send the file to the output
+                    // ----- Send the file to the response
                     echo $v_file_content;
                     unset($v_file_content);
                 }

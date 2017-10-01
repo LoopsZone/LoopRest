@@ -101,8 +101,8 @@ class EasyPeasyICS
     }
 
     /**
-     * Render and optionally output a vcal string.
-     * @param bool $output Whether to output the calendar data directly (the default).
+     * Render and optionally response a vcal string.
+     * @param bool $output Whether to response the calendar data directly (the default).
      * @return string The complete rendered vlal
      */
     public function render($output = true)

@@ -3,21 +3,21 @@
 |---------------------------------------------------------------------------
 |Web services REST Loop in server PHP
 |---------------------------------------------------------------------------
-|	use request to methods http GET,POST,PUT,DELETE
+|	use a request with the methods http GET,POST,PUT,DELETE
 |	METHOD | ACTION
-|	|GET   : |Response | request in JSON data for to use
-|	|POST  : |Type of input data in JSON to use Web services to store data
-|	|PUT   : |Type of input data in JSON to use Web services to update data
-|	|DELETE: |Type of input data in JSON to use Web services to delete data
+|
+|	|GET   : |Response to the request in JSON data
+|	|POST  : |Input data type in JSON to consume Web services to store data
+|	|PUT   : |Input data type in JSON to consume Web services to update data
+|	|DELETE: |Input data type in JSON to consume Web services to delete data
 |___________________________________________________________________________
 */
 require_once 'autoLoad.classes.php';
 
 $http = new Input();
 $http->request();
-$response = $http->output();
+$http->response();
 
-echo $response;
 /**
  * Loop PHP platform for the organization
  *

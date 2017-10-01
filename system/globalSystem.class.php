@@ -16,7 +16,8 @@ class GlobalSystem extends GlobalConstants
     public static $expFormatHeaders;
     public static $expFormatTriggers;
     public static $expFormatVariable;
-    
+
+    public static $systemSettings;
     public static $ignoreDirectories;
 
     /**
@@ -88,6 +89,20 @@ class GlobalSystem extends GlobalConstants
                 return filter_var($data, FILTER_VALIDATE_URL);
             case self::ExpFormatIp :
                 return filter_var($data, FILTER_VALIDATE_IP);
+            case self::ExpFormatDomain :
+                return true;
+            case  self::ExpFormatMethods :
+                return self::availableMethod($data);
+        }
+
+        return false;
+    }
+
+    private function availableMethod($data) {
+        foreach (Expected::ExpAvailableMethods as $availableMethod) {
+            if ($availableMethod == $data) {
+                return true;
+            }
         }
 
         return false;
