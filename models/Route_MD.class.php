@@ -46,7 +46,7 @@ class Route_MD {
             return $this->request[$this->route];
         }
 
-        return null;
+        return false;
     }
 
     /**
@@ -105,7 +105,11 @@ class Route_MD {
     {
         if (key_exists($this->route, RequestRoute::$routes)) {
             $this->trigger = RequestRoute::$routes[$this->route][GlobalSystem::ExpRouteKeyTrigger];
+
+            return true;
         }
+
+        return false;
     }
 
     public function getTrigger()

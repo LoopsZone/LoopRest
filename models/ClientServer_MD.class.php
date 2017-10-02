@@ -12,8 +12,8 @@ class ClientServer_MD {
 
     /**
      * get a singleton instance of ClientServer_MD
-     *
-     * @return TblCustomer
+     * 
+     * @return ClientServer_MD
      */
     public static function getInstance()
     {
