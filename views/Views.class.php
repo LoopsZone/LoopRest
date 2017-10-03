@@ -29,14 +29,18 @@ class Views
         return $this->render($view);
     }
 
-    public function render($view) {
+    public function render($view, $parent = '') {
 
         $components = scandir(self::COMPONENTS_DIR);
         $component = in_array($view, $components);
 
         if ($component) {
 
-            $componentHTML = DIRECTORY . self::COMPONENTS_DIR . DIRECTORY_SEPARATOR . $view . DIRECTORY_SEPARATOR . "$view.html";
+            if($parent == '') {
+                $parent = $view;
+            }
+
+            $componentHTML = DIRECTORY . self::COMPONENTS_DIR . DIRECTORY_SEPARATOR . $view . DIRECTORY_SEPARATOR . "{$parent}.html";
 
             if (file_exists($componentHTML)) {
 
@@ -45,6 +49,34 @@ class Views
                 $render = preg_match_all('/<comp>[a-zA-Z0-9_\-]+<\/comp>/', $currentComponent, $matchesComponents, PREG_PATTERN_ORDER);
 
                 if ($render) {
+
+                    $resource = preg_match_all('/<src type=["|\'](img|js|css|file)["|\']>[a-zA-Z0-9_\-]+<\/src>/', $currentComponent, $matchesResources, PREG_PATTERN_ORDER);
+
+                    if ($resource) {
+
+                        $clean[] = '';
+                        $clean[] = '';
+                        $patrons[] = '/<src type=["|\'](img|js|css|file)["|\']>/';
+                        $patrons[] = '/<\/src>/';
+
+                        $resource = preg_replace($patrons, $clean, $matchesResources[0]);
+                        $type = $matchesResources[1][0];
+
+                        $resourcesPath = self::COMPONENTS_DIR . DIRECTORY_SEPARATOR . $view . DIRECTORY_SEPARATOR . 'Resources' . DIRECTORY_SEPARATOR . $type . DIRECTORY_SEPARATOR;
+                        $resources = scandir($resourcesPath);
+                        $file = $resource[0].".{$type}";
+                        $found = in_array($file, $resources);
+
+                        if ($found){
+
+                            $count = count($resource);
+                            $path = "'{$resourcesPath}{$file}'";
+
+                            for ($i = 0; $i < $count; $i++) {
+                                $currentComponent = str_replace($matchesResources[0][$i], $path,$currentComponent);
+                            }
+                        }
+                    }
 
                     $clean[] = '';
                     $clean[] = '';
@@ -55,7 +87,7 @@ class Views
                     $count = count($components);
 
                     for ($i = 0; $i < $count; $i++) {
-                        $renderedComponent = $this->render($components[$i]);
+                        $renderedComponent = $this->render($view, $components[$i]);
                         $currentComponent = str_replace($matchesComponents[0][$i], $renderedComponent,$currentComponent);
                     }
                 }
