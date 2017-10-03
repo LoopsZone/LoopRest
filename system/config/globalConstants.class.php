@@ -1,6 +1,6 @@
 <?php
 
-require_once DIRECTORY . 'system/config/Expected.class.php';
+require_once 'Expected.class.php';
 
 /**
  * Class globalConstants
@@ -10,7 +10,8 @@ require_once DIRECTORY . 'system/config/Expected.class.php';
 class GlobalConstants extends Expected
 {
     protected static $directoriesToIgnore = [
-        'vendor'
+        'vendor',
+        'staticFiles'
     ];
 
     const ExpMethodGet = 'GET';
@@ -23,4 +24,6 @@ class GlobalConstants extends Expected
         Expected::ExpHeaderFrom,
         Expected::ExpHeaderAuth
     ];
+
+    const PRINCIPAL_VIEW = 'Home';
 }

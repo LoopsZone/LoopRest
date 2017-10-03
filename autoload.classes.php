@@ -1,15 +1,14 @@
 <?php
-
-define('DIRECTORY', str_replace('\\', '/', __DIR__ . '/'));
-require_once DIRECTORY . 'system/config/CoreConfig.php';
-require_once DIRECTORY . 'system/GlobalSystem.class.php';
+define('DIRECTORY', __DIR__ . DIRECTORY_SEPARATOR);
+require_once 'system/config/CoreConfig.php';
+require_once 'system/GlobalSystem.class.php';
 
 /**
  * Class AutoLoad
  *
  * @author   Mario Henmanuel Vargas Ugalde <hemma.hvu@gmail.com>
  */
-class AutoLoad
+class AutoLoad extends GlobalSystem
 {
   /**
    * @param $className

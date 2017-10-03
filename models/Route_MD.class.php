@@ -39,11 +39,9 @@ class Route_MD {
     public function getRequest($param = null)
     {
         if ($param) {
-            return $this->request[$this->route][$param];
-        }
-
-        if (key_exists($this->route, $this->request)) {
-            return $this->request[$this->route];
+            if (key_exists($this->route, $this->request)) {
+                return $this->request[$this->route][$param];
+            }
         }
 
         return false;

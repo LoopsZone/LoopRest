@@ -173,7 +173,7 @@ class Manager extends Auth
     private function views()
     {
         $request = $this->getRouteInstance();
-        
-        $request->getRequest();
+        $view = new Views($request->getRequest(Expected::ExpViews));
+        return $view->routingView();
     }
 }

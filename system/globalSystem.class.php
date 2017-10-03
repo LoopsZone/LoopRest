@@ -1,6 +1,6 @@
 <?php
 
-require_once DIRECTORY . 'system/config/GlobalConstants.class.php';
+require_once 'config/GlobalConstants.class.php';
 
 /**
  * Class globalSystem
@@ -19,7 +19,7 @@ class GlobalSystem extends GlobalConstants
 
     public static $systemSettings;
     public static $ignoreDirectories;
-
+    
     /**
      * Returns the regex string of the ignored directories
      *
