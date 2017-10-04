@@ -54,36 +54,34 @@ class Views
 
                     if ($resource) {
 
-                        $clean[] = '';
-                        $clean[] = '';
+                        $clear[] = '';
+                        $clear[] = '';
                         $patrons[] = '/<src type=["|\'](img|js|css|file)["|\']>/';
                         $patrons[] = '/<\/src>/';
 
-                        $resource = preg_replace($patrons, $clean, $matchesResources[0]);
-                        $type = $matchesResources[1][0];
+                        $resource = preg_replace($patrons, $clear, $matchesResources[0]);
+                        $types = $matchesResources[1];
+                        $count = count($resource);
 
-                        $resourcesPath = self::COMPONENTS_DIR . DIRECTORY_SEPARATOR . $view . DIRECTORY_SEPARATOR . 'Resources' . DIRECTORY_SEPARATOR . $type . DIRECTORY_SEPARATOR;
-                        $resources = scandir($resourcesPath);
-                        $file = $resource[0].".{$type}";
-                        $found = in_array($file, $resources);
+                        for ($i = 0; $i < $count; $i++) {
+                            $resourcesPath = self::COMPONENTS_DIR . DIRECTORY_SEPARATOR . $view . DIRECTORY_SEPARATOR . 'Resources' . DIRECTORY_SEPARATOR . $types[$i] . DIRECTORY_SEPARATOR;
+                            $resources = scandir($resourcesPath);
+                            $file = $resource[$i].".{$types[$i]}";
+                            $found = in_array($file, $resources);
 
-                        if ($found){
-
-                            $count = count($resource);
-                            $path = "'{$resourcesPath}{$file}'";
-
-                            for ($i = 0; $i < $count; $i++) {
+                            if ($found){
+                                $path = "'{$resourcesPath}{$file}'";
                                 $currentComponent = str_replace($matchesResources[0][$i], $path,$currentComponent);
                             }
                         }
                     }
 
-                    $clean[] = '';
-                    $clean[] = '';
+                    $clear[] = '';
+                    $clear[] = '';
                     $patrons[] = '/<comp>/';
                     $patrons[] = '/<\/comp>/';
 
-                    $components = preg_replace($patrons, $clean, $matchesComponents[0]);
+                    $components = preg_replace($patrons, $clear, $matchesComponents[0]);
                     $count = count($components);
 
                     for ($i = 0; $i < $count; $i++) {
