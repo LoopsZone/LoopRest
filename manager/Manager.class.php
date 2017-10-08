@@ -5,30 +5,7 @@
  *
  * @author   Mario Henmanuel Vargas Ugalde <hemma.hvu@gmail.com>
  */
-class Manager extends Auth
-{
-    /**
-     * Model
-     * get a singleton instance of ClientServer_MD
-     *
-     * @return ClientServer_MD
-     */
-    protected function getClientServerInstance()
-    {
-        return ClientServer_MD::getInstance();
-    }
-
-    /**
-     * Model
-     * get a singleton instance of Route_MD
-     *
-     * @return Route_MD
-     */
-    protected function getRouteInstance()
-    {
-        return Route_MD::getInstance();
-    }
-
+class Manager extends Auth{
     /**
      * Format response to response
      *
@@ -37,9 +14,10 @@ class Manager extends Auth
      */
     public function response()
     {
-        $route = $this->getRouteInstance();
+        $model = Model::getInstance();
+        $routeMD = $model->getRouteInstance();
 
-        $route->checkRoute();
+        $routeMD->checkRoute();
         $response = $this->action();
 
         if (is_array($response) || is_object($response)) {
@@ -56,11 +34,12 @@ class Manager extends Auth
      */
     protected function action()
     {
-        $route = $this->getRouteInstance();
+        $model = Model::getInstance();
+        $routeMD = $model->getRouteInstance();
 
         try {
 
-            switch ($route->getTrigger()) {
+            switch ($routeMD->getTrigger()) {
 
                 case 'GET':
                     return $this->request();
@@ -82,10 +61,8 @@ class Manager extends Auth
 
         } catch (GeneralException $e) {
 
-            $route = $this->getRouteInstance();
-
-            $route->setRoute(Expected::ExpRouteError);
-            $route->setRequest();
+            $routeMD->setRoute(Expected::ExpRouteError);
+            $routeMD->setRequest();
 
             return false;
         }
@@ -172,8 +149,9 @@ class Manager extends Auth
 
     private function views()
     {
-        $request = $this->getRouteInstance();
-        $view = new Views($request->getRequest(Expected::ExpViews));
+        $model = Model::getInstance();
+        $requestMD = $model->getRouteInstance();
+        $view = new Views($requestMD->getRequest(Expected::ExpViews));
         return $view->routingView();
     }
 }

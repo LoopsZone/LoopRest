@@ -5,8 +5,7 @@
  *
  * @author   Mario Henmanuel Vargas Ugalde <hemma.hvu@gmail.com>
  */
-class Auth extends AccessDB
-{
+class Auth extends AccessDB{
     protected static function getData($token, $request)
     {
         $user = Token::getData($token);

@@ -5,8 +5,7 @@
  *
  * @author   Mario Henmanuel Vargas Ugalde <hemma.hvu@gmail.com>
  */
-class Access extends Manager
-{
+class Access extends Manager{
     /**
      * Check current route, validate and verify data to setting request type system
      * This method routing to new action in principal system if exist valid request and type
@@ -19,7 +18,8 @@ class Access extends Manager
      */
     protected function checkInputSystem($countParams, $parameter, $value)
     {
-        $routeMD = $this->getRouteInstance();
+        $model = Model::getInstance();
+        $routeMD = $model->getRouteInstance();
 
         if ($countParams > 0) {
 
@@ -86,8 +86,9 @@ class Access extends Manager
 
     protected function checkAuth()
     {
-        $route = $this->getRouteInstance();
-        $token = $route->getRequest(Token::ExpRequestToken);
+        $model = Model::getInstance();
+        $routeMD = $model->getRouteInstance();
+        $token = $routeMD->getRequest(Token::ExpRequestToken);
 
         return Token::check($token);
     }

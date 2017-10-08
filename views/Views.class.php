@@ -1,30 +1,20 @@
 <?php
 
-class Views
-{
+class Views{
     const COMPONENTS_DIR = 'views' . DIRECTORY_SEPARATOR . 'staticFiles';
-
-    /**
-     * Model
-     * get a singleton instance of Views_MD
-     *
-     * @return Route_MD
-     */
-    protected function getViewsInstance()
-    {
-        return Views_MD::getInstance();
-    }
 
     function __construct($request)
     {
-        $view = $this->getViewsInstance();
+        $model = Model::getInstance();
+        $viewMD = $model->getViewsInstance();
         $target = ($request) ? $request : GlobalConstants::PRINCIPAL_VIEW;
-        $view->setView($target);
+        $viewMD->setView($target);
     }
 
     public function routingView() {
-        $target = $this->getViewsInstance();
-        $view = $target->getView();
+        $model = Model::getInstance();
+        $targetMD = $model->getViewsInstance();
+        $view = $targetMD->getView();
 
         return $this->render($view);
     }

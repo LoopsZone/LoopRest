@@ -5,14 +5,14 @@
  *
  * @author   Mario Henmanuel Vargas Ugalde <hemma.hvu@gmail.com>
  */
-class Input extends Access
-{
+class Input extends Access{
     /**
      * INPUT constructor.
      */
     public function __construct()
     {
-        $this->getClientServerInstance();
+        $model = Model::getInstance();
+        $model->getClientServerInstance();
     }
 
     /**
@@ -23,29 +23,29 @@ class Input extends Access
     public function request()
     {
         try {
+            $model = Model::getInstance();
+            $clientInfoMD = $model->getClientServerInstance();
 
-            $clientInfo = $this->getClientServerInstance();
-
-            switch ($clientInfo->getMethod()) {
+            switch ($clientInfoMD->getMethod()) {
 
                 case GlobalSystem::ExpMethodGet:
                     return $this->in($_GET);
                 case GlobalSystem::ExpMethodPost:
                     return $this->in($_POST);
                 case GlobalSystem::ExpMethodPut:
-                    return $this->in($_PUT);
+                    return $this->in($_REQUEST);
                 case GlobalSystem::ExpMethodDelete:
-                    return $this->in($_DELETE);
+                    return $this->in($_REQUEST);
                 default:
                     return; //['error' => 'Action selected no valid or implemented'];
             }
 
         } catch (GeneralException $e) {
 
-            $route = $this->getRouteInstance();
-
-            $route->setRoute(Expected::ExpRouteError);
-            $route->setRequest();
+            $model = Model::getInstance();
+            $routeMD = $model->getRouteInstance();
+            $routeMD->setRoute(Expected::ExpRouteError);
+            $routeMD->setRequest();
 
             return false;
         }
@@ -76,9 +76,10 @@ class Input extends Access
      */
     private function checkInput($countParams, $parameter, $value)
     {
-        $header = $this->getClientServerInstance();
+        $model = Model::getInstance();
+        $headerMD = $model->getClientServerInstance();
   
-        if ($header->getHeader(Expected::ExpHeaderAuth)) {
+        if ($headerMD->getHeader(Expected::ExpHeaderAuth)) {
             return $this->checkInputMerchant($countParams, $parameter, $value);
         }
 
