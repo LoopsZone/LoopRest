@@ -1,7 +1,7 @@
 <?php
 
 class Route_MD {
-    
+
     private $route = null;
     private $trigger = null;
     private $request = array();
