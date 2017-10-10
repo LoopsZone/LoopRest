@@ -1,5 +1,6 @@
 <?php
-define('DIRECTORY', __DIR__ . DIRECTORY_SEPARATOR);
+define('DS', DIRECTORY_SEPARATOR);
+define('DIRECTORY', __DIR__ . DS);
 require_once 'system/config/CoreConfig.php';
 require_once 'system/GlobalSystem.class.php';
 
@@ -17,11 +18,7 @@ class AutoLoad extends GlobalSystem
    */
   static public function LoadClasses($className, $directory = DIRECTORY)
   {
-
-    $directory = str_replace('\\', '/', $directory);
-
     if ($directory == DIRECTORY) {
-
       $filePath = DIRECTORY . $className;
     } else {
       $filePath = $directory . $className;
@@ -34,7 +31,6 @@ class AutoLoad extends GlobalSystem
     }
 
     $found = false;
-
     $folders = scandir($directory);
 
     foreach ($folders as $check) {
@@ -45,7 +41,7 @@ class AutoLoad extends GlobalSystem
 
         if (!$ignoreDirectory) {
 
-          $found = self::LoadClasses($className, $directory . $check . '/');
+          $found = self::LoadClasses($className, $directory . $check . DS);
 
           if ($found) {
             break;
