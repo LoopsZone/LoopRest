@@ -83,7 +83,14 @@ class Views{
                 $file = $nameResource[$i].".{$matchesResources[1][$i]}";
                 $found = in_array($file, $resources);
 
-                $content = ($found) ? "'{$resourcesPath}{$file}'" : "<!-- {$file} not fount -->";
+                if($found){
+                    $type = strtoupper($matchesResources[1][$i]);
+                    $methodTypeName = "resources{$type}";
+                    $content = $this->$methodTypeName($resourcesPath.$file);
+                }else{
+                    $content = "<!-- {$file} not fount -->";
+                }
+
                 $this->currentComponent = str_replace($matchesResources[0][$i], $content, $this->currentComponent);
             }
 
@@ -91,5 +98,17 @@ class Views{
         }
 
         return false;
+    }
+
+    private function resourcesJS($path) {
+        return "<script src='{$path}'></script>";
+    }
+
+    private function resourcesCSS($path) {
+        return "<link rel='stylesheet' type='text/css' href='{$path}'>";
+    }
+
+    private function resourcesIMG($path) {
+        return "<img src='$path' />";
     }
 }
