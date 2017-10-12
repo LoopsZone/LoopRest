@@ -74,8 +74,6 @@ class Views{
             $namePatrons[] = '/<src[\s]*type=["|\'](js|css|png|gif|file)[\s]*["|\']*[\s]*name=["|\']/';
             $namePatrons[] = '/["|\'][\s]*\/>/';
 
-            $resourcesJS =
-
             $nameResource = preg_replace($namePatrons, $clear, $matchesResources[0]);
             $count = count($nameResource);
 
