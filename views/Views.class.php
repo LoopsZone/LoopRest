@@ -83,11 +83,13 @@ class Views{
                 $file = $nameResource[$i].".{$matchesResources[1][$i]}";
                 $found = in_array($file, $resources);
 
-                if ($found){
-                    $path = "'{$resourcesPath}{$file}'";
-                    $this->currentComponent = str_replace($matchesResources[0][$i], $path, $this->currentComponent);
-                }
+                $content = ($found) ? "'{$resourcesPath}{$file}'" : "<!-- {$file} not fount -->";
+                $this->currentComponent = str_replace($matchesResources[0][$i], $content, $this->currentComponent);
             }
+
+            return true;
         }
+
+        return false;
     }
 }
