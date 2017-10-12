@@ -74,19 +74,28 @@ class Views{
             $namePatrons[] = '/<src[\s]*type=["|\'](js|css|png|gif|file)[\s]*["|\']*[\s]*name=["|\']/';
             $namePatrons[] = '/["|\'][\s]*\/>/';
 
+            $resourcesJS =
+
             $nameResource = preg_replace($namePatrons, $clear, $matchesResources[0]);
             $count = count($nameResource);
 
             for ($i = 0; $i < $count; $i++) {
-                $resourcesPath = $this->comps_dir . DS . $view . DS . 'Resources' . DS . $matchesResources[1][$i] . DS;
+                $extra = '';
+                $fileType = $matchesResources[1][$i];
+                if ($fileType == 'png'){
+                    $fileType = 'img';
+                    $extra = $nameResource[$i];
+                }
+
+                $resourcesPath = $this->comps_dir . DS . $view . DS . 'Resources' . DS . $fileType . DS;
                 $resources = scandir($resourcesPath);
                 $file = $nameResource[$i].".{$matchesResources[1][$i]}";
                 $found = in_array($file, $resources);
 
                 if($found){
-                    $type = strtoupper($matchesResources[1][$i]);
-                    $methodTypeName = "resources{$type}";
-                    $content = $this->$methodTypeName($resourcesPath.$file);
+                    $type = strtoupper($fileType);
+                    $methodTypeResource = "resources{$type}";
+                    $content = $this->$methodTypeResource($resourcesPath.$file, $extra);
                 }else{
                     $content = "<!-- {$file} not fount -->";
                 }
@@ -108,7 +117,7 @@ class Views{
         return "<link rel='stylesheet' type='text/css' href='{$path}'>";
     }
 
-    private function resourcesIMG($path) {
-        return "<img src='$path' />";
+    private function resourcesIMG($path, $id) {
+        return "<img id='{$id}' src='$path' />";
     }
 }
