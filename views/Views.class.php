@@ -17,18 +17,21 @@ class Views{
         $model = Model::getInstance();
         $targetMD = $model->getViewsInstance();
         $view = $targetMD->getView();
+        $views = explode(':', $view);
 
-        return $this->render($view);
+        return $this->render($views[0], $views[1]);
     }
 
-    public function render($view, $parent = '') {
+    public function render($view, $parent) {
 
-        $components = scandir($this->comps_dir);
-        $component = in_array($view, $components);
+        $target = ($parent) ? "{$parent}.html" : $view;
+        $findIn = ($parent) ? DS . $view : '';
+        $components = scandir($this->comps_dir.$findIn);
+        $component = in_array($target, $components);
 
         if ($component) {
 
-            if($parent == '') {
+            if(!$parent) {
                 $parent = $view;
             }
 
@@ -52,6 +55,8 @@ class Views{
                         $renderedComponent = $this->render($view, $components[$i]);
                         $this->currentComponent = str_replace($matchesComponents[0], $renderedComponent, $currentComponent);
                     }
+                }else{
+                    $this->currentComponent = $currentComponent;
                 }
 
                 $this->resources($view);
