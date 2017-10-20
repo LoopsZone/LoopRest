@@ -3,6 +3,7 @@
 class Views{
     private $currentComponent;
     private $comps_dir = 'views' . DS . 'staticFiles';
+    private $parent_explode = '/[a-zA-Z0-9_\-]:[a-zA-Z0-9_\-]/';
     private $comp_rgx = '/<comp[\s]*name=["|\'][a-zA-Z0-9_\-]*["|\']+[\s]*\/>/';
     private $src_rgx = '/<src[\s]*type=["|\'](js|css|png|gif|file)[\s]*["|\']*[\s]*name=["|\'][a-zA-Z0-9_\-]+["|\'][\s]*\/>/';
 
@@ -17,25 +18,34 @@ class Views{
         $model = Model::getInstance();
         $targetMD = $model->getViewsInstance();
         $view = $targetMD->getView();
-        $views = explode(':', $view);
 
-        return $this->render($views[0], $views[1]);
+        $component = $view;
+        $parent = '';
+
+        $explode = preg_match($this->parent_explode, $view);
+        if ($explode) {
+           $views = explode(':', $view) ;
+           $component = $views[0];
+           $parent = $views[1];
+        }
+
+        return $this->render($component, $parent);
     }
 
-    public function render($view, $parent) {
+    public function render($component, $parent) {
 
-        $target = ($parent) ? "{$parent}.html" : $view;
-        $findIn = ($parent) ? DS . $view : '';
+        $findIn = ($parent) ? DS . $component : $parent;
+        $target = ($parent) ? "{$parent}.html" : $component;
         $components = scandir($this->comps_dir.$findIn);
-        $component = in_array($target, $components);
+        $componentMatch = in_array($target, $components);
 
-        if ($component) {
+        if ($componentMatch) {
 
             if(!$parent) {
-                $parent = $view;
+                $parent = $component;
             }
 
-            $componentHTML = DIRECTORY . $this->comps_dir . DS . $view . DS . "{$parent}.html";
+            $componentHTML = DIRECTORY . $this->comps_dir . DS . $component . DS . "{$parent}.html";
 
             if (file_exists($componentHTML)) {
                 $currentComponent = file_get_contents($componentHTML);
@@ -52,14 +62,14 @@ class Views{
                     $count = count($components);
 
                     for ($i = 0; $i < $count; $i++) {
-                        $renderedComponent = $this->render($view, $components[$i]);
+                        $renderedComponent = $this->render($component, $components[$i]);
                         $this->currentComponent = str_replace($matchesComponents[0], $renderedComponent, $currentComponent);
                     }
                 }else{
                     $this->currentComponent = $currentComponent;
                 }
 
-                $this->resources($view);
+                $this->resources($component);
 
                 return $this->currentComponent;
             }
