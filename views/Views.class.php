@@ -49,8 +49,9 @@ class Views{
 
             if (file_exists($componentHTML)) {
                 $currentComponent = file_get_contents($componentHTML);
-                $render = preg_match_all($this->comp_rgx, $currentComponent, $matchesComponents, PREG_PATTERN_ORDER);
+                $this->currentComponent = $currentComponent;
 
+                $render = preg_match_all($this->comp_rgx, $currentComponent, $matchesComponents, PREG_PATTERN_ORDER);
                 if ($render) {
 
                     $clear[] = '';
@@ -65,8 +66,6 @@ class Views{
                         $renderedComponent = $this->render($component, $components[$i]);
                         $this->currentComponent = str_replace($matchesComponents[0], $renderedComponent, $currentComponent);
                     }
-                }else{
-                    $this->currentComponent = $currentComponent;
                 }
 
                 $this->resources($component);
@@ -78,7 +77,7 @@ class Views{
         return false;
     }
 
-    private function resources($view) {
+    private function resources($component) {
         $matchesResources = array();
         $resource = preg_match_all($this->src_rgx, $this->currentComponent, $matchesResources, PREG_PATTERN_ORDER);
 
@@ -100,17 +99,16 @@ class Views{
                     $extra = $nameResource[$i];
                 }
 
-                $resourcesPath = $this->comps_dir . DS . $view . DS . 'Resources' . DS . $fileType . DS;
+                $resourcesPath = $this->comps_dir . DS . $component . DS . 'Resources' . DS . $fileType . DS;
                 $resources = scandir($resourcesPath);
                 $file = $nameResource[$i].".{$matchesResources[1][$i]}";
-                $found = in_array($file, $resources);
+                $content = "<!-- {$file} not fount -->";
 
+                $found = in_array($file, $resources);
                 if($found){
                     $type = strtoupper($fileType);
                     $methodTypeResource = "resources{$type}";
                     $content = $this->$methodTypeResource($resourcesPath.$file, $extra);
-                }else{
-                    $content = "<!-- {$file} not fount -->";
                 }
 
                 $this->currentComponent = str_replace($matchesResources[0][$i], $content, $this->currentComponent);
