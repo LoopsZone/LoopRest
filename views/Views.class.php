@@ -1,6 +1,6 @@
 <?php
 
-class Views{
+class Views extends Expected_Views {
     private $currentComponent;
 
     function __construct($request) {
@@ -18,7 +18,7 @@ class Views{
         $component = $view;
         $parent = '';
 
-        $explode = preg_match(Expected_Views::PARENT_EXPLODE, $view);
+        $explode = preg_match(self::PARENT_EXPLODE, $view);
         if ($explode) {
            $views = explode(':', $view) ;
            $component = $views[0];
@@ -31,8 +31,8 @@ class Views{
     public function render($component, $parent) {
 
         $findIn = ($parent) ? DS . $component : $parent;
-        $target = ($parent) ? "{$parent}." . Expected_Views::EXT : $component;
-        $components = scandir(Expected_Views::COMPS_DIR.$findIn);
+        $target = ($parent) ? "{$parent}." . self::EXT : $component;
+        $components = scandir(self::COMPS_DIR.$findIn);
         $componentMatch = in_array($target, $components);
 
         if ($componentMatch) {
@@ -41,19 +41,19 @@ class Views{
                 $parent = $component;
             }
 
-            $componentHTML = DIRECTORY . Expected_Views::COMPS_DIR . DS . $component . DS . "{$parent}." . Expected_Views::EXT;
+            $componentHTML = DIRECTORY . self::COMPS_DIR . DS . $component . DS . "{$parent}." . self::EXT;
 
             if (file_exists($componentHTML)) {
                 $currentComponent = file_get_contents($componentHTML);
                 $this->currentComponent = $currentComponent;
 
-                $render = preg_match_all(Expected_Views::COMP_RGX, $currentComponent, $matchesComponents, PREG_PATTERN_ORDER);
+                $render = preg_match_all(self::COMP_RGX, $currentComponent, $matchesComponents, PREG_PATTERN_ORDER);
                 if ($render) {
 
-                    $clear[] = Expected_Views::CLEAR;
-                    $clear[] = Expected_Views::CLEAR;
-                    $patrons[] = Expected_Views::COMP_INIT;
-                    $patrons[] = Expected_Views::COMP_END;
+                    $clear[] = self::CLEAR;
+                    $clear[] = self::CLEAR;
+                    $patrons[] = self::COMP_INIT;
+                    $patrons[] = self::COMP_END;
 
                     $components = preg_replace($patrons, $clear, $matchesComponents[0]);
                     $count = count($components);
@@ -75,14 +75,14 @@ class Views{
 
     private function resources($component) {
         $matchesResources = array();
-        $resource = preg_match_all(Expected_Views::SRC_RGX, $this->currentComponent, $matchesResources, PREG_PATTERN_ORDER);
+        $resource = preg_match_all(self::SRC_RGX, $this->currentComponent, $matchesResources, PREG_PATTERN_ORDER);
 
         if ($resource) {
 
-            $clear[] = Expected_Views::CLEAR;
-            $clear[] = Expected_Views::CLEAR;
-            $namePatrons[] = Expected_Views::SRC_INIT;
-            $namePatrons[] = Expected_Views::SRC_END;
+            $clear[] = self::CLEAR;
+            $clear[] = self::CLEAR;
+            $namePatrons[] = self::SRC_INIT;
+            $namePatrons[] = self::SRC_END;
 
             $nameResource = preg_replace($namePatrons, $clear, $matchesResources[0]);
             $count = count($nameResource);
@@ -95,15 +95,15 @@ class Views{
                     $extra = $nameResource[$i];
                 }
 
-                $resourcesPath = Expected_Views::COMPS_DIR . DS . $component . DS . Expected_Views::SRC_PATH . DS . $fileType . DS;
+                $resourcesPath = self::COMPS_DIR . DS . $component . DS . self::SRC_PATH . DS . $fileType . DS;
                 $resources = scandir($resourcesPath);
                 $file = $nameResource[$i].".{$matchesResources[1][$i]}";
-                $content = str_replace('{file}', $file,Expected_Views::NOT_FOUND_COMP);
+                $content = str_replace('{file}', $file,self::NOT_FOUND_COMP);
 
                 $found = in_array($file, $resources);
                 if($found){
                     $type = strtoupper($fileType);
-                    $methodTypeResource = constant("Expected_Views::SRC_{$type}");
+                    $methodTypeResource = constant("self::SRC_{$type}");
                     $methodTypeResource = str_replace('{id}', $extra, $methodTypeResource);
                     $methodTypeResource = str_replace('{path}', $resourcesPath.$file, $methodTypeResource);
                     $content = $methodTypeResource;
