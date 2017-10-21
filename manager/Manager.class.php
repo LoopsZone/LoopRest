@@ -8,9 +8,6 @@
 class Manager extends Auth{
     /**
      * Format response to response
-     *
-     * @param $request
-     * @return array|bool|string
      */
     public function response()
     {
@@ -152,6 +149,7 @@ class Manager extends Auth{
         $model = Model::getInstance();
         $requestMD = $model->getRouteInstance();
         $view = new Views($requestMD->getRequest(Expected::ExpViews));
+
         return $view->routingView();
     }
 }

@@ -2,10 +2,6 @@
 
 class Views{
     private $currentComponent;
-    private $comps_dir = 'views' . DS . 'staticFiles';
-    private $parent_explode = '/[a-zA-Z0-9_\-]:[a-zA-Z0-9_\-]/';
-    private $comp_rgx = '/<comp[\s]*name=["|\'][a-zA-Z0-9_\-]*["|\']+[\s]*\/>/';
-    private $src_rgx = '/<src[\s]*type=["|\'](js|css|png|gif|file)[\s]*["|\']*[\s]*name=["|\'][a-zA-Z0-9_\-]+["|\'][\s]*\/>/';
 
     function __construct($request) {
         $model = Model::getInstance();
@@ -22,7 +18,7 @@ class Views{
         $component = $view;
         $parent = '';
 
-        $explode = preg_match($this->parent_explode, $view);
+        $explode = preg_match(Expected_Views::PARENT_EXPLODE, $view);
         if ($explode) {
            $views = explode(':', $view) ;
            $component = $views[0];
@@ -35,8 +31,8 @@ class Views{
     public function render($component, $parent) {
 
         $findIn = ($parent) ? DS . $component : $parent;
-        $target = ($parent) ? "{$parent}.html" : $component;
-        $components = scandir($this->comps_dir.$findIn);
+        $target = ($parent) ? "{$parent}." . Expected_Views::EXT : $component;
+        $components = scandir(Expected_Views::COMPS_DIR.$findIn);
         $componentMatch = in_array($target, $components);
 
         if ($componentMatch) {
@@ -45,19 +41,19 @@ class Views{
                 $parent = $component;
             }
 
-            $componentHTML = DIRECTORY . $this->comps_dir . DS . $component . DS . "{$parent}.html";
+            $componentHTML = DIRECTORY . Expected_Views::COMPS_DIR . DS . $component . DS . "{$parent}." . Expected_Views::EXT;
 
             if (file_exists($componentHTML)) {
                 $currentComponent = file_get_contents($componentHTML);
                 $this->currentComponent = $currentComponent;
 
-                $render = preg_match_all($this->comp_rgx, $currentComponent, $matchesComponents, PREG_PATTERN_ORDER);
+                $render = preg_match_all(Expected_Views::COMP_RGX, $currentComponent, $matchesComponents, PREG_PATTERN_ORDER);
                 if ($render) {
 
-                    $clear[] = '';
-                    $clear[] = '';
-                    $patrons[] = '/<comp[\s]*name=["|\']/';
-                    $patrons[] = '/["|\']+[\s]*\/>/';
+                    $clear[] = Expected_Views::CLEAR;
+                    $clear[] = Expected_Views::CLEAR;
+                    $patrons[] = Expected_Views::COMP_INIT;
+                    $patrons[] = Expected_Views::COMP_END;
 
                     $components = preg_replace($patrons, $clear, $matchesComponents[0]);
                     $count = count($components);
@@ -79,14 +75,14 @@ class Views{
 
     private function resources($component) {
         $matchesResources = array();
-        $resource = preg_match_all($this->src_rgx, $this->currentComponent, $matchesResources, PREG_PATTERN_ORDER);
+        $resource = preg_match_all(Expected_Views::SRC_RGX, $this->currentComponent, $matchesResources, PREG_PATTERN_ORDER);
 
         if ($resource) {
 
-            $clear[] = '';
-            $clear[] = '';
-            $namePatrons[] = '/<src[\s]*type=["|\'](js|css|png|gif|file)[\s]*["|\']*[\s]*name=["|\']/';
-            $namePatrons[] = '/["|\'][\s]*\/>/';
+            $clear[] = Expected_Views::CLEAR;
+            $clear[] = Expected_Views::CLEAR;
+            $namePatrons[] = Expected_Views::SRC_INIT;
+            $namePatrons[] = Expected_Views::SRC_END;
 
             $nameResource = preg_replace($namePatrons, $clear, $matchesResources[0]);
             $count = count($nameResource);
@@ -99,16 +95,18 @@ class Views{
                     $extra = $nameResource[$i];
                 }
 
-                $resourcesPath = $this->comps_dir . DS . $component . DS . 'Resources' . DS . $fileType . DS;
+                $resourcesPath = Expected_Views::COMPS_DIR . DS . $component . DS . Expected_Views::SRC_PATH . DS . $fileType . DS;
                 $resources = scandir($resourcesPath);
                 $file = $nameResource[$i].".{$matchesResources[1][$i]}";
-                $content = "<!-- {$file} not fount -->";
+                $content = str_replace('{file}', $file,Expected_Views::NOT_FOUND_COMP);
 
                 $found = in_array($file, $resources);
                 if($found){
                     $type = strtoupper($fileType);
-                    $methodTypeResource = "resources{$type}";
-                    $content = $this->$methodTypeResource($resourcesPath.$file, $extra);
+                    $methodTypeResource = constant("Expected_Views::SRC_{$type}");
+                    $methodTypeResource = str_replace('{id}', $extra, $methodTypeResource);
+                    $methodTypeResource = str_replace('{path}', $resourcesPath.$file, $methodTypeResource);
+                    $content = $methodTypeResource;
                 }
 
                 $this->currentComponent = str_replace($matchesResources[0][$i], $content, $this->currentComponent);
@@ -118,17 +116,5 @@ class Views{
         }
 
         return false;
-    }
-
-    private function resourcesJS($path) {
-        return "<script src='{$path}'></script>";
-    }
-
-    private function resourcesCSS($path) {
-        return "<link rel='stylesheet' type='text/css' href='{$path}'>";
-    }
-
-    private function resourcesIMG($path, $id) {
-        return "<img id='{$id}' src='$path' />";
     }
 }

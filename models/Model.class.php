@@ -33,12 +33,12 @@ class Model {
     return Route_MD::getInstance();
   }
 
-  /**
-   * Model
-   * get a singleton instance of Views_MD
-   *
-   * @return Route_MD
-   */
+    /**
+     * Model
+     * get a singleton instance of Views_MD
+     *
+     * @return Views_MD
+     */
   public function getViewsInstance()
   {
     return Views_MD::getInstance();
