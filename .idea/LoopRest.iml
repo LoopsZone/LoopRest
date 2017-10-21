@@ -2,12 +2,15 @@
 <module type="WEB_MODULE" version="4">
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/vendor/bower-asset/jquery" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/cache/cache" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/composer" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/doctrine/cache" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/firebase/php-jwt" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/geoip/geoip" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/league/flysystem" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/mouf/nodejs-installer" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/nodejs/nodejs" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/phpmailer/phpmailer" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/psr/cache" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/psr/log" />
@@ -19,12 +22,15 @@
       <library name="PHP" type="php">
         <CLASSES>
           <root url="file://C:/Program Files (x86)/Google/google_appengine/php/sdk" />
+          <root url="file://$MODULE_DIR$/vendor/bower-asset/jquery" />
           <root url="file://$MODULE_DIR$/vendor/cache/cache" />
           <root url="file://$MODULE_DIR$/vendor/composer" />
           <root url="file://$MODULE_DIR$/vendor/doctrine/cache" />
           <root url="file://$MODULE_DIR$/vendor/firebase/php-jwt" />
           <root url="file://$MODULE_DIR$/vendor/geoip/geoip" />
           <root url="file://$MODULE_DIR$/vendor/league/flysystem" />
+          <root url="file://$MODULE_DIR$/vendor/mouf/nodejs-installer" />
+          <root url="file://$MODULE_DIR$/vendor/nodejs/nodejs" />
           <root url="file://$MODULE_DIR$/vendor/phpmailer/phpmailer" />
           <root url="file://$MODULE_DIR$/vendor/psr/cache" />
           <root url="file://$MODULE_DIR$/vendor/psr/log" />
@@ -32,12 +38,15 @@
         </CLASSES>
         <SOURCES>
           <root url="file://C:/Program Files (x86)/Google/google_appengine/php/sdk" />
+          <root url="file://$MODULE_DIR$/vendor/bower-asset/jquery" />
           <root url="file://$MODULE_DIR$/vendor/cache/cache" />
           <root url="file://$MODULE_DIR$/vendor/composer" />
           <root url="file://$MODULE_DIR$/vendor/doctrine/cache" />
           <root url="file://$MODULE_DIR$/vendor/firebase/php-jwt" />
           <root url="file://$MODULE_DIR$/vendor/geoip/geoip" />
           <root url="file://$MODULE_DIR$/vendor/league/flysystem" />
+          <root url="file://$MODULE_DIR$/vendor/mouf/nodejs-installer" />
+          <root url="file://$MODULE_DIR$/vendor/nodejs/nodejs" />
           <root url="file://$MODULE_DIR$/vendor/phpmailer/phpmailer" />
           <root url="file://$MODULE_DIR$/vendor/psr/cache" />
           <root url="file://$MODULE_DIR$/vendor/psr/log" />
