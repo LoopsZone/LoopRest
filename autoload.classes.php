@@ -18,11 +18,7 @@ class AutoLoad extends GlobalSystem
    */
   static public function LoadClasses($className, $directory = DIRECTORY)
   {
-    if ($directory == DIRECTORY) {
-      $filePath = DIRECTORY . $className;
-    } else {
-      $filePath = $directory . $className;
-    }
+    $filePath = ($directory == DIRECTORY) ? DIRECTORY . $className : $directory . $className;
 
     if (file_exists($filePath . '.class.php')) {
       $filePath .= '.class.php';
@@ -38,11 +34,9 @@ class AutoLoad extends GlobalSystem
       if (is_dir($directory . $check)) {
 
         $ignoreDirectory = preg_match('[^\.' . GlobalSystem::$ignoreDirectories . ']', $check);
-
         if (!$ignoreDirectory) {
 
           $found = self::LoadClasses($className, $directory . $check . DS);
-
           if ($found) {
             break;
           }

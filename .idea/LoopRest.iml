@@ -19,29 +19,9 @@
       <library name="PHP" type="php">
         <CLASSES>
           <root url="file://C:/Program Files (x86)/Google/google_appengine/php/sdk" />
-          <root url="file://$MODULE_DIR$/vendor/cache/cache" />
-          <root url="file://$MODULE_DIR$/vendor/composer" />
-          <root url="file://$MODULE_DIR$/vendor/doctrine/cache" />
-          <root url="file://$MODULE_DIR$/vendor/firebase/php-jwt" />
-          <root url="file://$MODULE_DIR$/vendor/geoip/geoip" />
-          <root url="file://$MODULE_DIR$/vendor/league/flysystem" />
-          <root url="file://$MODULE_DIR$/vendor/phpmailer/phpmailer" />
-          <root url="file://$MODULE_DIR$/vendor/psr/cache" />
-          <root url="file://$MODULE_DIR$/vendor/psr/log" />
-          <root url="file://$MODULE_DIR$/vendor/psr/simple-cache" />
         </CLASSES>
         <SOURCES>
           <root url="file://C:/Program Files (x86)/Google/google_appengine/php/sdk" />
-          <root url="file://$MODULE_DIR$/vendor/cache/cache" />
-          <root url="file://$MODULE_DIR$/vendor/composer" />
-          <root url="file://$MODULE_DIR$/vendor/doctrine/cache" />
-          <root url="file://$MODULE_DIR$/vendor/firebase/php-jwt" />
-          <root url="file://$MODULE_DIR$/vendor/geoip/geoip" />
-          <root url="file://$MODULE_DIR$/vendor/league/flysystem" />
-          <root url="file://$MODULE_DIR$/vendor/phpmailer/phpmailer" />
-          <root url="file://$MODULE_DIR$/vendor/psr/cache" />
-          <root url="file://$MODULE_DIR$/vendor/psr/log" />
-          <root url="file://$MODULE_DIR$/vendor/psr/simple-cache" />
         </SOURCES>
       </library>
     </orderEntry>
