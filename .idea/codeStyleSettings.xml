@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectCodeStyleSettingsManager">
+    <option name="PER_PROJECT_SETTINGS">
+      <value>
+        <PHPCodeStyleSettings>
+          <option name="PHPDOC_BLANK_LINES_AROUND_PARAMETERS" value="true" />
+          <option name="LOWER_CASE_BOOLEAN_CONST" value="true" />
+          <option name="LOWER_CASE_NULL_CONST" value="true" />
+          <option name="ELSE_IF_STYLE" value="SEPARATE" />
+          <option name="VARIABLE_NAMING_STYLE" value="CAMEL_CASE" />
+          <option name="BLANK_LINE_BEFORE_RETURN_STATEMENT" value="true" />
+          <option name="BLANK_LINES_AFTER_OPENING_TAG" value="1" />
+          <option name="KEEP_BLANK_LINES_AFTER_LBRACE" value="0" />
+          <option name="SPACE_BETWEEN_TERNARY_QUEST_AND_COLON" value="true" />
+          <option name="SPACE_BEFORE_CLOSURE_LEFT_PARENTHESIS" value="false" />
+          <option name="SPACE_AROUND_ASSIGNMENT_IN_DECLARE" value="true" />
+          <option name="SPACE_BEFORE_COLON_IN_RETURN_TYPE" value="true" />
+        </PHPCodeStyleSettings>
+        <codeStyleSettings language="PHP">
+          <option name="LINE_COMMENT_AT_FIRST_COLUMN" value="false" />
+          <option name="KEEP_LINE_BREAKS" value="false" />
+          <option name="KEEP_FIRST_COLUMN_COMMENT" value="false" />
+          <option name="KEEP_CONTROL_STATEMENT_IN_ONE_LINE" value="false" />
+          <option name="KEEP_BLANK_LINES_IN_DECLARATIONS" value="0" />
+          <option name="KEEP_BLANK_LINES_IN_CODE" value="0" />
+          <option name="KEEP_BLANK_LINES_BEFORE_RBRACE" value="0" />
+          <option name="BLANK_LINES_BEFORE_PACKAGE" value="0" />
+          <option name="BLANK_LINES_AFTER_PACKAGE" value="1" />
+          <option name="BLANK_LINES_BEFORE_IMPORTS" value="0" />
+          <option name="BLANK_LINES_AFTER_CLASS_HEADER" value="1" />
+          <option name="CLASS_BRACE_STYLE" value="1" />
+          <option name="METHOD_BRACE_STYLE" value="1" />
+          <option name="SPACE_AFTER_TYPE_CAST" value="true" />
+          <option name="SPACE_BEFORE_IF_PARENTHESES" value="false" />
+          <option name="SPACE_BEFORE_WHILE_PARENTHESES" value="false" />
+          <option name="SPACE_BEFORE_FOR_PARENTHESES" value="false" />
+          <option name="SPACE_BEFORE_CATCH_PARENTHESES" value="false" />
+          <option name="SPACE_BEFORE_SWITCH_PARENTHESES" value="false" />
+          <option name="SPACE_BEFORE_CLASS_LBRACE" value="false" />
+          <option name="SPACE_BEFORE_METHOD_LBRACE" value="false" />
+          <option name="SPACE_BEFORE_IF_LBRACE" value="false" />
+          <option name="SPACE_BEFORE_ELSE_LBRACE" value="false" />
+          <option name="SPACE_BEFORE_WHILE_LBRACE" value="false" />
+          <option name="SPACE_BEFORE_FOR_LBRACE" value="false" />
+          <option name="SPACE_BEFORE_DO_LBRACE" value="false" />
+          <option name="SPACE_BEFORE_SWITCH_LBRACE" value="false" />
+          <option name="SPACE_BEFORE_TRY_LBRACE" value="false" />
+          <option name="SPACE_BEFORE_CATCH_LBRACE" value="false" />
+          <option name="SPACE_BEFORE_FINALLY_LBRACE" value="false" />
+          <option name="SPACE_BEFORE_ELSE_KEYWORD" value="false" />
+          <option name="SPACE_BEFORE_WHILE_KEYWORD" value="false" />
+          <option name="SPACE_BEFORE_CATCH_KEYWORD" value="false" />
+          <option name="SPACE_BEFORE_FINALLY_KEYWORD" value="false" />
+          <option name="KEEP_SIMPLE_METHODS_IN_ONE_LINE" value="true" />
+          <indentOptions>
+            <option name="INDENT_SIZE" value="2" />
+            <option name="CONTINUATION_INDENT_SIZE" value="2" />
+            <option name="TAB_SIZE" value="2" />
+          </indentOptions>
+          <arrangement>
+            <rules>
+              <section>
+                <rule>
+                  <match>
+                    <CONST>true</CONST>
+                  </match>
+                </rule>
+              </section>
+              <section>
+                <rule>
+                  <match>
+                    <CONSTRUCTOR>true</CONSTRUCTOR>
+                  </match>
+                </rule>
+              </section>
+              <section>
+                <rule>
+                  <match>
+                    <AND>
+                      <METHOD>true</METHOD>
+                      <modifiers />
+                    </AND>
+                  </match>
+                </rule>
+              </section>
+              <section>
+                <rule>
+                  <match>
+                    <TRAIT>true</TRAIT>
+                  </match>
+                </rule>
+              </section>
+              <section>
+                <rule>
+                  <match>
+                    <INTERFACE>true</INTERFACE>
+                  </match>
+                </rule>
+              </section>
+              <section>
+                <rule>
+                  <match>
+                    <CLASS>true</CLASS>
+                  </match>
+                </rule>
+              </section>
+            </rules>
+          </arrangement>
+        </codeStyleSettings>
+      </value>
+    </option>
+    <option name="USE_PER_PROJECT_SETTINGS" value="true" />
+  </component>
+</project>
