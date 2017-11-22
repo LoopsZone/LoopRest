@@ -1,6 +1,4 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
 /*
 |---------------------------------------------------------------------------
 |Web services REST Loop in server PHP
@@ -16,7 +14,7 @@ ini_set('display_errors', 1);
 */
 require_once 'autoLoad.classes.php';
 
-$http = new Input();
+$http = new Input;
 $http->request();
 $http->response();
 

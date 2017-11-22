@@ -5,84 +5,124 @@
  *
  * @author   Mario Henmanuel Vargas Ugalde <hemma.hvu@gmail.com>
  */
-class Input extends Access{
-    /**
-     * INPUT constructor.
-     */
-    public function __construct()
-    {
-        $model = Model::getInstance();
-        $model->getClientServerInstance();
-    }
-
-    /**
-     * Route action to execute set to params
-     * 
-     * @return array|bool|string
-     */
-    public function request()
-    {
-        try {
-            $model = Model::getInstance();
-            $clientInfoMD = $model->getClientServerInstance();
-
-            switch ($clientInfoMD->getMethod()) {
-
-                case GlobalSystem::ExpMethodGet:
-                    return $this->in($_GET);
-                case GlobalSystem::ExpMethodPost:
-                    return $this->in($_POST);
-                case GlobalSystem::ExpMethodPut:
-                    return $this->in($_REQUEST);
-                case GlobalSystem::ExpMethodDelete:
-                    return $this->in($_REQUEST);
-                default:
-                    return; //['error' => 'Action selected no valid or implemented'];
-            }
-
-        } catch (GeneralException $e) {
-
-            $model = Model::getInstance();
-            $routeMD = $model->getRouteInstance();
-            $routeMD->setRoute(Expected::ExpRouteError);
-            $routeMD->setRequest();
-
-            return false;
-        }
-    }
-
-    /**
-     * In request and generate sets to check variables
-     *
-     * @param $method
-     * @return array
-     */
-    private function in($method)
-    {
-        $contReq = count($method);
-        $parameters = array_keys($method);
-        $values = array_values($method);
-
-       return $this->checkInput($contReq, $parameters, $values);
-    }
-
-    /**
-     * Check input to request and generate sets variable for found to system
-     *
-     * @param $countParams
-     * @param $parameter
-     * @param $value
-     * @return array
-     */
-    private function checkInput($countParams, $parameter, $value)
-    {
-        $model = Model::getInstance();
-        $headerMD = $model->getClientServerInstance();
-  
-        if ($headerMD->getHeader(Expected::ExpHeaderAuth)) {
-            return $this->checkInputMerchant($countParams, $parameter, $value);
-        }
-
-        return $this->checkInputSystem($countParams, $parameter, $value);
-    }
+class Input extends Manager
+{
+	/**
+	 * Route action to execute set to params
+	 *
+	 * @return array|bool|strcheckInputg
+	 */
+	public function request ()
+	{
+		try {
+			
+			$model = Model::getInstance();
+			$routeMD = $model->getRouteInstance();
+			$clientInfoMD = $model->getClientServerInstance();
+			$httpAction = $clientInfoMD->getMethod();
+			$resposeObject = ($httpAction != GlobalSystem::ExpMethodGet);
+			$routeMD->setResponseObject($resposeObject);
+			
+			if(GlobalSystem::availableMethod($httpAction)){
+				return $this->checkInput($_REQUEST);
+			}
+			
+			throw new Exception('Action selected no valid or implemented', 0);
+			
+		}catch(Exception $error){
+			GlobalSystem::onErrorRoute($error);
+			return false;
+		}
+	}
+	
+	/**
+	 * Check current route, validate and verify data to set check input request type system
+	 * This method routing check input to new action checkInput principal system if exist valid request and type
+	 * Or return principal view to home system configured if not exist data input
+	 *
+	 * @param $countParams
+	 * @param $parameter
+	 * @param $value
+	 * @return bool
+	 */
+	protected function checkInput($method)
+	{
+		$model = Model::getInstance();
+		$routeMD = $model->getRouteInstance();
+		$serverMD = $model->getClientServerInstance();
+		$authHeader = $serverMD->getHeader(Expected::ExpHeaderAuth);
+		
+		/*
+		 * Cero value get usser access to principal system and one value get structure merchange access
+		 */
+		$auth = (!$authHeader) ? 0 : 1;
+		$routeMD->setAuthorization($auth);
+		
+		$countParams = count($method);
+		$parameter = array_keys($method);
+		$value = array_values($method);
+		
+		if($countParams) {
+			
+			$found = false;
+			$request = null;
+			$routeName = null;
+			
+			// Generate set to variables that need request
+			foreach(RequestRoute::$routes as $set => $route) {
+				foreach($route[GlobalSystem::ExpRouteKeyParams] as $param => $format) {
+					for($i = 0; $i < $countParams; $i++) {
+						if($param == $parameter[$i]) {
+							$routeName = $set;
+							$request[$routeName][$param] = GlobalSystem::validateData($value[$i], $format);
+						}
+					}
+					
+					if(count($request[$routeName]) == $countParams) {
+						$found = true;
+						break;
+					}
+				}
+				
+				if($found) {
+					$routeMD->setResponseObject(true);
+					break;
+				}
+			}
+			
+			if(!$found) {
+				throw new Exception('Invalid input params', 1);
+			}
+			
+			$routeMD->setRoute($routeName);
+			$routeMD->setRequest($request);
+			$this->validRequestAction($routeName);
+			
+			return true;
+		}
+		
+		$routeMD->setRoute(Expected::ExpRouteView);
+		
+		return false;
+	}
+	
+	/**
+	 * Validate and set action from request
+	 *
+	 * @param $route
+	 * @return bool
+	 */
+	private function validRequestAction($route)
+	{
+		$model = Model::getInstance();
+		$routeMD = $model->getRouteInstance();
+		$serverMD = $model->getClientServerInstance();
+		
+		if($route == Expected::ExpRouteRequest){
+			$routeMD->setAction($serverMD->getMethod());
+			return true;
+		}
+		
+		return false;
+	}
 }

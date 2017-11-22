@@ -9,21 +9,27 @@ require_once 'Expected.class.php';
  */
 class GlobalConstants extends Expected
 {
-    protected static $directoriesToIgnore = [
-        'vendor',
-        'staticFiles'
-    ];
-
-    const ExpMethodGet = 'GET';
-    const ExpMethodPut = 'PUT';
-    const ExpMethodPost = 'POST';
-    const ExpMethodDelete = 'DELETE';
-
-    //Header Allow
-    public static $allowHeaders = [
-        Expected::ExpHeaderFrom,
-        Expected::ExpHeaderAuth
-    ];
-
-    const PRINCIPAL_VIEW = 'Home';
+	const ExpMethodGet = 'GET';
+	const ExpMethodPut = 'PUT';
+	const ExpMethodPost = 'POST';
+	const ExpMethodDelete = 'DELETE';
+	
+	const ExpAvailableMethods = [
+		self::ExpMethodGet,
+		self::ExpMethodPut,
+		self::ExpMethodPost,
+		self::ExpMethodDelete
+	];
+	
+	const PRINCIPAL_VIEW = 'Home';
+	
+	//Header Allow
+	public static $allowHeaders = [
+		Expected::ExpHeaderFrom,
+		Expected::ExpHeaderAuth
+	];
+	protected static $directoriesToIgnore = [
+		'vendor',
+		'staticFiles'
+	];
 }

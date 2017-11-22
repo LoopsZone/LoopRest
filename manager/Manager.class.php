@@ -5,151 +5,174 @@
  *
  * @author   Mario Henmanuel Vargas Ugalde <hemma.hvu@gmail.com>
  */
-class Manager extends Auth{
-    /**
-     * Format response to response
-     */
-    public function response()
-    {
-        $model = Model::getInstance();
-        $routeMD = $model->getRouteInstance();
-
-        $routeMD->checkRoute();
-        $response = $this->action();
-
-        if (is_array($response) || is_object($response)) {
-            $result = json_encode($response);
-            $response = ($_GET["callback"] . "({$result});");//Response data type JSON cross domain
-        }
-
-        echo $response;
-    }
-
-    /**
-     * @param $route
-     * @return array
-     */
-    protected function action()
-    {
-        $model = Model::getInstance();
-        $routeMD = $model->getRouteInstance();
-
-        try {
-
-            switch ($routeMD->getTrigger()) {
-
-                case 'GET':
-                    return $this->request();
-                case 'POST':
-                    return $this->insert();
-                case 'PUT':
-                    return $this->update();
-                case 'DELETE':
-                    return $this->delete();
-                case 'AUTH':
-                    return $this->auth();
-                case 'ERROR':
-                    return $this->error();
-                case 'VIEWS':
-                    return $this->views();
-                default:
-                    return ['error' => 'Action selected no valid'];
-            }
-
-        } catch (GeneralException $e) {
-
-            $routeMD->setRoute(Expected::ExpRouteError);
-            $routeMD->setRequest();
-
-            return false;
-        }
-    }
-
-    /**
-     * @param $tk
-     * @param $request
-     *
-     * @return string|array
-     */
-    private function request()
-    {
-        $checkTK = Auth::check();
-
-        if ($checkTK === 'access') {
-
-            $request[Token::ExpRequestToken] = $this->getProperty(Token::ExpRequestToken);
-            $request[RequestRoute::ExpRequestRequest] = $this->getProperty(RequestRoute::ExpRequestRequest);
-            $this->validate($request);
-
-            $trigger = $this->getProperty(GlobalSystem::ExpRouteKeyTrigger);
-
-            if (!$trigger) {
-
-                if ($request[RequestRoute::ExpRequestRequest] == 'access') {
-
-                    return 'access to web services';
-
-                } else {
-
-                    return Auth::getData(
-                        $request[Token::ExpRequestToken],
-                        $request[RequestRoute::ExpRequestRequest]
-                    );
-                }
-            }
-
-            return $this->validateTrigger();
-        }
-
-        return ['error' => $checkTK];
-    }
-
-    private function insert()
-    {
-
-    }
-
-    private function update()
-    {
-
-    }
-
-    private function delete()
-    {
-
-    }
-
-    /**
-     * @param $id
-     * @param $email
-     * @param $name
-     * @param $birthday
-     * @param $cellphone
-     *
-     * @return string
-     */
-    private function auth()
-    {
-        $auth = $this->getProperty(Expected::ExpRequestRequest);
-
-        return Auth::signIn([
-            'access' => 0,
-            'id' => $auth[RequestRoute::ExpAuthId],
-            'name' => $auth[RequestRoute::ExpAuthName]
-        ]);
-    }
-
-    private function error()
-    {
-
-    }
-
-    private function views()
-    {
-        $model = Model::getInstance();
-        $requestMD = $model->getRouteInstance();
-        $view = new Views($requestMD->getRequest(Expected::ExpViews));
-
-        return $view->routingView();
-    }
+class Manager extends Auth
+{
+	/**
+	 * Format response to response
+	 */
+	public function response ()
+	{
+		$response = $this->route();
+		new Response($response);
+	}
+	
+	/**
+	 * @return array|mixed|string
+	 */
+	protected function route()
+	{
+		$model = Model::getInstance();
+		$routeMD = $model->getRouteInstance();
+		
+		try {
+			switch($routeMD->getTrigger()) {
+				case Expected::ExpRequestTrigger:
+					return $this->request();
+				case Expected::ExpAuthTrigger:
+					return $this->auth();
+				case Expected::ExpErrorTrigger:
+					return $this->error();
+				case Expected::ExpViewsTrigger:
+					return $this->views();
+				default: throw new Exception('Action selected no valid', 2);
+			}
+		}catch(Exception $error){
+			GlobalSystem::onErrorRoute($error);
+			return $this->error();
+		}
+	}
+	
+	/**
+	 * @param $tk
+	 * @param $request
+	 *
+	 * @return string|array
+	 */
+	private function request ()
+	{
+		$model = Model::getInstance();
+		$checkTK = self::checkClient();
+		
+		if($checkTK === true){
+			
+			$action = $this->requestAction();
+			$routeMD = $model->getRouteInstance();
+			$request = $routeMD->getRequest();
+			$token = $routeMD->getRequest(Expected::ExpRequestToken);
+			
+			if($action){
+				return $action;
+			}
+			
+			return self::getData($token, $request);
+		}
+		
+		throw new Exception($checkTK, 4);
+	}
+	
+	/**
+	 * Active action in request and execute this
+	 *
+	 * @return array|bool
+	 * @throws Exception
+	 */
+	private function requestAction()
+	{
+		$model = Model::getInstance();
+		$routeMD = $model->getRouteInstance();
+		
+		switch($routeMD->getAction()) {
+			case Expected::ExpPostTrigger:
+				return $this->post();
+			case Expected::ExpPutTrigger:
+				return $this->update();
+			case Expected::ExpDeleteTrigger:
+				return $this->delete();
+			default: return false;
+		}
+	}
+	
+	private function post()
+	{
+	
+	}
+	
+	private function update ()
+	{
+	
+	}
+	
+	private function delete ()
+	{
+	
+	}
+	
+	/**
+	 * @return string
+	 */
+	private function auth ()
+	{
+		$model = Model::getInstance();
+		$routeMD = $model->getRouteInstance();
+		$userEmail = $routeMD->getRequest(Expected::ExpAuthEmail);
+		
+		$isUser = $this->requestSystemData('user', $userEmail, true);
+		if($isUser){
+			$user = $this->insertSystemData('user', $routeMD->getRequest());
+		}
+		
+		$routeMD->setResponseObject(false);
+		$access = $routeMD->getRequest(RequestRoute::ExpAuthEmail);
+		
+		$tokenData = [
+			'access' => self::checkUserAccess($access),
+			'id' => $routeMD->getRequest(RequestRoute::ExpAuthId),
+			'name' => $routeMD->getRequest(RequestRoute::ExpAuthName)
+		];
+		
+		return self::signIn($tokenData);
+	}
+	
+	/**
+	 * Error routing response to print custom message during execution
+	 *
+	 * @return mixed
+	 */
+	private function error ()
+	{
+		$model = Model::getInstance();
+		$routeMD = $model->getRouteInstance();
+		$routeMD->setResponseObject(true);
+		
+		return $routeMD->getRequest(Expected::ExpErrorDesc);
+	}
+	
+	/**
+	 * Return any html view rendering component
+	 *
+	 * @return string
+	 */
+	private function views ()
+	{
+		$model = Model::getInstance();
+		$routeMD = $model->getRouteInstance();
+		$views = new Views($routeMD->getRequest(Expected::ExpViews));
+		
+		return $views->routingView();
+	}
+	
+	protected function putSystemData ()
+	{
+	
+	}
+	
+	protected function dismissSystemData ()
+	{
+	
+	}
+	
+	protected function updateSystemData ()
+	{
+	
+	}
 }
