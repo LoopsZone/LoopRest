@@ -21,22 +21,7 @@ class Expected
 	const ExpHeaderAuth = 'Authorization';
 	
 	const ExpSetVariableRoute = 'route';
-	//Set routes expected names
 	const ExpSetVarRouteName = 'routeName';
-	
-	//Set Update route expected names
-	const ExpRoutePut = 'update';
-	
-	//Set Post route expected names
-	const ExpRoutePost = 'insert';
-	
-	//Set View route expected names
-	const ExpRouteView = 'views';
-	
-	const ExpGetTrigger = 'GET';
-	const ExpPostTrigger = 'POST';
-	const ExpPutTrigger = 'PUT';
-	const ExpDeleteTrigger = 'DELETE';
 	
 	//Set Auth route expected names
 	const ExpRouteAuth = 'auth';
@@ -46,9 +31,6 @@ class Expected
 	const ExpAuthBirthday = 'birthday';
 	//Set trigger route name
 	const ExpAuthTrigger = 'AUTH';
-	
-	//Set Delete route expected names
-	const ExpRouteDelete = 'delete';
 	
 	//Set Request route expected names
 	const ExpRouteRequest = 'request';
@@ -75,9 +57,6 @@ class Expected
 	const ExpRouteKeyParams = 'params';
 	const ExpRouteKeyTrigger = 'trigger';
 	const ExpErrorKeyException = 'exception';
-	
-	//Set expected method implemented
-	const ExpSetPropertiesMethod = 'method';
 	
 	//Set format options keys
 	const ExpFormat = 'format';

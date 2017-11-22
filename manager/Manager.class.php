@@ -26,13 +26,13 @@ class Manager extends Auth
 		
 		try {
 			switch($routeMD->getTrigger()) {
-				case Expected::ExpRequestTrigger:
+				case GlobalSystem::ExpRequestTrigger:
 					return $this->request();
-				case Expected::ExpAuthTrigger:
+				case GlobalSystem::ExpAuthTrigger:
 					return $this->auth();
-				case Expected::ExpErrorTrigger:
+				case GlobalSystem::ExpErrorTrigger:
 					return $this->error();
-				case Expected::ExpViewsTrigger:
+				case GlobalSystem::ExpViewsTrigger:
 					return $this->views();
 				default: throw new Exception('Action selected no valid', 2);
 			}
@@ -58,7 +58,7 @@ class Manager extends Auth
 			$action = $this->requestAction();
 			$routeMD = $model->getRouteInstance();
 			$request = $routeMD->getRequest();
-			$token = $routeMD->getRequest(Expected::ExpRequestToken);
+			$token = $routeMD->getRequest(GlobalSystem::ExpRequestToken);
 			
 			if($action){
 				return $action;
@@ -82,11 +82,11 @@ class Manager extends Auth
 		$routeMD = $model->getRouteInstance();
 		
 		switch($routeMD->getAction()) {
-			case Expected::ExpPostTrigger:
+			case GlobalSystem::ExpMethodPost:
 				return $this->post();
-			case Expected::ExpPutTrigger:
+			case GlobalSystem::ExpMethodPut:
 				return $this->update();
-			case Expected::ExpDeleteTrigger:
+			case GlobalSystem::ExpMethodDelete:
 				return $this->delete();
 			default: return false;
 		}
@@ -114,7 +114,7 @@ class Manager extends Auth
 	{
 		$model = Model::getInstance();
 		$routeMD = $model->getRouteInstance();
-		$userEmail = $routeMD->getRequest(Expected::ExpAuthEmail);
+		$userEmail = $routeMD->getRequest(GlobalSystem::ExpAuthEmail);
 		
 		$isUser = $this->requestSystemData('user', $userEmail, true);
 		if($isUser){
@@ -144,7 +144,7 @@ class Manager extends Auth
 		$routeMD = $model->getRouteInstance();
 		$routeMD->setResponseObject(true);
 		
-		return $routeMD->getRequest(Expected::ExpErrorDesc);
+		return $routeMD->getRequest(GlobalSystem::ExpErrorDesc);
 	}
 	
 	/**
@@ -152,11 +152,12 @@ class Manager extends Auth
 	 *
 	 * @return string
 	 */
-	private function views ()
+	private function views()
 	{
 		$model = Model::getInstance();
 		$routeMD = $model->getRouteInstance();
-		$views = new Views($routeMD->getRequest(Expected::ExpViews));
+		$routeMD->setResponseObject(false);
+		$views = new Views($routeMD->getRequest(GlobalSystem::ExpViews));
 		
 		return $views->routingView();
 	}

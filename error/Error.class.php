@@ -8,9 +8,9 @@ class Error extends ExceptionManager
 	{
 		$messageResponse = array();
 		
-		foreach($this->messageResponse[Expected::ExpRouteError] as $code => $message) {
-			$messageResponse[Expected::ExpErrorCode][] = $code;
-			$messageResponse[Expected::ExpErrorDesc][] = $message;
+		foreach($this->messageResponse[GlobalSystem::ExpRouteError] as $code => $message) {
+			$messageResponse[GlobalSystem::ExpErrorCode][] = $code;
+			$messageResponse[GlobalSystem::ExpErrorDesc][] = $message;
 		}
 		
 		return $messageResponse;

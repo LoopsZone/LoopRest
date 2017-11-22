@@ -40,7 +40,7 @@ class Auth extends AccessDB
 	{
 		$model = Model::getInstance();
 		$routeMD = $model->getRouteInstance();
-		$token = $routeMD->getRequest(Expected::ExpRequestToken);
+		$token = $routeMD->getRequest(GlobalSystem::ExpRequestToken);
 		
 		return Token::check($token);
 	}

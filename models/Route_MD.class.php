@@ -101,7 +101,7 @@ class Route_MD
 		if(count($error) > 0) {
 			
 			$this->route = RequestRoute::ExpRouteError;
-			$this->request[Expected::ExpRouteError] = $error;
+			$this->request[GlobalSystem::ExpRouteError] = $error;
 			$message = json_encode($error);
 			throw  new Exception($message, 3);
 		}

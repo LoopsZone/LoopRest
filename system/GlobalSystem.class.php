@@ -48,13 +48,13 @@ class GlobalSystem extends GlobalConstants
 		$model = Model::getInstance();
 		$routeMD = $model->getRouteInstance();
 		
-		$routeMD->setRoute(Expected::ExpRouteError);
+		$routeMD->setRoute(GlobalSystem::ExpRouteError);
 		$route = $routeMD->getRoute();
 		
-		$request[$route][Expected::ExpErrorDoc] = $error->getFile();
-		$request[$route][Expected::ExpErrorLine] = $error->getLine();
-		$request[$route][Expected::ExpErrorCode] = $error->getCode();
-		$request[$route][Expected::ExpErrorDesc] = $error->getMessage();
+		$request[$route][GlobalSystem::ExpErrorDoc] = $error->getFile();
+		$request[$route][GlobalSystem::ExpErrorLine] = $error->getLine();
+		$request[$route][GlobalSystem::ExpErrorCode] = $error->getCode();
+		$request[$route][GlobalSystem::ExpErrorDesc] = $error->getMessage();
 		
 		$routeMD->setRequest($request);
 	}

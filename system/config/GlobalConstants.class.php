@@ -21,13 +21,12 @@ class GlobalConstants extends Expected
 		self::ExpMethodDelete
 	];
 	
-	const PRINCIPAL_VIEW = 'Home';
-	
 	//Header Allow
 	public static $allowHeaders = [
-		Expected::ExpHeaderFrom,
-		Expected::ExpHeaderAuth
+		self::ExpHeaderFrom,
+		self::ExpHeaderAuth
 	];
+	
 	protected static $directoriesToIgnore = [
 		'vendor',
 		'staticFiles'

@@ -50,7 +50,7 @@ class Input extends Manager
 		$model = Model::getInstance();
 		$routeMD = $model->getRouteInstance();
 		$serverMD = $model->getClientServerInstance();
-		$authHeader = $serverMD->getHeader(Expected::ExpHeaderAuth);
+		$authHeader = $serverMD->getHeader(GlobalSystem::ExpHeaderAuth);
 		
 		/*
 		 * Cero value get usser access to principal system and one value get structure merchange access
@@ -101,7 +101,7 @@ class Input extends Manager
 			return true;
 		}
 		
-		$routeMD->setRoute(Expected::ExpRouteView);
+		$routeMD->setRoute(GlobalSystem::ExpRouteViews);
 		
 		return false;
 	}
@@ -118,7 +118,7 @@ class Input extends Manager
 		$routeMD = $model->getRouteInstance();
 		$serverMD = $model->getClientServerInstance();
 		
-		if($route == Expected::ExpRouteRequest){
+		if($route == GlobalSystem::ExpRouteRequest){
 			$routeMD->setAction($serverMD->getMethod());
 			return true;
 		}

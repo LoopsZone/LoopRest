@@ -8,7 +8,7 @@ class Views extends Expected_Views
 	{
 		$model = Model::getInstance();
 		$viewMD = $model->getViewsInstance();
-		$target = ($request) ? $request : GlobalConstants::PRINCIPAL_VIEW;
+		$target = ($request) ? $request : CoreConfig::PRINCIPAL_VIEW;
 		$viewMD->setView($target);
 	}
 	
