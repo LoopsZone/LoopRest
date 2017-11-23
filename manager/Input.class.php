@@ -10,7 +10,7 @@ class Input extends Manager
 	/**
 	 * Route action to execute set to params
 	 *
-	 * @return array|bool|strcheckInputg
+	 * @return bool
 	 */
 	public function request ()
 	{
@@ -20,8 +20,8 @@ class Input extends Manager
 			$routeMD = $model->getRouteInstance();
 			$clientInfoMD = $model->getClientServerInstance();
 			$httpAction = $clientInfoMD->getMethod();
-			$resposeObject = ($httpAction != GlobalSystem::ExpMethodGet);
-			$routeMD->setResponseObject($resposeObject);
+			$responseObject = ($httpAction != GlobalSystem::ExpMethodGet);
+			$routeMD->setResponseObject($responseObject);
 			
 			if(GlobalSystem::availableMethod($httpAction)){
 				return $this->checkInput($_REQUEST);
