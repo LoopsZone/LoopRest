@@ -114,7 +114,10 @@ class Manager extends Auth
 	{
 		$model = Model::getInstance();
 		$routeMD = $model->getRouteInstance();
+		$dataBaseMD = $model->getDataBaseInstance();
 		$userEmail = $routeMD->getRequest(GlobalSystem::ExpAuthEmail);
+		
+		
 		
 		$isUser = $this->requestSystemData('user', $userEmail, true);
 		if($isUser){

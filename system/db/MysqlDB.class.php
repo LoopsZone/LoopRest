@@ -5,13 +5,35 @@
  *
  * @author   Mario Henmanuel Vargas Ugalde <hemma.hvu@gmail.com>
  */
-class MysqlDB
+class MysqlDB implements DataBase
 {
-	private $conexion;
+	private $connection;
 	
 	public function __construct ($host, $user, $password, $db)
 	{
-		$this->conexion = new mysqli($host, $user, $password, $db);
+		$this->connection = new mysqli($host, $user, $password, $db);
+	}
+	
+	public function query($sql, $print)
+	{
+		$result = $this->connection->query($sql);
+		$count = $result->num_rows;
+		
+		if($count > 0) {
+			if($print){
+				
+				for($i = 0; $i < $count; $i++) {
+					$result->data_seek($i);
+					$rows[$i] = $result->fetch_assoc();
+				}
+				
+				return $rows;
+			}else{
+				return true;
+			}
+		}else{
+			return false;
+		}
 	}
 	
 	/**
@@ -22,34 +44,10 @@ class MysqlDB
 	 * @param $print
 	 * @return bool|array
 	 */
-	public function search ($object, $registry, $print)
+	public function search ($object, $registry, $print = true)
 	{
-		if(isset($object) AND isset($registry)){
-			
-			$sql = "SELECT * FROM {$object} WHERE email = '{$registry}' ORDER BY 1 DESC";
-			$result = $this->conexion->query($sql);
-			$count = (!$result) ? 0 : $result->field_count;
-			
-			if($count > 0) {
-				if($print) {
-					$row = mysqli_fetch_row($result);
-					for($i = 0; $i < $count; $i++) {
-						$result->data_seek($i);
-						$field = $result->fetch_field();
-						$currentField = $field->name;
-						$rows[$currentField] = $row[$i];
-					}
-					$this->conexion->close();
-					return $rows;
-				}else{
-					$this->conexion->close();
-					return true;
-				}
-			}else{
-				$this->conexion->close();
-				return false;
-			}
-		}
+		$sql = "SELECT * FROM {$object}";
+		return $this->query($sql, $print);
 	}
 	
 	public function insert($object, $data)
@@ -68,7 +66,7 @@ class MysqlDB
 			$fields = implode(',', $colums);
 			
 			$sql = "INSERT INTO  {$object} (`users_id`, `external_Id`, `name`, `email`, `birthday`) VALUES ('3', '3', 'Test', 'test', '1994-06-02')";
-			$result = $this->conexion->query($sql);
+			$result = $this->connection->query($sql);
 			$count = (!$result) ? 0 : $result->field_count;
 			
 			if($count > 0) {
@@ -80,24 +78,24 @@ class MysqlDB
 						$currentField = $field->name;
 						$rows[$currentField] = $row[$i];
 					}
-					$this->conexion->close();
+					$this->connection->close();
 					return $rows;
 				}else{
 					$result->close();
 					return true;
 				}
 			}else{
-				$this->conexion->close();
+				$this->connection->close();
 				return false;
 			}
 		}
 	}
 	
-	private function tableInfo ($table)
+	public function tableInfo($table)
 	{
 		
 		$sql = "SHOW COLUMNS FROM " . $table;//var_dump($sql);
-		$result = $this->conexion->query($sql);
+		$result = $this->connection->query($sql);
 		$count = $result->num_rows;
 		$rows = array();
 		for($i = 0; $i < $count; $i++) {
@@ -152,7 +150,7 @@ class MysqlDB
 				and REFERENCED_TABLE_NAME IS NOT NULL";
 		//var_dump($sql);
 		
-		$result = $this->conexion->query($sql);
+		$result = $this->connection->query($sql);
 		$row = mysqli_fetch_row($result);
 		
 		if($row != FALSE) {
@@ -173,5 +171,10 @@ class MysqlDB
 			$result->close();
 			return FALSE;
 		}
+	}
+	
+	public function close ()
+	{
+		$this->connection->close();
 	}
 }

@@ -5,7 +5,7 @@
  *
  * @author   Mario Henmanuel Vargas Ugalde <hemma.hvu@gmail.com>
  */
-class AccessDB
+class AccessDB extends DB
 {
 	private $db;
 	private $host;
@@ -13,7 +13,7 @@ class AccessDB
 	private $password;
 	private $conectionDB;
 	
-	protected function conectionDB()
+	protected function connectionDB()
 	{
 		$this->host = 'localhost';
 		$this->user = 'root';
@@ -31,11 +31,14 @@ class AccessDB
 	 * @param bool $print
 	 * @return bool|array
 	 */
-	protected function requestSystemData($object, $registry, $print = true)
+	protected function requestSystemData($object, $registry)
 	{
-		$this->conectionDB();
+		$this->connectionDB();
 		$db = $this->conectionDB;
-		return $db->search($object, $registry, $print);
+		$result = $db->search($object, $registry);
+		
+		$db->close();
+		return $result;
 	}
 	
 	/**
@@ -46,7 +49,7 @@ class AccessDB
 	 * @return array|bool
 	 */
 	protected function insertSystemData($object, $data){
-		$this->conectionDB();
+		$this->connectionDB();
 		$db = $this->conectionDB;
 		return $db->insert($object, $data);
 	}

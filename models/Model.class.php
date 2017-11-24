@@ -4,7 +4,7 @@ class Model
 {
 	private static $singleton;
 	
-	public static function getInstance ()
+	public static function getInstance()
 	{
 		
 		if(is_null(self::$singleton)) {
@@ -20,7 +20,7 @@ class Model
 	 *
 	 * @return ClientServer_MD
 	 */
-	public function getClientServerInstance ()
+	public function getClientServerInstance()
 	{
 		return ClientServer_MD::getInstance();
 	}
@@ -31,7 +31,7 @@ class Model
 	 *
 	 * @return Route_MD
 	 */
-	public function getRouteInstance ()
+	public function getRouteInstance()
 	{
 		return Route_MD::getInstance();
 	}
@@ -42,8 +42,13 @@ class Model
 	 *
 	 * @return Views_MD
 	 */
-	public function getViewsInstance ()
+	public function getViewsInstance()
 	{
 		return Views_MD::getInstance();
+	}
+	
+	public function getDataBaseInstance()
+	{
+		return DataBase_MD::getInstance();
 	}
 }

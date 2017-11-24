@@ -9,15 +9,6 @@ require_once 'config/GlobalConstants.class.php';
  */
 class GlobalSystem extends GlobalConstants
 {
-	public static $expFormatRoutes;
-	public static $expFormatClients;
-	public static $expFormatDevices;
-	public static $expFormatMethods;
-	public static $expFormatHeaders;
-	public static $expFormatTriggers;
-	public static $expFormatVariable;
-	
-	public static $systemSettings;
 	public static $ignoreDirectories;
 	
 	/**
