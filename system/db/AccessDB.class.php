@@ -5,7 +5,7 @@
  *
  * @author   Mario Henmanuel Vargas Ugalde <hemma.hvu@gmail.com>
  */
-class AccessDB extends DB
+class AccessDB
 {
 	private $db;
 	private $host;
@@ -19,6 +19,8 @@ class AccessDB extends DB
 		$this->user = 'root';
 		$this->password = '';
 		$this->db = 'looprest';
+		
+		$this->result = new DB();
 		
 		$this->conectionDB = new MysqlDB($this->host, $this->user, $this->password, $this->db);
 	}
