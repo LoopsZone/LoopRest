@@ -19,7 +19,6 @@ class AutoLoad extends GlobalSystem
 	static public function LoadClasses ($className, $directory = DIRECTORY)
 	{
 		$filePath = $directory . $className . CoreConfig::SUFFIX_FILE;
-		
 		if(file_exists($filePath)) {
 			require_once($filePath);
 			return true;
