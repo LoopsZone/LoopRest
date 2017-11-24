@@ -53,7 +53,7 @@ class Input extends Manager
 		$authHeader = $serverMD->getHeader(GlobalSystem::ExpHeaderAuth);
 		
 		/*
-		 * Cero value get usser access to principal system and one value get structure merchange access
+		 * Zero value get user access to principal system and one value get structure merchant access
 		 */
 		$auth = (!$authHeader) ? 0 : 1;
 		$routeMD->setAuthorization($auth);
