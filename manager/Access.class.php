@@ -7,4 +7,5 @@
  */
 class Access extends Manager
 {
+  
 }

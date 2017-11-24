@@ -15,7 +15,6 @@ class Input extends Manager
 	public function request ()
 	{
 		try{
-			
 			$model = Model::getInstance();
 			$routeMD = $model->getRouteInstance();
 			$clientInfoMD = $model->getClientServerInstance();
@@ -52,9 +51,7 @@ class Input extends Manager
 		$serverMD = $model->getClientServerInstance();
 		$authHeader = $serverMD->getHeader(GlobalSystem::ExpHeaderAuth);
 		
-		/*
-		 * Zero value get user access to principal system and one value get structure merchant access
-		 */
+		/*Zero value get user access to principal system and one value get structure merchant access*/
 		$auth = (!$authHeader) ? 0 : 1;
 		$routeMD->setAuthorization($auth);
 		
@@ -62,7 +59,7 @@ class Input extends Manager
 		$parameter = array_keys($method);
 		$value = array_values($method);
 		
-		if($countParams) {
+		if($countParams){
 			
 			$found = false;
 			$request = null;
