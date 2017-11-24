@@ -14,7 +14,7 @@ class Input extends Manager
 	 */
 	public function request ()
 	{
-		try {
+		try{
 			
 			$model = Model::getInstance();
 			$routeMD = $model->getRouteInstance();
@@ -69,28 +69,28 @@ class Input extends Manager
 			$routeName = null;
 			
 			// Generate set to variables that need request
-			foreach(RequestRoute::$routes as $set => $route) {
-				foreach($route[GlobalSystem::ExpRouteKeyParams] as $param => $format) {
-					for($i = 0; $i < $countParams; $i++) {
-						if($param == $parameter[$i]) {
+			foreach(RequestRoute::$routes as $set => $route){
+				foreach($route[GlobalSystem::ExpRouteKeyParams] as $param => $format){
+					for($i = 0; $i < $countParams; $i++){
+						if($param == $parameter[$i]){
 							$routeName = $set;
 							$request[$routeName][$param] = GlobalSystem::validateData($value[$i], $format);
 						}
 					}
 					
-					if(count($request[$routeName]) == $countParams) {
+					if(count($request[$routeName]) == $countParams){
 						$found = true;
 						break;
 					}
 				}
 				
-				if($found) {
+				if($found){
 					$routeMD->setResponseObject(true);
 					break;
 				}
 			}
 			
-			if(!$found) {
+			if(!$found){
 				throw new Exception('Invalid input params', 1);
 			}
 			
