@@ -12,7 +12,7 @@
 |	|DELETE: |Input data type in JSON to consume Web services to delete data
 |___________________________________________________________________________
 */
-require_once 'autoLoad.classes.php';
+require_once 'AutoLoad.classes.php';
 
 $http = new Input;
 $http->request();
