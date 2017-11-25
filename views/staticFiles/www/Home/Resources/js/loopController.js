@@ -1,4 +1,4 @@
-var url = "http://localhost:8080/LoopRest"; //Rest API
+var url = "http://rest.loopszone:8080"; //Rest API
 
 function modal(id, content) {
     if ($("#" + id).length == 0) {
@@ -32,7 +32,7 @@ function plus() {
     var pressTimer;
     $('#plusCont').remove('#plusLogIn');
     if ($("#plus").length == 0) {
-        $('#plusCont').append('<img id="plus" class="plus" src="style/img/plus.png">');
+        $('#plusCont').append('<img id="plus" class="plus" src="views/staticFiles/www/Home/Resources/style/img/plus.png">');
         $('#plus').mousedown(function () {
             pressTimer = window.setTimeout(function () {
 
@@ -135,7 +135,7 @@ function faceLogin(req) {
 
     window.fbAsyncInit = function () {
         FB.init({
-            appId: '1413878928878484',
+            appId: '387158854997343',
             xfbml: true,
             version: 'v2.7'
         });
@@ -150,7 +150,7 @@ function faceLogin(req) {
             } else if (response.status === 'not_authorized') {
                 modal('authModal', 'views/authorized.html');
             } else {
-                $('#plusCont').append('<img id="plusLogIn" class="plus" src="style/img/fb.png">');
+                $('#plusCont').append('<img id="plusLogIn" class="plus" src="views/staticFiles/www/Home/Resources/style/img/fb.png">');
                 $('#plusLogIn').click(function () {
                     login(req);
                 });
