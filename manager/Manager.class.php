@@ -26,14 +26,14 @@ class Manager extends Auth
 		
 		try {
 			switch($routeMD->getTrigger()) {
-				case GlobalSystem::ExpRequestTrigger:
-					return $this->request();
 				case GlobalSystem::ExpAuthTrigger:
 					return $this->auth();
 				case GlobalSystem::ExpErrorTrigger:
 					return $this->error();
 				case GlobalSystem::ExpViewsTrigger:
 					return $this->views();
+				case GlobalSystem::ExpRequestTrigger:
+					return $this->request();
 				default: throw new Exception('Action selected no valid', 2);
 			}
 		}catch(Exception $error){
@@ -50,11 +50,10 @@ class Manager extends Auth
 	 */
 	private function request ()
 	{
-		$model = Model::getInstance();
-		$checkTK = self::checkClient();
+		$availableAccess = self::checkClient();
 		
-		if($checkTK === true){
-			
+		if($availableAccess){
+			$model = Model::getInstance();
 			$action = $this->requestAction();
 			$routeMD = $model->getRouteInstance();
 			$request = $routeMD->getRequest();
@@ -67,7 +66,7 @@ class Manager extends Auth
 			return self::getData($token, $request);
 		}
 		
-		throw new Exception($checkTK, 4);
+		throw new Exception($availableAccess, 4);
 	}
 	
 	/**
@@ -117,23 +116,27 @@ class Manager extends Auth
 		$dataBaseMD = $model->getDataBaseInstance();
 		$userEmail = $routeMD->getRequest(GlobalSystem::ExpAuthEmail);
 		
-		
-		
-		$isUser = $this->requestSystemData('user', $userEmail, true);
-		if($isUser){
-			$user = $this->insertSystemData('user', $routeMD->getRequest());
+		$availableAccess = self::checkClient();
+		if($availableAccess){
+			
+			$isUser = $this->requestSystemData('user', $userEmail);
+			if($isUser){
+				$user = $this->insertSystemData('user', $routeMD->getRequest());
+			}
+			
+			$routeMD->setResponseObject(false);
+			$access = $routeMD->getRequest(RequestRoute::ExpAuthEmail);
+			
+			$tokenData = [
+				'access' => self::checkUserAccess($access),
+				'id' => $routeMD->getRequest(RequestRoute::ExpAuthId),
+				'name' => $routeMD->getRequest(RequestRoute::ExpAuthName)
+			];
+			
+			return self::signIn($tokenData);
 		}
 		
-		$routeMD->setResponseObject(false);
-		$access = $routeMD->getRequest(RequestRoute::ExpAuthEmail);
-		
-		$tokenData = [
-			'access' => self::checkUserAccess($access),
-			'id' => $routeMD->getRequest(RequestRoute::ExpAuthId),
-			'name' => $routeMD->getRequest(RequestRoute::ExpAuthName)
-		];
-		
-		return self::signIn($tokenData);
+		throw new Exception($availableAccess, 4);
 	}
 	
 	/**

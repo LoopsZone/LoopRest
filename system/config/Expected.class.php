@@ -54,6 +54,7 @@ class Expected
 	const ExpViewsTrigger = 'VIEWS';
 	
 	//Set Keys name to expected routes params
+	const ExpRouteNeedTK = 'needTK';
 	const ExpRouteKeyParams = 'params';
 	const ExpRouteKeyTrigger = 'trigger';
 	const ExpErrorKeyException = 'exception';

@@ -5,7 +5,7 @@
  *
  * @author   Mario Henmanuel Vargas Ugalde <hemma.hvu@gmail.com>
  */
-class Auth extends AccessDB
+class Auth extends Access
 {
 	/**
 	 * Get data from request to database
@@ -40,9 +40,24 @@ class Auth extends AccessDB
 	{
 		$model = Model::getInstance();
 		$routeMD = $model->getRouteInstance();
-		$token = $routeMD->getRequest(GlobalSystem::ExpRequestToken);
+		$authorization = $routeMD->getAuthorization();
 		
-		return Token::check($token);
+		$tk = false;
+		$route = $routeMD->getRoute();
+		
+		//TODO Add BlackList customers
+		$needTK = self::routeNeedTK($route);
+		
+		if($needTK){
+			$token = $routeMD->getRequest(GlobalSystem::ExpRequestToken);
+			$availableTK = Token::check($token);
+			
+			if($availableTK === true){
+				$tk = true;
+			}
+		}
+		
+		return ($authorization && $tk);
 	}
 	
 	/**
@@ -57,6 +72,18 @@ class Auth extends AccessDB
 		$access = (!in_array($user, $users)) ? 0 : 1;
 		
 		return $access;
+	}
+	
+	private static function routeNeedTK($route)
+	{
+		if(key_exists($route, RequestRoute::$routes))
+		{
+			$routeExecuting = RequestRoute::$routes[$route];
+			return $routeExecuting[GlobalSystem::ExpRouteNeedTK];
+		}
+		
+		//TODO General Exception add nd yours functions of notification
+		throw new Exception('An error has occurred in system', 5);
 	}
 	
 	private function checkAllowIp ()
