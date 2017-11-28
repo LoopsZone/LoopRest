@@ -114,7 +114,7 @@ class Manager extends Auth
 		$model = Model::getInstance();
 		$routeMD = $model->getRouteInstance();
 		$dataBaseMD = $model->getDataBaseInstance();
-		$userEmail = $routeMD->getRequest(GlobalSystem::ExpAuthEmail);
+		$authorization = $routeMD->getAuthorization();
 		
 		$availableAccess = self::checkClient();
 		if($availableAccess){
@@ -125,10 +125,11 @@ class Manager extends Auth
 			}
 			
 			$routeMD->setResponseObject(false);
-			$access = $routeMD->getRequest(RequestRoute::ExpAuthEmail);
+			$userEmail = $routeMD->getRequest(GlobalSystem::ExpAuthEmail);
+			$userAccess = self::checkUserAccess($userEmail);
 			
 			$tokenData = [
-				'access' => self::checkUserAccess($access),
+				'access' => $userAccess,
 				'id' => $routeMD->getRequest(RequestRoute::ExpAuthId),
 				'name' => $routeMD->getRequest(RequestRoute::ExpAuthName)
 			];

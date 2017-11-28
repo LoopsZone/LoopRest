@@ -57,7 +57,7 @@ input:focus {
     float: left;
     position: fixed;
     z-index: 2;
-    margin-left: 5px;
+    margin-left: 1%;
     margin-top: 12.5px;
     cursor: pointer;
 }
@@ -84,10 +84,12 @@ input:focus {
 }
 
 #loopHome h1 {
-    display: none;
     float: right;
-    margin-top: 25px;
+    display: block;
     font-size: 25px;
+    margin-top: 25px;
+    margin-right: 1%;
+    color: rgb(169, 169, 169);
 }
 
 .modal {
@@ -326,11 +328,6 @@ input:checked + .lapseVision:before {
     #search {
         width: 30%;
         margin-left: 35%;
-    }
-
-    #loopHome h1 {
-        display: block;
-        color: rgb(224, 224, 209);
     }
 
     #modal {

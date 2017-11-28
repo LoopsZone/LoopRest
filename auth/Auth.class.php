@@ -26,7 +26,7 @@ class Auth extends Access
 	 * @param $data
 	 * @return string
 	 */
-	protected static function signIn ($data)
+	protected static function signIn($data)
 	{
 		return Token::signIn($data);
 	}
@@ -36,28 +36,23 @@ class Auth extends Access
 	 *
 	 * @return string
 	 */
-	protected static function checkClient ()
+	protected static function checkClient()
 	{
 		$model = Model::getInstance();
 		$routeMD = $model->getRouteInstance();
-		$authorization = $routeMD->getAuthorization();
-		
-		$tk = false;
 		$route = $routeMD->getRoute();
+		$needTK = self::routeNeedTK($route);
 		
 		//TODO Add BlackList customers
-		$needTK = self::routeNeedTK($route);
 		
 		if($needTK){
 			$token = $routeMD->getRequest(GlobalSystem::ExpRequestToken);
 			$availableTK = Token::check($token);
 			
-			if($availableTK === true){
-				$tk = true;
-			}
+			return ($availableTK === true) ? true : false;
 		}
 		
-		return ($authorization && $tk);
+		return true;
 	}
 	
 	/**
@@ -69,9 +64,7 @@ class Auth extends Access
 	protected function checkUserAccess ($user)
 	{
 		$users = array_values(CoreConfig::$rootUsers);
-		$access = (!in_array($user, $users)) ? 0 : 1;
-		
-		return $access;
+		return (!in_array($user, $users)) ? 0 : 1;
 	}
 	
 	private static function routeNeedTK($route)
