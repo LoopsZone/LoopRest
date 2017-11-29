@@ -2,7 +2,6 @@
 
 class ClientServer_MD
 {
-	
 	static private $singleton;
 	private $ip;
 	private $host;
@@ -10,7 +9,7 @@ class ClientServer_MD
 	private $headers;
 	private $userAgent;
 	
-	private function __construct ()
+	private function __construct()
 	{
 		$this->ip = $this->setIp();
 		$this->headers = apache_request_headers();
@@ -19,14 +18,13 @@ class ClientServer_MD
 		$this->userAgent = $_SERVER['HTTP_USER_AGENT'];
 	}
 	
-	private function setIp ()
+	private function setIp()
 	{
-		
-		if(!empty($_SERVER['HTTP_CLIENT_IP'])) {
+		if(!empty($_SERVER['HTTP_CLIENT_IP'])){
 			return $_SERVER['HTTP_CLIENT_IP'];
-		} else if(!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+		}else if(!empty($_SERVER['HTTP_X_FORWARDED_FOR'])){
 			return $_SERVER['HTTP_X_FORWARDED_FOR'];
-		} else {
+		}else{
 			return $_SERVER['REMOTE_ADDR'];
 		}
 	}
@@ -36,9 +34,9 @@ class ClientServer_MD
 	 *
 	 * @return ClientServer_MD
 	 */
-	public static function getInstance ()
+	public static function getInstance()
 	{
-		if(is_null(self::$singleton)) {
+		if(is_null(self::$singleton)){
 			self::$singleton = new ClientServer_MD();
 		}
 		
@@ -48,7 +46,7 @@ class ClientServer_MD
 	/**
 	 * @return mixed
 	 */
-	public function getIp ()
+	public function getIp()
 	{
 		return $this->ip;
 	}
@@ -56,7 +54,7 @@ class ClientServer_MD
 	/**
 	 * @return mixed
 	 */
-	public function getHost ()
+	public function getHost()
 	{
 		return $this->host;
 	}
@@ -64,7 +62,7 @@ class ClientServer_MD
 	/**
 	 * @return mixed
 	 */
-	public function getMethod ()
+	public function getMethod()
 	{
 		return $this->method;
 	}
@@ -72,7 +70,7 @@ class ClientServer_MD
 	/**
 	 * @return array
 	 */
-	public function getHeaders ()
+	public function getHeaders()
 	{
 		return $this->headers;
 	}
@@ -80,24 +78,19 @@ class ClientServer_MD
 	/**
 	 * @return mixed
 	 */
-	public function getUserAgent ()
+	public function getUserAgent()
 	{
 		return $this->userAgent;
 	}
 	
-	public function getHeader ($target)
+	public function getHeader($target)
 	{
-		
 		$settingHeaders = GlobalConstants::$allowHeaders;
-		
-		foreach($this->headers as $header => $value) {
-			
-			if($header == $target) {
-				
-				if(isset($settingHeaders) && !is_null($settingHeaders) && !empty($settingHeaders) && $settingHeaders != '') {
-					
-					foreach(GlobalConstants::$allowHeaders as $allowHeader) {
-						if($allowHeader == $target) {
+		foreach($this->headers as $header => $value){
+			if($header == $target){
+				if(isset($settingHeaders) && !is_null($settingHeaders) && !empty($settingHeaders) && $settingHeaders != ''){
+					foreach(GlobalConstants::$allowHeaders as $allowHeader){
+						if($allowHeader == $target){
 							return $value;
 						}
 					}
