@@ -24,8 +24,16 @@ class CoreConfig
    */
   const LOG_PATH = DIRECTORY . 'logs';
 
+  /**
+   * Name to principal component view to this system
+   * @see views::__construct()
+   */
   const PRINCIPAL_VIEW = 'Home';
 
+  /**
+   * The suffix name use to require any php class in execution time
+   * @see AutoLoad::LoadClasses
+   */
   const SUFFIX_FILE = '.class.php';
 
   /**
@@ -40,9 +48,18 @@ class CoreConfig
    */
   const ENCRYPT = ['HS256'];
 
+  /**
+   * Root users with global access
+   * @var array
+   */
   public static $rootUsers = [
     'hemma.hvu@gmail.com'
   ];
+
+  /**
+   * Use of the database to establish the system configuration
+   */
+  const DB_SYSTEM = 'loopsrest';
 }
 
 ?>
