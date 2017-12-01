@@ -17,23 +17,20 @@ class MysqlDB implements DataBase
 	public function query($sql, $print)
 	{
 		$result = $this->connection->query($sql);
-		$count = $result->num_rows;
-		
-		if($count > 0) {
+		if($result->num_rows > 0) {
 			if($print){
-				
-				for($i = 0; $i < $count; $i++) {
+				for($i = 0; $i < $result->num_rows; $i++) {
 					$result->data_seek($i);
 					$rows[$i] = $result->fetch_assoc();
 				}
-				
+
 				return $rows;
-			}else{
-				return true;
 			}
-		}else{
-			return false;
+
+			return true;
 		}
+
+		return false;
 	}
 	
 	/**

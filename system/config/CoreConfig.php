@@ -3,7 +3,7 @@
 class CoreConfig
 {
   /**
-   * define if the current environment is development or production
+   * Define if the current environment is development or production
    *
    * @var bool
    */

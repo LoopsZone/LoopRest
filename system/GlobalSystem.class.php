@@ -30,7 +30,7 @@ class GlobalSystem extends GlobalConstants
 	}
 	
 	/**
-	 * If any exception is triggered active error route in system
+	 * If an exception is activated, an error path is activated in the system
 	 *
 	 * @param $error
 	 */

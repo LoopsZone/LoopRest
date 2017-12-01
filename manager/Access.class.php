@@ -7,5 +7,5 @@
  */
 class Access extends AccessDB
 {
-
+  
 }
