@@ -7,22 +7,21 @@
  */
 class AccessDB
 {
-	private $db;
 	private $host;
 	private $user;
 	private $password;
+	private $dataBase;
 	private $conectionDB;
 	
 	protected function connectionDB()
 	{
-		$this->host = 'localhost';
 		$this->user = 'root';
 		$this->password = '';
-		$this->db = 'looprest';
+		$this->host = 'localhost';
+		$this->dataBase = 'looprest';
 		
 		$this->result = new DB();
-		
-		$this->conectionDB = new MysqlDB($this->host, $this->user, $this->password, $this->db);
+		$this->conectionDB = new MysqlDB($this->host, $this->user, $this->password, $this->dataBase);
 	}
 	
 	/**

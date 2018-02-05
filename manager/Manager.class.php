@@ -22,7 +22,7 @@ class Manager extends Auth
 	protected function route()
 	{
 		$model = Model::getInstance();
-		$routeMD = $model->getRouteInstance();
+		$routeMD = $model->getRouteInstance;
 		
 		try {
 			switch($routeMD->getTrigger()) {
@@ -55,7 +55,7 @@ class Manager extends Auth
 		if($availableAccess){
 			$model = Model::getInstance();
 			$action = $this->requestAction();
-			$routeMD = $model->getRouteInstance();
+			$routeMD = $model->getRouteInstance;
 			$request = $routeMD->getRequest();
 			$token = $routeMD->getRequest(GlobalSystem::ExpRequestToken);
 			
@@ -78,7 +78,7 @@ class Manager extends Auth
 	private function requestAction()
 	{
 		$model = Model::getInstance();
-		$routeMD = $model->getRouteInstance();
+		$routeMD = $model->getRouteInstance;
 		
 		switch($routeMD->getAction()) {
 			case GlobalSystem::ExpMethodPost:
@@ -112,21 +112,21 @@ class Manager extends Auth
 	private function auth ()
 	{
 		$model = Model::getInstance();
-		$routeMD = $model->getRouteInstance();
-		$dataBaseMD = $model->getDataBaseInstance();
+		$routeMD = $model->getRouteInstance;
+		$dataBaseMD = $model->getDataBaseInstance;
 		$authorization = $routeMD->getAuthorization();
 		
 		$availableAccess = self::checkClient();
 		if($availableAccess){
-			
-			$isUser = $this->requestSystemData('user', $userEmail);
-			if($isUser){
-				$user = $this->insertSystemData('user', $routeMD->getRequest());
-			}
-			
 			$routeMD->setResponseObject(false);
 			$userEmail = $routeMD->getRequest(GlobalSystem::ExpAuthEmail);
 			$userAccess = self::checkUserAccess($userEmail);
+			
+			$isUser = $this->requestSystemData('user', $userEmail);
+	
+			if($isUser){
+				$user = $this->insertSystemData('user', $routeMD->getRequest());
+			}
 			
 			$tokenData = [
 				'access' => $userAccess,
@@ -148,7 +148,7 @@ class Manager extends Auth
 	private function error ()
 	{
 		$model = Model::getInstance();
-		$routeMD = $model->getRouteInstance();
+		$routeMD = $model->getRouteInstance;
 		$routeMD->setResponseObject(true);
 		
 		return $routeMD->getRequest(GlobalSystem::ExpErrorDesc);
@@ -162,7 +162,7 @@ class Manager extends Auth
 	private function views()
 	{
 		$model = Model::getInstance();
-		$routeMD = $model->getRouteInstance();
+		$routeMD = $model->getRouteInstance;
 		$routeMD->setResponseObject(false);
 		$views = new Views($routeMD->getRequest(GlobalSystem::ExpViews));
 		
@@ -171,7 +171,11 @@ class Manager extends Auth
 	
 	protected function putSystemData ()
 	{
-	
+		$model = Model::getInstance();
+		$routeMD = $model->getRouteInstance;
+		$routeMD->setResponseObject();
+		
+		return true;
 	}
 	
 	protected function dismissSystemData ()

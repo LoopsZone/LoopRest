@@ -39,7 +39,7 @@ class Auth extends Access
 	protected static function checkClient()
 	{
 		$model = Model::getInstance();
-		$routeMD = $model->getRouteInstance();
+		$routeMD = $model->getRouteInstance;
 		$route = $routeMD->getRoute();
 		$needTK = self::routeNeedTK($route);
 		

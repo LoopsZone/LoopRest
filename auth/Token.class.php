@@ -31,7 +31,7 @@ class Token extends Expected
 	private static function aud ()
 	{
 		$model = Model::getInstance();
-		$server = $model->getClientServerInstance();
+		$server = $model->getClientServerInstance;
 		$aud = $server->getIp();
 		$aud .= @$_SERVER['HTTP_USER_AGENT'];
 		$aud .= gethostname();

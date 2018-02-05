@@ -12,8 +12,8 @@ class ClientServer_MD
 	private function __construct()
 	{
 		$this->ip = $this->setIp();
-		$this->headers = apache_request_headers();
 		$this->host = $_SERVER['HTTP_HOST'];
+		$this->headers = apache_request_headers();
 		$this->method = $_SERVER['REQUEST_METHOD'];
 		$this->userAgent = $_SERVER['HTTP_USER_AGENT'];
 	}

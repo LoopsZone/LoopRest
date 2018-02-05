@@ -31,4 +31,6 @@ class GlobalConstants extends Expected
 		'vendor',
 		'staticFiles'
 	];
+	
+	const DB_ENGINE_MYSQL = 'Mysql';
 }

@@ -57,9 +57,32 @@ class CoreConfig
   ];
 
   /**
-   * Use of the database to establish the system configuration
+   * Use the database to establish the initial system configuration
    */
   const DB_SYSTEM = 'loopsrest';
+	
+	/**
+	 * Use the host's dns where your sensitive data awaits
+	 */
+  const DB_SYSTEM_HOST = 'localhost';
+	
+	/**
+	 * Use to shield sensitive data
+	 */
+  const DB_SYSTEM_PASSWORD = '';
+	
+	/**
+	 * Use it to identify user access to the database
+	 */
+  const DB_SYSTEM_USERNAME = 'root';
+	
+	/**
+	 * Use for the database controller used
+	 *
+	 * Engine controlers integrated
+	 *  MySql
+	 */
+  const DB_SYSTEN_ENGINE_USE = GlobalSystem::DB_ENGINE_MYSQL;
 }
 
 ?>

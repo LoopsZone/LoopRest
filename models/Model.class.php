@@ -1,17 +1,25 @@
 <?php
 
-class Model
+class Model extends ModelsTrack
 {
 	private static $singleton;
 	
 	public static function getInstance()
 	{
-		
-		if(is_null(self::$singleton)) {
+		if(is_null(self::$singleton)){
+			self::startStepsRoutesSystem(get_class());
 			self::$singleton = new Model();
 		}
 		
 		return self::$singleton;
+	}
+	
+	public function __get($method){
+		try{
+			self::TrackExecution(get_class(), $method);
+		}catch(Exception $e){
+			return $this->$method();
+		}
 	}
 	
 	/**
@@ -20,7 +28,7 @@ class Model
 	 *
 	 * @return ClientServer_MD
 	 */
-	public function getClientServerInstance()
+	private function getClientServerInstance()
 	{
 		return ClientServer_MD::getInstance();
 	}
@@ -31,7 +39,7 @@ class Model
 	 *
 	 * @return Route_MD
 	 */
-	public function getRouteInstance()
+	private function getRouteInstance()
 	{
 		return Route_MD::getInstance();
 	}
@@ -42,12 +50,12 @@ class Model
 	 *
 	 * @return Views_MD
 	 */
-	public function getViewsInstance()
+	private function getViewsInstance()
 	{
 		return Views_MD::getInstance();
 	}
 	
-	public function getDataBaseInstance()
+	private function getDataBaseInstance()
 	{
 		return DataBase_MD::getInstance();
 	}

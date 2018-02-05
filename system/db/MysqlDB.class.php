@@ -62,7 +62,7 @@ class MysqlDB implements DataBase
 			
 			$fields = implode(',', $colums);
 			
-			$sql = "INSERT INTO  {$object} (`users_id`, `external_Id`, `name`, `email`, `birthday`) VALUES ('3', '3', 'Test', 'test', '1994-06-02')";
+			$sql = "INSERT INTO  {$object} (`users_id`, `external_Id`, `name`, `email`, `birthday`) VALUES ('3', '3', 'Test', 'test', '1994-06-02')";//TODO insert DB urgente
 			$result = $this->connection->query($sql);
 			$count = (!$result) ? 0 : $result->field_count;
 			

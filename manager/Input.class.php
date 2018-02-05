@@ -12,14 +12,14 @@ class Input extends Manager
 	 *
 	 * @return bool
 	 */
-	public function request ()
+	public function request()
 	{
 		try{
 			$model = Model::getInstance();
-			$routeMD = $model->getRouteInstance();
-			$clientInfoMD = $model->getClientServerInstance();
+			$clientInfoMD = $model->getClientServerInstance;
 			$httpAction = $clientInfoMD->getMethod();
 			$responseObject = ($httpAction != GlobalSystem::ExpMethodGet);
+			$routeMD = $model->getRouteInstance;
 			$routeMD->setResponseObject($responseObject);
 			
 			if(GlobalSystem::availableMethod($httpAction)){
@@ -46,25 +46,23 @@ class Input extends Manager
 	 */
 	protected function checkInput($method)
 	{
-		$model = Model::getInstance();
-		$routeMD = $model->getRouteInstance();
-		$serverMD = $model->getClientServerInstance();
-		$authHeader = $serverMD->getHeader(GlobalSystem::ExpHeaderAuth);
-		
-		/*Zero value get user access to principal system and one value get structure merchant access*/
-		$auth = (!$authHeader) ? 0 : 1;
-		$routeMD->setAuthorization($auth);
-		
 		$countParams = count($method);
-		$parameter = array_keys($method);
-		$value = array_values($method);
-		
+		$model = Model::getInstance();
+		$routeMD = $model->getRouteInstance;
 		if($countParams){
+			
+			$serverMD = $model->getClientServerInstance;
+			$authHeader = $serverMD->getHeader(GlobalSystem::ExpHeaderAuth);
+			
+			/*Zero value get user access to principal system and one value get structure merchant access*/
+			$auth = (!$authHeader) ? 0 : 1;
+			$routeMD->setAuthorization($auth);
 			
 			$found = false;
 			$request = null;
 			$routeName = null;
-			
+			$parameter = array_keys($method);
+			$value = array_values($method);
 			// Generate set to variables that need request
 			foreach(RequestRoute::$routes as $set => $route){
 				foreach($route[GlobalSystem::ExpRouteKeyParams] as $param => $format){
@@ -112,8 +110,8 @@ class Input extends Manager
 	private function validRequestAction($route)
 	{
 		$model = Model::getInstance();
-		$routeMD = $model->getRouteInstance();
-		$serverMD = $model->getClientServerInstance();
+		$routeMD = $model->getRouteInstance;
+		$serverMD = $model->getClientServerInstance;
 		
 		if($route == GlobalSystem::ExpRouteRequest){
 			$routeMD->setAction($serverMD->getMethod());

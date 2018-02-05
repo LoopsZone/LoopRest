@@ -37,7 +37,7 @@ class GlobalSystem extends GlobalConstants
 	public static function onErrorRoute($error)
 	{
 		$model = Model::getInstance();
-		$routeMD = $model->getRouteInstance();
+		$routeMD = $model->getRouteInstance;
 		
 		$routeMD->setRoute(GlobalSystem::ExpRouteError);
 		$route = $routeMD->getRoute();

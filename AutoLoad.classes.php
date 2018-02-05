@@ -1,8 +1,8 @@
 <?php
 define('DS', DIRECTORY_SEPARATOR);
 define('DIRECTORY', __DIR__ . DS);
-require_once 'system/config/CoreConfig.php';
 require_once 'system/GlobalSystem.class.php';
+require_once 'system/config/CoreConfig.php';
 
 /**
  * Class AutoLoad
