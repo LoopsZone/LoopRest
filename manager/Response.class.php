@@ -14,7 +14,7 @@ class Response extends ModelsTrack
 		$model = Model::getInstance();
 		$routeMD= $model->getRouteInstance;
 
-		if($routeMD->getResponseObject()) {
+		if($routeMD->getResponseObject()){
 			$response = json_encode($response);
 		}
 

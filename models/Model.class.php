@@ -4,6 +4,9 @@ class Model extends ModelsTrack
 {
 	private static $singleton;
 	
+	/**
+	 * @return Model
+	 */
 	public static function getInstance()
 	{
 		if(is_null(self::$singleton)){
@@ -14,6 +17,10 @@ class Model extends ModelsTrack
 		return self::$singleton;
 	}
 	
+	/**
+	 * @param $method
+	 * @return mixed
+	 */
 	public function __get($method){
 		try{
 			self::TrackExecution(get_class(), $method);

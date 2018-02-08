@@ -109,11 +109,11 @@ class Input extends Manager
 	 */
 	private function validRequestAction($route)
 	{
-		$model = Model::getInstance();
-		$routeMD = $model->getRouteInstance;
-		$serverMD = $model->getClientServerInstance;
-		
 		if($route == GlobalSystem::ExpRouteRequest){
+			$model = Model::getInstance();
+			$routeMD = $model->getRouteInstance;
+			$serverMD = $model->getClientServerInstance;
+			
 			$routeMD->setAction($serverMD->getMethod());
 			return true;
 		}

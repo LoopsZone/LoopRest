@@ -10,7 +10,7 @@ class Manager extends Auth
 	/**
 	 * Format response to response
 	 */
-	public function response ()
+	public function response()
 	{
 		$response = $this->route();
 		new Response($response);
@@ -25,7 +25,7 @@ class Manager extends Auth
 		$routeMD = $model->getRouteInstance;
 		
 		try {
-			switch($routeMD->getTrigger()) {
+			switch($routeMD->getTrigger()){
 				case GlobalSystem::ExpAuthTrigger:
 					return $this->auth();
 				case GlobalSystem::ExpErrorTrigger:
@@ -48,7 +48,7 @@ class Manager extends Auth
 	 *
 	 * @return string|array
 	 */
-	private function request ()
+	private function request()
 	{
 		$availableAccess = self::checkClient();
 		
@@ -80,7 +80,7 @@ class Manager extends Auth
 		$model = Model::getInstance();
 		$routeMD = $model->getRouteInstance;
 		
-		switch($routeMD->getAction()) {
+		switch($routeMD->getAction()){
 			case GlobalSystem::ExpMethodPost:
 				return $this->post();
 			case GlobalSystem::ExpMethodPut:
@@ -145,7 +145,7 @@ class Manager extends Auth
 	 *
 	 * @return mixed
 	 */
-	private function error ()
+	private function error()
 	{
 		$model = Model::getInstance();
 		$routeMD = $model->getRouteInstance;
