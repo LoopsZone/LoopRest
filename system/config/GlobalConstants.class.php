@@ -13,24 +13,24 @@ class GlobalConstants extends Expected
 	const ExpMethodPut = 'PUT';
 	const ExpMethodPost = 'POST';
 	const ExpMethodDelete = 'DELETE';
-	
+
 	const ExpAvailableMethods = [
 		self::ExpMethodGet,
 		self::ExpMethodPut,
 		self::ExpMethodPost,
 		self::ExpMethodDelete
 	];
-	
+
 	//Header Allow
 	public static $allowHeaders = [
 		self::ExpHeaderFrom,
 		self::ExpHeaderAuth
 	];
-	
+
 	protected static $directoriesToIgnore = [
 		'vendor',
 		'staticFiles'
 	];
-	
-	const DB_ENGINE_MYSQL = 'Mysql';
+
+	const DB_ENGINE_MYSQL = 'mysql';
 }

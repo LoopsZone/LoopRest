@@ -3,7 +3,7 @@
 class Model extends ModelsTrack
 {
 	private static $singleton;
-	
+
 	/**
 	 * @return Model
 	 */
@@ -13,22 +13,26 @@ class Model extends ModelsTrack
 			self::startStepsRoutesSystem(get_class());
 			self::$singleton = new Model();
 		}
-		
+
 		return self::$singleton;
 	}
-	
+
 	/**
+	 * Start tracking model mode
+	 * 
 	 * @param $method
-	 * @return mixed
+	 * @return bool
 	 */
-	public function __get($method){
+	public function __get($method)
+	{
 		try{
 			self::TrackExecution(get_class(), $method);
+			return false;
 		}catch(Exception $e){
 			return $this->$method();
 		}
 	}
-	
+
 	/**
 	 * Model
 	 * get a singleton instance of ClientServer_MD
@@ -39,7 +43,7 @@ class Model extends ModelsTrack
 	{
 		return ClientServer_MD::getInstance();
 	}
-	
+
 	/**
 	 * Model
 	 * get a singleton instance of Route_MD
@@ -50,7 +54,7 @@ class Model extends ModelsTrack
 	{
 		return Route_MD::getInstance();
 	}
-	
+
 	/**
 	 * Model
 	 * get a singleton instance of Views_MD
@@ -61,7 +65,7 @@ class Model extends ModelsTrack
 	{
 		return Views_MD::getInstance();
 	}
-	
+
 	private function getDataBaseInstance()
 	{
 		return DataBase_MD::getInstance();

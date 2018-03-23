@@ -37,14 +37,14 @@ class CoreConfig
   const SUFFIX_FILE = '.class.php';
 
   /**
-   * Encript options
+   * Encrypt options
    *
-   * secret key to encript JWT
+   * secret key to encrypt JWT
    */
   const SECRET_KEY = 'Sdw1s9x8@adjnA@#Sjs#dAsdg*$*S&D&nja';
 
   /**
-   * Encript algorin to use
+   * Encrypt algorithm to use
    */
   const ENCRYPT = ['HS256'];
 
@@ -59,30 +59,28 @@ class CoreConfig
   /**
    * Use the database to establish the initial system configuration
    */
-  const DB_SYSTEM = 'loopsrest';
-	
+  const DB_SYSTEM = 'system_lp';
+
 	/**
 	 * Use the host's dns where your sensitive data awaits
 	 */
   const DB_SYSTEM_HOST = 'localhost';
-	
+
 	/**
 	 * Use to shield sensitive data
 	 */
-  const DB_SYSTEM_PASSWORD = '';
-	
+  const DB_SYSTEM_PASSWORD = 'loop';
+
 	/**
 	 * Use it to identify user access to the database
 	 */
   const DB_SYSTEM_USERNAME = 'root';
-	
+
 	/**
 	 * Use for the database controller used
 	 *
-	 * Engine controlers integrated
+	 * Engine controllers integrated
 	 *  MySql
 	 */
-  const DB_SYSTEN_ENGINE_USE = GlobalSystem::DB_ENGINE_MYSQL;
+  const DB_SYSTEM_ENGINE_USE = GlobalSystem::DB_ENGINE_MYSQL;
 }
-
-?>
