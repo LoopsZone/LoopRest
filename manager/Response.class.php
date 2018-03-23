@@ -12,7 +12,7 @@ class Response extends ModelsTrack
 	function __construct ($response)
 	{
 		$model = Model::getInstance();
-		$routeMD= $model->getRouteInstance;
+		$routeMD = $model->getRouteInstance;
 
 		if($routeMD->getResponseObject()){
 			$response = json_encode($response);
@@ -24,8 +24,8 @@ class Response extends ModelsTrack
 
 		echo $response;
 	}
-	
-	public function __destruct ()
+
+	public function __destruct()
 	{
 		Log::custom('ExecuteModels', json_encode(self::$executionSteps, JSON_PRETTY_PRINT));
 	}
