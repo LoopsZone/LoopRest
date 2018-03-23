@@ -7,13 +7,10 @@ class DB
 		try {
 			$dbInstance = new PDO("{$engine}: host={$host}; dbname={$db}", $user, $password);
 
-			$modelDB = $dbInstance->prepare('SELECT * from `users_lp`');
+			$modelDB = $dbInstance->prepare('CALL test');
 			$modelDB->execute();
 
-			$result = $modelDB->fetchAll(PDO::FETCH_ASSOC);
-
-			echo json_encode($result, JSON_PRETTY_PRINT);
-			
+			return $modelDB->fetchAll(PDO::FETCH_ASSOC);
 		}catch (PDOException $e){
 			print "¡Error!: " . $e->getMessage() . "<br/>";
 			die();

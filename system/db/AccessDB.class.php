@@ -15,13 +15,20 @@ class AccessDB
 	
 	protected function connectionDB()
 	{
-		$this->user = 'root';
-		$this->password = '';
-		$this->host = 'localhost';
-		$this->dataBase = 'looprest';
-		
-		$this->result = new DB();
-		$this->conectionDB = new MysqlDB($this->host, $this->user, $this->password, $this->dataBase);
+		$this->result = new DB(
+			CoreConfig::DB_SYSTEM_ENGINE_USE,
+			CoreConfig::DB_SYSTEM_HOST,
+			CoreConfig::DB_SYSTEM,
+			CoreConfig::DB_SYSTEM_USERNAME,
+			CoreConfig::DB_SYSTEM_PASSWORD
+		);
+
+		$this->conectionDB = new MysqlDB(
+			CoreConfig::DB_SYSTEM_HOST,
+			CoreConfig::DB_SYSTEM_USERNAME,
+			CoreConfig::DB_SYSTEM_PASSWORD,
+			CoreConfig::DB_SYSTEM
+		);
 	}
 	
 	/**
