@@ -8,7 +8,7 @@ class StepsRoutes extends GlobalSystem
 	private static $order = 0;
 	protected static $currentStep;
 	protected static $executionSteps;
-	
+
 	public static function startStepsRoutesSystem($class){
 		try{
 			throw new Exception('Initial execution track', 10);

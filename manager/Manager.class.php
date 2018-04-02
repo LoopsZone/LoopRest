@@ -12,10 +12,10 @@ class Manager extends Auth
 	 */
 	public function response()
 	{
-		$response = $this->route();
-		new Response($response);
+		$result = $this->route();
+		new Response($result);
 	}
-	
+
 	/**
 	 * @return array|mixed|string
 	 */
@@ -23,7 +23,7 @@ class Manager extends Auth
 	{
 		$model = Model::getInstance();
 		$routeMD = $model->getRouteInstance;
-		
+
 		try {
 			switch($routeMD->getTrigger()){
 				case GlobalSystem::ExpAuthTrigger:
@@ -41,7 +41,7 @@ class Manager extends Auth
 			return $this->error();
 		}
 	}
-	
+
 	/**
 	 * @param $tk
 	 * @param $request
@@ -51,24 +51,24 @@ class Manager extends Auth
 	private function request()
 	{
 		$availableAccess = self::checkClient();
-		
+
 		if($availableAccess){
 			$model = Model::getInstance();
 			$action = $this->requestAction();
 			$routeMD = $model->getRouteInstance;
 			$request = $routeMD->getRequest();
 			$token = $routeMD->getRequest(GlobalSystem::ExpRequestToken);
-			
+
 			if($action){
 				return $action;
 			}
-			
+
 			return self::getData($token, $request);
 		}
-		
+
 		throw new Exception($availableAccess, 4);
 	}
-	
+
 	/**
 	 * Active action in request and execute this
 	 *
@@ -79,7 +79,7 @@ class Manager extends Auth
 	{
 		$model = Model::getInstance();
 		$routeMD = $model->getRouteInstance;
-		
+
 		switch($routeMD->getAction()){
 			case GlobalSystem::ExpMethodPost:
 				return $this->post();
@@ -90,22 +90,22 @@ class Manager extends Auth
 			default: return false;
 		}
 	}
-	
+
 	private function post()
 	{
 	
 	}
-	
+
 	private function update ()
 	{
 	
 	}
-	
+
 	private function delete ()
 	{
 	
 	}
-	
+
 	/**
 	 * @return string
 	 */
@@ -113,33 +113,32 @@ class Manager extends Auth
 	{
 		$model = Model::getInstance();
 		$routeMD = $model->getRouteInstance;
-		$dataBaseMD = $model->getDataBaseInstance;
 		$authorization = $routeMD->getAuthorization();
-		
+
 		$availableAccess = self::checkClient();
 		if($availableAccess){
 			$routeMD->setResponseObject(false);
 			$userEmail = $routeMD->getRequest(GlobalSystem::ExpAuthEmail);
 			$userAccess = self::checkUserAccess($userEmail);
-			
-			$isUser = $this->requestSystemData('user', $userEmail);
-	
-			if($isUser){
-				$user = $this->insertSystemData('user', $routeMD->getRequest());
+
+			$isUser = $this->getUser($userEmail);
+
+			if(!$isUser){
+				$this->newUser($routeMD->getRequest());
 			}
-			
+
 			$tokenData = [
 				'access' => $userAccess,
 				'id' => $routeMD->getRequest(RequestRoute::ExpAuthId),
 				'name' => $routeMD->getRequest(RequestRoute::ExpAuthName)
 			];
-			
+
 			return self::signIn($tokenData);
 		}
-		
+
 		throw new Exception($availableAccess, 4);
 	}
-	
+
 	/**
 	 * Error routing response to print custom message during execution
 	 *
@@ -150,10 +149,10 @@ class Manager extends Auth
 		$model = Model::getInstance();
 		$routeMD = $model->getRouteInstance;
 		$routeMD->setResponseObject(true);
-		
+
 		return $routeMD->getRequest(GlobalSystem::ExpErrorDesc);
 	}
-	
+
 	/**
 	 * Return any html view rendering component
 	 *
@@ -165,24 +164,24 @@ class Manager extends Auth
 		$routeMD = $model->getRouteInstance;
 		$routeMD->setResponseObject(false);
 		$views = new Views($routeMD->getRequest(GlobalSystem::ExpViews));
-		
+
 		return $views->routingView();
 	}
-	
+
 	protected function putSystemData ()
 	{
 		$model = Model::getInstance();
 		$routeMD = $model->getRouteInstance;
 		$routeMD->setResponseObject();
-		
+
 		return true;
 	}
-	
+
 	protected function dismissSystemData ()
 	{
 	
 	}
-	
+
 	protected function updateSystemData ()
 	{
 	

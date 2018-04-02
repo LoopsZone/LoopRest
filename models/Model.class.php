@@ -1,6 +1,6 @@
 <?php
 
-class Model extends ModelsTrack
+class Model extends ModelsTracking
 {
 	private static $singleton;
 

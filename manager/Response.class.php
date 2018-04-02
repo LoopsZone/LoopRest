@@ -3,7 +3,7 @@
 /**
  * Class Response
  */
-class Response extends ModelsTrack
+class Response extends ModelsTracking
 {
 	/**
 	 * Response constructor.

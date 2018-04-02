@@ -11,26 +11,44 @@ class AccessDB
 	private $user;
 	private $password;
 	private $dataBase;
-	private $conectionDB;
-	
+	private $connectionDB;
+
 	protected function connectionDB()
 	{
-		$this->result = new DB(
+		$this->connectionDB = new DB(
 			CoreConfig::DB_SYSTEM_ENGINE_USE,
 			CoreConfig::DB_SYSTEM_HOST,
 			CoreConfig::DB_SYSTEM,
 			CoreConfig::DB_SYSTEM_USERNAME,
 			CoreConfig::DB_SYSTEM_PASSWORD
 		);
-
-		$this->conectionDB = new MysqlDB(
-			CoreConfig::DB_SYSTEM_HOST,
-			CoreConfig::DB_SYSTEM_USERNAME,
-			CoreConfig::DB_SYSTEM_PASSWORD,
-			CoreConfig::DB_SYSTEM
-		);
 	}
-	
+
+	/**
+	 * Get user by email
+	 * 
+	 * @param $user
+	 * @return mixed
+	 */
+	protected function getUser($userEmail){
+		$this->connectionDB();
+		$result = $this->connectionDB->query("CALL lpGetUserByEmail({$userEmail})");
+
+		return $result;
+	}
+
+	protected function newUser($request){
+		$this->connectionDB();
+
+		$userName = $request['name'];
+		$userEmail = $request['email'];
+		$userBirthday = $request['birthday'];
+
+		$result = $this->connectionDB->execute("CALL lpNewUser({$userName}, {$userEmail}, {$userBirthday})");
+
+		return $result;
+	}
+
 	/**
 	 * Request data to system
 	 *
@@ -42,13 +60,11 @@ class AccessDB
 	protected function requestSystemData($object, $registry)
 	{
 		$this->connectionDB();
-		$db = $this->conectionDB;
-		$result = $db->search($object, $registry);
-		
-		$db->close();
+		$result = $this->connectionDB->execute('CALL test');
+
 		return $result;
 	}
-	
+
 	/**
 	 * Insert data in system
 	 *
@@ -58,7 +74,7 @@ class AccessDB
 	 */
 	protected function insertSystemData($object, $data){
 		$this->connectionDB();
-		$db = $this->conectionDB;
+		$db = $this->connectionDB;
 		return $db->insert($object, $data);
 	}
 }

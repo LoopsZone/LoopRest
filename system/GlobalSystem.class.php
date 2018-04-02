@@ -10,7 +10,7 @@ require_once 'config/GlobalConstants.class.php';
 class GlobalSystem extends GlobalConstants
 {
 	public static $ignoreDirectories;
-	
+
 	/**
 	 * Returns the regex string of the ignored directories
 	 *
@@ -19,13 +19,12 @@ class GlobalSystem extends GlobalConstants
 	public static function ignoreDirectories ()
 	{
 		$folders = self::$directoriesToIgnore;
-		
+
 		$ignoreDirectories = '';
-		
 		foreach($folders as $ignore) {
 			$ignoreDirectories .= '|' . $ignore;
 		}
-		
+
 		return $ignoreDirectories;
 	}
 	
@@ -38,18 +37,18 @@ class GlobalSystem extends GlobalConstants
 	{
 		$model = Model::getInstance();
 		$routeMD = $model->getRouteInstance;
-		
+
 		$routeMD->setRoute(GlobalSystem::ExpRouteError);
 		$route = $routeMD->getRoute();
-		
+
 		$request[$route][GlobalSystem::ExpErrorDoc] = $error->getFile();
 		$request[$route][GlobalSystem::ExpErrorLine] = $error->getLine();
 		$request[$route][GlobalSystem::ExpErrorCode] = $error->getCode();
 		$request[$route][GlobalSystem::ExpErrorDesc] = $error->getMessage();
-		
+
 		$routeMD->setRequest($request);
 	}
-	
+
 	/**
 	 * Validate data to data into request array and is certificated if is right format
 	 *
@@ -106,10 +105,10 @@ class GlobalSystem extends GlobalConstants
 			case  self::ExpFormatMethods :
 				return self::availableMethod($data);
 		}
-		
+
 		return false;
 	}
-	
+
 	public static function availableMethod ($data)
 	{
 		foreach(self::ExpAvailableMethods as $availableMethod) {
@@ -117,7 +116,7 @@ class GlobalSystem extends GlobalConstants
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
 }

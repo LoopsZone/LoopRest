@@ -1,6 +1,6 @@
 <?php
 
-class ModelsTrack extends StepsRoutes
+class ModelsTracking extends StepsRoutes
 {
 	public static function TrackExecution($model, $method){
 		if(method_exists($model, $method)){

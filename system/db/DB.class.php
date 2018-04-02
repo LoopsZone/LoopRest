@@ -2,18 +2,61 @@
 
 class DB
 {
+	private $dbInstance;
+
 	function __construct ($engine, $host, $db, $user, $password)
 	{
 		try {
-			$dbInstance = new PDO("{$engine}: host={$host}; dbname={$db}", $user, $password);
+			$this->dbInstance = new PDO("{$engine}: host={$host}; dbname={$db}", $user, $password);
+		}catch(PDOException $error){
+			GlobalSystem::onErrorRoute($error);
+		}
+	}
 
-			$modelDB = $dbInstance->prepare('CALL test');
+	/**
+	 * Execute sql query
+	 *
+	 * @return array
+	 */
+	public function query($select)
+	{
+		try{
+			$this->dbInstance->beginTransaction();
+			$modelDB = $this->dbInstance->prepare($select);
 			$modelDB->execute();
 
-			return $modelDB->fetchAll(PDO::FETCH_ASSOC);
-		}catch (PDOException $e){
-			print "¡Error!: " . $e->getMessage() . "<br/>";
-			die();
+			$result = $modelDB->fetchAll(PDO::FETCH_ASSOC);
+			$this->dbInstance->commit();
+
+			return $result;
+
+		}catch(PDOException $error){
+			$this->dbInstance->rollBack();
+
+			GlobalSystem::onErrorRoute($error);
+			return false;
+		}
+	}
+
+	/**
+	 * Execute sql statement
+	 *
+	 * @return bool
+	 */
+	public function execute($sql)
+	{
+		try{
+			$this->dbInstance->beginTransaction();
+			$result = $this->dbInstance->exec($sql);
+			//$this->dbInstance->commit();
+
+			return $result;
+
+		}catch(PDOException $error){
+			$this->dbInstance->rollBack();
+
+			GlobalSystem::onErrorRoute($error);
+			return false;
 		}
 	}
 }

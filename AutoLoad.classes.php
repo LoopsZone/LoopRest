@@ -19,7 +19,7 @@ class AutoLoad extends GlobalSystem
 	static public function LoadClasses ($className, $directory = DIRECTORY)
 	{
 		$filePath = $directory . $className . CoreConfig::SUFFIX_FILE;
-		if(file_exists($filePath)) {
+		if(file_exists($filePath)){
 			require_once($filePath);
 			return true;
 		}
@@ -27,12 +27,12 @@ class AutoLoad extends GlobalSystem
 		$found = false;
 		$folders = scandir($directory);
 
-		foreach($folders as $check) {
-			if(is_dir($directory . $check)) {
+		foreach($folders as $check){
+			if(is_dir($directory . $check)){
 				$ignoreDirectory = preg_match('[^\.' . self::$ignoreDirectories . ']', $check);
-				if(!$ignoreDirectory) {
+				if(!$ignoreDirectory){
 					$found = self::LoadClasses($className, $directory . $check . DS);
-					if($found) {
+					if($found){
 						break;
 					}
 				}
