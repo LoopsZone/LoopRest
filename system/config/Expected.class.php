@@ -15,14 +15,14 @@ class Expected
 	const ExpSetPropertiesDomain = 'client';
 	const SetPropertiesDevice = 'device';
 	const ExpSetPropertiesHeaders = 'headers';
-	
+
 	//Set expected header name
 	const ExpHeaderFrom = 'From';
 	const ExpHeaderAuth = 'Authorization';
-	
+
 	const ExpSetVariableRoute = 'route';
 	const ExpSetVarRouteName = 'routeName';
-	
+
 	//Set Auth route expected names
 	const ExpRouteAuth = 'auth';
 	const ExpAuthId = 'id';
@@ -31,14 +31,14 @@ class Expected
 	const ExpAuthBirthday = 'birthday';
 	//Set trigger route name
 	const ExpAuthTrigger = 'AUTH';
-	
+
 	//Set Request route expected names
 	const ExpRouteRequest = 'request';
 	const ExpRequestToken = 'tk';
 	const ExpRequestRequest = 'request';
 	//Set trigger route name
 	const ExpRequestTrigger = 'REQUEST';
-	
+
 	//Set Error routes expected names
 	const ExpRouteError = 'error';
 	const ExpErrorLine = 'line';
@@ -47,18 +47,18 @@ class Expected
 	const ExpErrorDesc = 'description';
 	//Set trigger route name
 	const ExpErrorTrigger = 'ERROR';
-	
+
 	//Set Error routes expected names
 	const ExpRouteViews = 'views';
 	const ExpViews = 'vw';
 	const ExpViewsTrigger = 'VIEWS';
-	
+
 	//Set Keys name to expected routes params
 	const ExpRouteNeedTK = 'needTK';
 	const ExpRouteKeyParams = 'params';
 	const ExpRouteKeyTrigger = 'trigger';
 	const ExpErrorKeyException = 'exception';
-	
+
 	//Set format options keys
 	const ExpFormat = 'format';
 	const ExpFormatIp = 'ip';

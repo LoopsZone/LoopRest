@@ -29,7 +29,7 @@ class AutoLoad extends GlobalSystem
 
 		foreach($folders as $check){
 			if(is_dir($directory . $check)){
-				$ignoreDirectory = preg_match('[^\.' . self::$ignoreDirectories . ']', $check);
+				$ignoreDirectory = preg_match('[^\.' . self::ignoreDirectories() . ']', $check);
 				if(!$ignoreDirectory){
 					$found = self::LoadClasses($className, $directory . $check . DS);
 					if($found){

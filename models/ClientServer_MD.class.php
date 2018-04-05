@@ -28,7 +28,7 @@ class ClientServer_MD
 			return $_SERVER['REMOTE_ADDR'];
 		}
 	}
-	
+
 	/**
 	 * get a singleton instance of ClientServer_MD
 	 *
@@ -39,10 +39,10 @@ class ClientServer_MD
 		if(is_null(self::$singleton)){
 			self::$singleton = new ClientServer_MD();
 		}
-		
+
 		return self::$singleton;
 	}
-	
+
 	/**
 	 * @return mixed
 	 */
@@ -50,7 +50,7 @@ class ClientServer_MD
 	{
 		return $this->ip;
 	}
-	
+
 	/**
 	 * @return mixed
 	 */
@@ -82,14 +82,14 @@ class ClientServer_MD
 	{
 		return $this->userAgent;
 	}
-	
+
 	public function getHeader($target)
 	{
-		$settingHeaders = GlobalConstants::$allowHeaders;
+		$settingHeaders = GlobalSystem::AllowHeaders;
 		foreach($this->headers as $header => $value){
 			if($header == $target){
 				if(isset($settingHeaders) && !is_null($settingHeaders) && !empty($settingHeaders) && $settingHeaders != ''){
-					foreach(GlobalConstants::$allowHeaders as $allowHeader){
+					foreach(GlobalSystem::AllowHeaders as $allowHeader){
 						if($allowHeader == $target){
 							return $value;
 						}

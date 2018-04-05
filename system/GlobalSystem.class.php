@@ -16,18 +16,18 @@ class GlobalSystem extends GlobalConstants
 	 *
 	 * @return string
 	 */
-	public static function ignoreDirectories ()
+	public static function ignoreDirectories()
 	{
-		$folders = self::$directoriesToIgnore;
+		$folders = self::DirectoriesToIgnore;
 
 		$ignoreDirectories = '';
-		foreach($folders as $ignore) {
+		foreach($folders as $ignore){
 			$ignoreDirectories .= '|' . $ignore;
 		}
 
 		return $ignoreDirectories;
 	}
-	
+
 	/**
 	 * If an exception is activated, an error path is activated in the system
 	 *
@@ -56,7 +56,7 @@ class GlobalSystem extends GlobalConstants
 	 * @param $format
 	 * @return bool|mixed|string
 	 */
-	public static function validateData ($data, $format)
+	public static function validateData($data, $format)
 	{
 		switch($format) {
 			case self::ExpFormatVarchar :
@@ -108,11 +108,17 @@ class GlobalSystem extends GlobalConstants
 
 		return false;
 	}
-
-	public static function availableMethod ($data)
+	
+	/**
+	 * Check if method is available
+	 *
+	 * @param $data
+	 * @return bool
+	 */
+	public static function availableMethod($data)
 	{
-		foreach(self::ExpAvailableMethods as $availableMethod) {
-			if($availableMethod == $data) {
+		foreach(self::ExpAvailableMethods as $availableMethod){
+			if($availableMethod == $data){
 				return true;
 			}
 		}
@@ -120,5 +126,3 @@ class GlobalSystem extends GlobalConstants
 		return false;
 	}
 }
-
-GlobalSystem::$ignoreDirectories = GlobalSystem::ignoreDirectories();

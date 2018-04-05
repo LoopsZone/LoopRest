@@ -22,12 +22,12 @@ class GlobalConstants extends Expected
 	];
 
 	//Header Allow
-	public static $allowHeaders = [
+	const AllowHeaders = [
 		self::ExpHeaderFrom,
 		self::ExpHeaderAuth
 	];
 
-	protected static $directoriesToIgnore = [
+	const DirectoriesToIgnore = [
 		'vendor',
 		'staticFiles'
 	];

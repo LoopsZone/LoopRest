@@ -21,19 +21,19 @@ class Input extends Manager
 			$responseObject = ($httpAction != GlobalSystem::ExpMethodGet);
 			$routeMD = $model->getRouteInstance;
 			$routeMD->setResponseObject($responseObject);
-			
+
 			if(GlobalSystem::availableMethod($httpAction)){
 				return $this->checkInput($_REQUEST);
 			}
-			
+
 			throw new Exception('Action selected no valid or implemented', 0);
-			
+
 		}catch(Exception $error){
 			GlobalSystem::onErrorRoute($error);
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Check current route, validate and verify data to set check input request type system
 	 * This method routing check input to new action checkInput principal system if exist valid request and type
@@ -50,14 +50,14 @@ class Input extends Manager
 		$model = Model::getInstance();
 		$routeMD = $model->getRouteInstance;
 		if($countParams){
-			
+
 			$serverMD = $model->getClientServerInstance;
 			$authHeader = $serverMD->getHeader(GlobalSystem::ExpHeaderAuth);
-			
+
 			/*Zero value get user access to principal system and one value get structure merchant access*/
 			$auth = (!$authHeader) ? 0 : 1;
 			$routeMD->setAuthorization($auth);
-			
+
 			$found = false;
 			$request = null;
 			$routeName = null;
@@ -72,35 +72,35 @@ class Input extends Manager
 							$request[$routeName][$param] = GlobalSystem::validateData($value[$i], $format);
 						}
 					}
-					
+
 					if(count($request[$routeName]) == $countParams){
 						$found = true;
 						break;
 					}
 				}
-				
+
 				if($found){
 					$routeMD->setResponseObject(true);
 					break;
 				}
 			}
-			
+
 			if(!$found){
 				throw new Exception('Invalid input params', 1);
 			}
-			
+
 			$routeMD->setRoute($routeName);
 			$routeMD->setRequest($request);
 			$this->validRequestAction($routeName);
-			
+
 			return true;
 		}
-		
+
 		$routeMD->setRoute(GlobalSystem::ExpRouteViews);
-		
+
 		return false;
 	}
-	
+
 	/**
 	 * Validate and set action from request
 	 *
@@ -113,11 +113,11 @@ class Input extends Manager
 			$model = Model::getInstance();
 			$routeMD = $model->getRouteInstance;
 			$serverMD = $model->getClientServerInstance;
-			
+
 			$routeMD->setAction($serverMD->getMethod());
 			return true;
 		}
-		
+
 		return false;
 	}
 }

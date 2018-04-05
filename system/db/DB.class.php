@@ -48,7 +48,7 @@ class DB
 		try{
 			$this->dbInstance->beginTransaction();
 			$result = $this->dbInstance->exec($sql);
-			//$this->dbInstance->commit();
+			$this->dbInstance->commit();
 
 			return $result;
 
