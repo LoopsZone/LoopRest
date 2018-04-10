@@ -104,23 +104,47 @@ class GlobalSystem extends GlobalConstants
 				return true;
 			case  self::ExpFormatMethods :
 				return self::availableMethod($data);
+			case  self::ExpFormatRoutes :
+				return self::getCurrentRoute($data);
 		}
 
 		return false;
 	}
-	
+
 	/**
 	 * Check if method is available
 	 *
 	 * @param $data
 	 * @return bool
 	 */
-	public static function availableMethod($data)
+	private static function availableMethod($data)
 	{
 		foreach(self::ExpAvailableMethods as $availableMethod){
 			if($availableMethod == $data){
 				return true;
 			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Get current route
+	 *
+	 * @param $data
+	 * @return array|bool|mixed
+	 */
+	public static function getCurrentRoute($data){
+		if(strpos($data, '/') !== false){
+			$finalRoutes = array();
+			$routes = explode('/', $data);
+			foreach($routes as $route => $routeName){
+				if($routes[$route] !== '' && $routes[$route] !== null){
+					array_push($finalRoutes, $routes[$route]);
+				}
+			}
+
+			return $finalRoutes;
 		}
 
 		return false;

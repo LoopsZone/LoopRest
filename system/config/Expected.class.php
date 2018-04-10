@@ -69,11 +69,11 @@ class Expected
 	const ExpFormatBool = 'bool';
 	const ExpFormatEmail = 'email';
 	const ExpFormatFloat = 'float';
+	const ExpFormatDomain = 'domain';
 	const ExpFormatRoutes = 'routes';
 	const ExpFormatVarchar = 'varchar';
 	const ExpFormatRequest = 'request';
 	const ExpFormatNumeric = 'numeric';
-	const ExpFormatDomain = 'domain';
 	const ExpFormatMethods = 'methods';
 	const ExpFormatHeaders = 'headers';
 	const ExpFormatTriggers = 'triggers';

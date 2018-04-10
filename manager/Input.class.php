@@ -22,8 +22,15 @@ class Input extends Manager
 			$routeMD = $model->getRouteInstance;
 			$routeMD->setResponseObject($responseObject);
 
-			if(GlobalSystem::availableMethod($httpAction)){
-				return $this->checkInput($_REQUEST);
+			if(GlobalSystem::validateData($httpAction, GlobalSystem::ExpFormatMethods)){
+				$route = $clientInfoMD->getUrl();
+				if(strpos($route, '?')){
+					$route = strstr($route, '?', true);
+				}
+
+				$route = GlobalSystem::validateData($route, GlobalSystem::ExpFormatRoutes);
+
+				return $this->checkInput($route, $_REQUEST);
 			}
 
 			throw new Exception('Action selected no valid or implemented', 0);
@@ -39,12 +46,13 @@ class Input extends Manager
 	 * This method routing check input to new action checkInput principal system if exist valid request and type
 	 * Or return principal view to home system configured if not exist data input
 	 *
-	 * @param $countParams
-	 * @param $parameter
-	 * @param $value
+	 * @param $route
+	 * @param $method
+	 * 
 	 * @return bool
+	 * @throws Exception
 	 */
-	protected function checkInput($method)
+	protected function checkInput($route, $method)
 	{
 		$countParams = count($method);
 		$model = Model::getInstance();

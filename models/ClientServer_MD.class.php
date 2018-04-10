@@ -4,7 +4,9 @@ class ClientServer_MD
 {
 	static private $singleton;
 	private $ip;
+	private $url;
 	private $host;
+	private $domain;
 	private $method;
 	private $headers;
 	private $userAgent;
@@ -13,6 +15,8 @@ class ClientServer_MD
 	{
 		$this->ip = $this->setIp();
 		$this->host = $_SERVER['HTTP_HOST'];
+		$this->url = $_SERVER['REQUEST_URI'];
+		$this->domain = $_SERVER['SERVER_NAME'];
 		$this->headers = apache_request_headers();
 		$this->method = $_SERVER['REQUEST_METHOD'];
 		$this->userAgent = $_SERVER['HTTP_USER_AGENT'];
@@ -46,6 +50,24 @@ class ClientServer_MD
 		}else{
 			return $_SERVER['REMOTE_ADDR'];
 		}
+	}
+
+	/**
+	 * Get Url
+	 *
+	 * @return mixed
+	 */
+	public function getUrl(){
+		return $this->url;
+	}
+
+	/**
+	 * Get domain
+	 *
+	 * @return mixed
+	 */
+	public function getDomain(){
+		return $this->domain;
 	}
 
 	/**
