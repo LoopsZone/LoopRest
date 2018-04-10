@@ -8,7 +8,7 @@ class ClientServer_MD
 	private $method;
 	private $headers;
 	private $userAgent;
-	
+
 	private function __construct()
 	{
 		$this->ip = $this->setIp();
@@ -16,17 +16,6 @@ class ClientServer_MD
 		$this->headers = apache_request_headers();
 		$this->method = $_SERVER['REQUEST_METHOD'];
 		$this->userAgent = $_SERVER['HTTP_USER_AGENT'];
-	}
-	
-	private function setIp()
-	{
-		if(!empty($_SERVER['HTTP_CLIENT_IP'])){
-			return $_SERVER['HTTP_CLIENT_IP'];
-		}else if(!empty($_SERVER['HTTP_X_FORWARDED_FOR'])){
-			return $_SERVER['HTTP_X_FORWARDED_FOR'];
-		}else{
-			return $_SERVER['REMOTE_ADDR'];
-		}
 	}
 
 	/**
@@ -41,6 +30,22 @@ class ClientServer_MD
 		}
 
 		return self::$singleton;
+	}
+
+	/**
+	 * Set ip
+	 *
+	 * @return mixed
+	 */
+	private function setIp()
+	{
+		if(!empty($_SERVER['HTTP_CLIENT_IP'])){
+			return $_SERVER['HTTP_CLIENT_IP'];
+		}else if(!empty($_SERVER['HTTP_X_FORWARDED_FOR'])){
+			return $_SERVER['HTTP_X_FORWARDED_FOR'];
+		}else{
+			return $_SERVER['REMOTE_ADDR'];
+		}
 	}
 
 	/**
@@ -83,6 +88,12 @@ class ClientServer_MD
 		return $this->userAgent;
 	}
 
+	/**
+	 * Get current header request
+	 *
+	 * @param $target
+	 * @return bool
+	 */
 	public function getHeader($target)
 	{
 		$settingHeaders = GlobalSystem::AllowHeaders;
@@ -97,7 +108,7 @@ class ClientServer_MD
 				}
 			}
 		}
-		
+
 		return false;
 	}
 }
