@@ -33,10 +33,10 @@ class Input extends Manager
 				return $this->checkInput($route, $_REQUEST);
 			}
 
-			throw new Exception('Action selected no valid or implemented', 0);
+			throw new Exception(ErrorManager::Method, ErrorManager::MethodCode);
 
 		}catch(Exception $error){
-			GlobalSystem::onErrorRoute($error);
+			ErrorManager::onErrorRoute($error);
 			return false;
 		}
 	}
@@ -93,7 +93,7 @@ class Input extends Manager
 			}
 
 			if(!$found){
-				throw new Exception('Invalid input params', 1);
+				throw new Exception(ErrorManager::HttpParams, ErrorManager::HttpParamsCode);
 			}
 
 			$routeMD->setRoute($routeName);

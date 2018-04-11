@@ -34,10 +34,10 @@ class Manager extends Auth
 					return $this->views();
 				case GlobalSystem::ExpRequestTrigger:
 					return $this->request();
-				default: throw new Exception('Action selected no valid', 2);
+				default: throw new Exception(ErrorManager::Action, ErrorManager::ActionCode);
 			}
 		}catch(Exception $error){
-			GlobalSystem::onErrorRoute($error);
+			Error::onErrorRoute($error);
 			return $this->error();
 		}
 	}

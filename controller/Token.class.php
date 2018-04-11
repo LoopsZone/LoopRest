@@ -4,7 +4,7 @@ require_once DIRECTORY . 'vendor/autoload.php';
 
 use Firebase\JWT\JWT;
 
-class Token extends Expected
+class Token
 {
 	protected $auth;
 	private static $aud = null;
@@ -15,7 +15,7 @@ class Token extends Expected
 	 * @param $data
 	 * @return string
 	 */
-	public static function signIn ($data)
+	public static function signIn($data)
 	{
 		$time = time();
 		$token = array('exp' => $time + (60 * 60), 'aud' => self::aud(), 'data' => $data);
@@ -28,7 +28,7 @@ class Token extends Expected
 	 *
 	 * @return string
 	 */
-	private static function aud ()
+	private static function aud()
 	{
 		$model = Model::getInstance();
 		$server = $model->getClientServerInstance;
@@ -45,16 +45,16 @@ class Token extends Expected
 	 * @param $token
 	 * @return string
 	 */
-	public static function check ($token)
+	public static function check($token)
 	{
 		try {
 			$decode = JWT::decode($token, CoreConfig::SECRET_KEY, CoreConfig::ENCRYPT);
 
-			if($decode->aud !== self::aud()) {
+			if($decode->aud !== self::aud()){
 				throw new Exception('Invalid user logged in.');
 			}
 
-			if(empty($token)) {
+			if(empty($token)){
 				throw new Exception('Invalid token supplied.');
 			}
 
@@ -64,7 +64,7 @@ class Token extends Expected
 			return 'expired token';
 		}catch(\Firebase\JWT\SignatureInvalidException $e){
 			return 'Corrupted sign';
-		}catch(\Exception $e) {
+		}catch(\Exception $e){
 			return 'Security error token';
 		}
 	}
@@ -77,6 +77,8 @@ class Token extends Expected
 	 */
 	public static function getData ($token)
 	{
-		return JWT::decode($token, CoreConfig::SECRET_KEY, CoreConfig::ENCRYPT)->data;
+		$decode = JWT::decode($token, CoreConfig::SECRET_KEY, CoreConfig::ENCRYPT);
+
+		return $decode->data;
 	}
 }

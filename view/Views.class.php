@@ -54,10 +54,10 @@ class Views extends Expected_Views
 					$clear[] = self::CLEAR;
 					$patrons[] = self::COMP_INIT;
 					$patrons[] = self::COMP_END;
-					
+
 					$components = preg_replace($patrons, $clear, $matchesComponents[0]);
 					$count = count($components);
-					
+
 					for($i = 0; $i < $count; $i++){
 						$renderedComponent = $this->render($component, $components[$i]);
 						$this->currentComponent = str_replace($matchesComponents[0], $renderedComponent, $currentComponent);

@@ -32,5 +32,10 @@ class GlobalConstants extends Expected
 		'staticFiles'
 	];
 
+	const UrlRouteNotAllow = [
+		self::ExpRouteError,
+		self::ExpRouteViews
+	];
+
 	const DB_ENGINE_MYSQL = 'mysql';
 }

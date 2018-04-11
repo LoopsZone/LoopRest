@@ -142,8 +142,6 @@ class ExceptionManager extends Exception
 			exit(1);
 		}
 	}
-	
-	
 }
 
 ?>
