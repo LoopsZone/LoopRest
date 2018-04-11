@@ -109,7 +109,7 @@ class Manager extends Auth
 	/**
 	 * @return string
 	 */
-	private function auth ()
+	private function auth()
 	{
 		$model = Model::getInstance();
 		$routeMD = $model->getRouteInstance;
@@ -168,7 +168,7 @@ class Manager extends Auth
 		return $views->routingView();
 	}
 
-	protected function putSystemData ()
+	protected function putSystemData()
 	{
 		$model = Model::getInstance();
 		$routeMD = $model->getRouteInstance;
@@ -177,12 +177,12 @@ class Manager extends Auth
 		return true;
 	}
 
-	protected function dismissSystemData ()
+	protected function dismissSystemData()
 	{
 	
 	}
 
-	protected function updateSystemData ()
+	protected function updateSystemData()
 	{
 	
 	}

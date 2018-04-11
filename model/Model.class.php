@@ -66,6 +66,12 @@ class Model extends ModelsTracking
 		return Views_MD::getInstance();
 	}
 
+	/**
+	 * Model
+	 * get a singleton instance of DataBase
+	 *
+	 * @return DataBase_MD
+	 */
 	private function getDataBaseInstance()
 	{
 		return DataBase_MD::getInstance();

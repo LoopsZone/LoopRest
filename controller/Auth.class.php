@@ -19,7 +19,7 @@ class Auth extends Access
 		$user = Token::getData($token);
 		return $user;//$this->auth->search($request.'/'.$user->id,TRUE);
 	}
-	
+
 	/**
 	 * Return token to request any data in system
 	 *
@@ -30,7 +30,7 @@ class Auth extends Access
 	{
 		return Token::signIn($data);
 	}
-	
+
 	/**
 	 *Check if token is valid for the system
 	 *
@@ -42,19 +42,19 @@ class Auth extends Access
 		$routeMD = $model->getRouteInstance;
 		$route = $routeMD->getRoute();
 		$needTK = self::routeNeedTK($route);
-		
+
 		//TODO Add BlackList customers
-		
+
 		if($needTK){
 			$token = $routeMD->getRequest(GlobalSystem::ExpRequestToken);
 			$availableTK = Token::check($token);
-			
+
 			return ($availableTK === true) ? true : false;
 		}
-		
+
 		return true;
 	}
-	
+
 	/**
 	 * Check and return access in system for user
 	 *
@@ -66,7 +66,7 @@ class Auth extends Access
 		$users = array_values(CoreConfig::$rootUsers);
 		return (!in_array($user, $users)) ? 0 : 1;
 	}
-	
+
 	private static function routeNeedTK($route)
 	{
 		if(key_exists($route, RequestRoute::$routes))
@@ -74,11 +74,11 @@ class Auth extends Access
 			$routeExecuting = RequestRoute::$routes[$route];
 			return $routeExecuting[GlobalSystem::ExpRouteNeedTK];
 		}
-		
+
 		//TODO General Exception add nd yours functions of notification
 		throw new Exception('An error has occurred in system', 5);
 	}
-	
+
 	private function checkAllowIp ()
 	{
 	

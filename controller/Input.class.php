@@ -58,7 +58,6 @@ class Input extends Manager
 		$model = Model::getInstance();
 		$routeMD = $model->getRouteInstance;
 		if($countParams){
-
 			$serverMD = $model->getClientServerInstance;
 			$authHeader = $serverMD->getHeader(GlobalSystem::ExpHeaderAuth);
 

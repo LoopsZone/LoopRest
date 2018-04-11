@@ -25,6 +25,13 @@ class Response extends ModelsTracking
 		echo $response;
 	}
 
+	/**
+	 * Used to complete the steps of executing model tracking
+	 *
+	 * @see Model
+	 * @see ModelsTracking
+	 * @see StepsRoutes::$executionSteps
+	 */
 	public function __destruct()
 	{
 		Log::custom('ExecuteModels', json_encode(self::$executionSteps, JSON_PRETTY_PRINT));

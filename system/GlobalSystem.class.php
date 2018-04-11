@@ -58,7 +58,7 @@ class GlobalSystem extends GlobalConstants
 	 */
 	public static function validateData($data, $format)
 	{
-		switch($format) {
+		switch($format){
 			case self::ExpFormatVarchar :
 				return filter_var($data, FILTER_SANITIZE_STRIPPED);
 			case self::ExpFormatRequest :
@@ -67,12 +67,12 @@ class GlobalSystem extends GlobalConstants
 				}
 				return false;
 			case self::ExpFormatNumeric :
-				if(is_numeric($data)) {
+				if(is_numeric($data)){
 					return filter_var($data, FILTER_SANITIZE_NUMBER_INT);
 				}
 				return false;
 			case self::ExpFormatChar :
-				if(preg_match('/[0-9]/', $data)) {
+				if(preg_match('/[0-9]/', $data)){
 					return false;
 				}
 				return filter_var($data, FILTER_SANITIZE_SPECIAL_CHARS);
@@ -80,15 +80,15 @@ class GlobalSystem extends GlobalConstants
 				return filter_var($data, FILTER_VALIDATE_EMAIL);
 			case self::ExpFormatDate :
 				$date = explode('-', $data);
-				if(checkdate($date[2], $date[1], $date[0])) {
+				if(checkdate($date[2], $date[1], $date[0])){
 					$birthday = strtotime($data);
-					if($birthday) {
+					if($birthday){
 						return date('Y-m-d', $birthday);
 					}
 				}
 				return false;
 			case self::ExpFormatInt :
-				if(is_int($data)) {
+				if(is_int($data)){
 					return filter_var($data, FILTER_VALIDATE_INT);
 				}
 				return false;
