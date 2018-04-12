@@ -1,9 +1,5 @@
 {
   "require": {
-    "firebase/php-jwt": "3.*",
-    "geoip/geoip": "~1.16",
-    "phpmailer/phpmailer": "^5.2",
-    "phpdocumentor/phpdocumentor": "2.*",
-    "phpFastCache/phpFastCache": "^6.0"
+    "firebase/php-jwt": "3.*"
   }
 }
