@@ -18,6 +18,21 @@ class CoreConfig
   const PRINT_EXCEPTIONS = false;
 
   /**
+   * User owner of the directory system
+   */
+  const USER_DIRECTORY = 'root';
+
+  /**
+   * Cache save documents path
+   */
+  const CACHE_PATH = DIRECTORY . 'system' . DS . 'cache';
+
+  /**
+   * Cache file format
+   */
+  const CACHE_SUFFIX_FILE = '.json';
+
+  /**
    * path where all system logs will be stored
    *
    * @var string

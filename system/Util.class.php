@@ -2,43 +2,6 @@
 
 class Util
 {
-	
-	/**
-	 * check if the environment is development
-	 */
-	public static function isDEV ()
-	{
-		$isDev = CoreConfig::DEV;
-		
-		return $isDev === true;
-	}
-	
-	/**
-	 * get server name where the application is running
-	 *
-	 * @return string
-	 */
-	public static function getServerName ()
-	{
-		$server = php_uname("n");
-		return $server;
-	}
-	
-	/**
-	 * retrieve the name of the current project
-	 *
-	 * @return string
-	 */
-	public static function getProjectName ()
-	{
-		if(self::isCli()) {
-			$project = 'script';
-		} else {
-			$project = $_SERVER['SERVER_NAME'];
-		}
-		return $project;
-	}
-	
 	/**
 	 * check if the script is running on the command line or from a browser call.
 	 *
@@ -774,7 +737,7 @@ class Util
 	 *
 	 * @return string
 	 */
-	public static function readFromFile ($path)
+	public static function readFromFile($path)
 	{
 		$f = @fopen($path, 'r');
 		if($f) {
@@ -784,7 +747,7 @@ class Util
 			}
 			@fclose($f);
 		}
-		
+
 		return $content;
 	}
 	
