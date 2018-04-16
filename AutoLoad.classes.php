@@ -1,8 +1,12 @@
 <?php
 define('DS', DIRECTORY_SEPARATOR);
 define('DIRECTORY', __DIR__ . DS);
+
 require_once 'system/GlobalSystem.class.php';
 require_once 'system/config/CoreConfig.php';
+
+require_once 'system/Cache.class.php';
+require_once 'system/DirectoryManager.class.php';
 
 /**
  * Class AutoLoad
@@ -11,17 +15,51 @@ require_once 'system/config/CoreConfig.php';
  */
 class AutoLoad extends GlobalSystem
 {
+	const CacheDocSystemPath = 'SYSTEM_PATH';
+
 	/**
+	 * Load the class in the current search
+	 *
+	 * @param $className
+	 * @return bool
+	 */
+	static public function loadClass($className)
+	{
+		$systemPath = Cache::getDocument(self::CacheDocSystemPath);
+
+		if($systemPath){
+			if(key_exists($className, $systemPath)){
+				if(file_exists($systemPath[$className])){
+					require($systemPath[$className]);
+					return true;
+				}
+			}
+		}
+
+		return self::findClass($className);
+	}
+
+	/**
+	 * Search for the class in the file system and load it into the cache
+	 * 
 	 * @param $className
 	 * @param string $directory
 	 * @return bool
 	 */
-	static public function LoadClasses($className, $directory = DIRECTORY)
+	static public function findClass($className, $directory = DIRECTORY)
 	{
 		$filePath = $directory . $className . CoreConfig::SUFFIX_FILE;
+
 		if(file_exists($filePath)){
-			require_once($filePath);
-			return true;
+			$systemPath = Cache::getDocument(self::CacheDocSystemPath);
+			$newSystemPath = ($systemPath) ? array_merge($systemPath, [$className => $filePath]) : [$className => $filePath];
+
+			$charged = Cache::loadDocument(self::CacheDocSystemPath, $newSystemPath);
+
+			return(
+				$charged &&
+				require($filePath)
+			);
 		}
 
 		$found = false;
@@ -31,7 +69,7 @@ class AutoLoad extends GlobalSystem
 			if(is_dir($directory . $check)){
 				$ignoreDirectory = preg_match('[^\.' . self::ignoreDirectories() . ']', $check);
 				if(!$ignoreDirectory){
-					$found = self::LoadClasses($className, $directory . $check . DS);
+					$found = self::findClass($className, $directory . $check . DS);
 					if($found){
 						break;
 					}
@@ -43,4 +81,4 @@ class AutoLoad extends GlobalSystem
 	}
 }
 
-spl_autoload_register('AutoLoad::LoadClasses');
+spl_autoload_register('AutoLoad::loadClass');
