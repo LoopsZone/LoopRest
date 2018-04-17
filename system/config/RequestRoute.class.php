@@ -19,7 +19,8 @@ class RequestRoute extends Expected
 				self::ExpViews => self::ExpFormatVarchar
 			],
 			self::ExpRouteKeyTrigger => self::ExpViewsTrigger,
-			self::ExpRouteNeedTK => false
+			self::ExpRouteNeedTK => false,
+			self::ExpRoutesWithParams => true
 		],
 		//Request Action
 		self::ExpRouteRequest => [
@@ -28,7 +29,8 @@ class RequestRoute extends Expected
 				self::ExpRequestRequest => self::ExpFormatVarchar
 			],
 			self::ExpRouteKeyTrigger => self::ExpRequestTrigger,
-			self::ExpRouteNeedTK => true
+			self::ExpRouteNeedTK => true,
+			self::ExpRoutesWithParams => true
 		],
 		//AUTH action
 		self::ExpRouteAuth => [
@@ -39,7 +41,8 @@ class RequestRoute extends Expected
 				self::ExpAuthBirthday => self::ExpFormatDate
 			],
 			self::ExpRouteKeyTrigger => self::ExpAuthTrigger,
-			self::ExpRouteNeedTK => false
+			self::ExpRouteNeedTK => false,
+			self::ExpRoutesWithParams => false
 		],
 		//Error Action
 		self::ExpRouteError => [
@@ -52,7 +55,8 @@ class RequestRoute extends Expected
 				self::ExpErrorDoc => self::ExpFormatChar
 			],
 			self::ExpRouteKeyTrigger => self::ExpErrorTrigger,
-			self::ExpRouteNeedTK => false
+			self::ExpRouteNeedTK => false,
+			self::ExpRoutesWithParams => false
 		]
 	];
 }

@@ -34,7 +34,7 @@ class GlobalConstants extends Expected
 
 	const UrlRouteNotAllow = [
 		self::ExpRouteError,
-		self::ExpRouteViews
+		self::ExpRouteRequest
 	];
 
 	const DB_ENGINE_MYSQL = 'mysql';

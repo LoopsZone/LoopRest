@@ -54,58 +54,66 @@ class Input extends Manager
 	 */
 	protected function checkInput($route, $method)
 	{
-		$countParams = count($method);
 		$model = Model::getInstance();
 		$routeMD = $model->getRouteInstance;
-		if($countParams){
-			$serverMD = $model->getClientServerInstance;
-			$authHeader = $serverMD->getHeader(GlobalSystem::ExpHeaderAuth);
 
-			/*Zero value get user access to principal system and one value get structure merchant access*/
-			$auth = (!$authHeader) ? 0 : 1;
-			$routeMD->setAuthorization($auth);
+		if($route){
+			if(key_exists($route[0], RequestRoute::$routes)){
+				$currentRoute = array_shift($route);
+				$systemRoute = RequestRoute::$routes[$currentRoute];
+				$routeParams = $systemRoute[GlobalSystem::ExpRouteKeyParams];
+				$treatAsRoute = $systemRoute[GlobalSystem::ExpRoutesWithParams];
+				$congruentRoute = (count($routeParams) == count($route));
 
-			$found = false;
-			$request = null;
-			$routeName = null;
-			$parameter = array_keys($method);
-			$value = array_values($method);
-			// Generate set to variables that need request
-			foreach(RequestRoute::$routes as $set => $route){
-				foreach($route[GlobalSystem::ExpRouteKeyParams] as $param => $format){
-					for($i = 0; $i < $countParams; $i++){
-						if($param == $parameter[$i]){
-							$routeName = $set;
-							$request[$routeName][$param] = GlobalSystem::validateData($value[$i], $format);
+				if($treatAsRoute){
+					if($congruentRoute){
+						foreach($routeParams as $key => $value){
+							$method[$key] = current($route);
+							next($route);
+						}
+					}else{
+						throw new Exception(ErrorManager::HttpParams, ErrorManager::HttpParamsCode);
+					}
+				}
+
+				$countParams = count($method);
+				if($countParams && $congruentRoute){
+					$serverMD = $model->getClientServerInstance;
+					$authHeader = $serverMD->getHeader(GlobalSystem::ExpHeaderAuth);
+
+					/*Zero value get user access to principal system and one value get structure merchant access*/
+					$auth = (!$authHeader) ? 0 : 1;
+					$routeMD->setAuthorization($auth);
+
+					$request = array();
+					$value = array_values($method);
+					$parameter = array_keys($method);
+
+					foreach($routeParams as $param => $format){
+						for($i = 0; $i < $countParams; $i++){
+							if($param == $parameter[$i]){
+								$request[$currentRoute][$param] = GlobalSystem::validateData($value[$i], $format);
+							}
 						}
 					}
 
-					if(count($request[$routeName]) == $countParams){
-						$found = true;
-						break;
+					$insufficientParameters = array_diff_key($method, $request[$currentRoute]);
+					if($insufficientParameters){
+						throw new Exception(ErrorManager::HttpParams, ErrorManager::HttpParamsCode);
 					}
-				}
 
-				if($found){
-					$routeMD->setResponseObject(true);
-					break;
+					$routeMD->setRequest($request);
+					$routeMD->setRoute($currentRoute);
+					$this->validRequestAction($currentRoute);
+
+					return true;
 				}
 			}
-
-			if(!$found){
-				throw new Exception(ErrorManager::HttpParams, ErrorManager::HttpParamsCode);
-			}
-
-			$routeMD->setRoute($routeName);
-			$routeMD->setRequest($request);
-			$this->validRequestAction($routeName);
-
-			return true;
 		}
 
 		$routeMD->setRoute(GlobalSystem::ExpRouteViews);
 
-		return false;
+		return true;
 	}
 
 	/**

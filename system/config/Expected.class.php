@@ -58,6 +58,7 @@ class Expected
 	const ExpRouteKeyParams = 'params';
 	const ExpRouteKeyTrigger = 'trigger';
 	const ExpErrorKeyException = 'exception';
+	const ExpRoutesWithParams = 'routesWithParams';
 
 	//Set format options keys
 	const ExpFormat = 'format';
