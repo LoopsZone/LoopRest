@@ -23,14 +23,7 @@ class Input extends Manager
 			$routeMD->setResponseObject($responseObject);
 
 			if(GlobalSystem::validateData($httpAction, GlobalSystem::ExpFormatMethods)){
-				$route = $clientInfoMD->getUrl();
-				if(strpos($route, '?')){
-					$route = strstr($route, '?', true);
-				}
-
-				$route = GlobalSystem::validateData($route, GlobalSystem::ExpFormatRoutes);
-
-				return $this->checkInput($route, $_REQUEST);
+				return $this->checkInput($clientInfoMD->getRoute(), $_REQUEST);
 			}
 
 			throw new Exception(ErrorManager::Method, ErrorManager::MethodCode);
@@ -58,62 +51,88 @@ class Input extends Manager
 		$routeMD = $model->getRouteInstance;
 
 		if($route){
-			if(key_exists($route[0], RequestRoute::$routes)){
+			$validRoute = $this->validRoute($route);
+
+			if($validRoute){
 				$currentRoute = array_shift($route);
 				$systemRoute = RequestRoute::$routes[$currentRoute];
 				$routeParams = $systemRoute[GlobalSystem::ExpRouteKeyParams];
 				$treatAsRoute = $systemRoute[GlobalSystem::ExpRoutesWithParams];
-				$congruentRoute = (count($routeParams) == count($route));
 
 				if($treatAsRoute){
-					if($congruentRoute){
-						foreach($routeParams as $key => $value){
-							$method[$key] = current($route);
-							next($route);
-						}
-					}else{
-						throw new Exception(ErrorManager::HttpParams, ErrorManager::HttpParamsCode);
+					foreach($routeParams as $key => $value){
+						$method[$key] = current($route);
+						$currentKey = key($route);
+						next($route);
+						unset($route[$currentKey]);
 					}
 				}
 
-				$countParams = count($method);
-				if($countParams && $congruentRoute){
-					$serverMD = $model->getClientServerInstance;
-					$authHeader = $serverMD->getHeader(GlobalSystem::ExpHeaderAuth);
+				if(!$route){
+					$countParams = count($method);
+					if($countParams){
+						$incongruentRoute = array_diff_key($routeParams, $method);
+						if(!count($incongruentRoute)){
+							$serverMD = $model->getClientServerInstance;
+							$authHeader = $serverMD->getHeader(GlobalSystem::ExpHeaderAuth);
 
-					/*Zero value get user access to principal system and one value get structure merchant access*/
-					$auth = (!$authHeader) ? 0 : 1;
-					$routeMD->setAuthorization($auth);
+							/*Zero value get user access to principal system and one value get structure merchant access*/
+							$auth = (!$authHeader) ? 0 : 1;
+							$routeMD->setAuthorization($auth);
 
-					$request = array();
-					$value = array_values($method);
-					$parameter = array_keys($method);
+							$request = array();
+							$value = array_values($method);
+							$parameter = array_keys($method);
 
-					foreach($routeParams as $param => $format){
-						for($i = 0; $i < $countParams; $i++){
-							if($param == $parameter[$i]){
-								$request[$currentRoute][$param] = GlobalSystem::validateData($value[$i], $format);
+							foreach($routeParams as $param => $format){
+								for($i = 0; $i < $countParams; $i++){
+									if($param == $parameter[$i]){
+										$request[$currentRoute][$param] = GlobalSystem::validateData($value[$i], $format);
+									}
+								}
 							}
-						}
-					}
 
-					$insufficientParameters = array_diff_key($method, $request[$currentRoute]);
-					if($insufficientParameters){
+							$routeMD->setRoute($currentRoute);
+							$routeMD->setRequest($request);
+							$this->validRequestAction($currentRoute);
+
+							return true;
+						}
+
 						throw new Exception(ErrorManager::HttpParams, ErrorManager::HttpParamsCode);
 					}
-
-					$routeMD->setRequest($request);
-					$routeMD->setRoute($currentRoute);
-					$this->validRequestAction($currentRoute);
-
-					return true;
 				}
+
+				throw new Exception(ErrorManager::HttpParams, ErrorManager::HttpParamsCode);
 			}
+		}
+
+		if(count($method)){
+			$message = [
+				'params' => $method,
+				'description' => ErrorManager::HttpParams
+			];
+
+			throw new Exception(ErrorManager::HttpParams, ErrorManager::HttpParamsCode);
 		}
 
 		$routeMD->setRoute(GlobalSystem::ExpRouteViews);
 
 		return true;
+	}
+
+	/**
+	 * Valid route
+	 *
+	 * @param $route
+	 * @return bool
+	 */
+	private function validRoute($route)
+	{
+		return(
+			key_exists($route[0], RequestRoute::$routes) &&
+			!key_exists($route[0], GlobalSystem::UrlRouteNotAllow)
+		);
 	}
 
 	/**

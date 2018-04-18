@@ -37,7 +37,7 @@ class Manager extends Auth
 				default: throw new Exception(ErrorManager::Action, ErrorManager::ActionCode);
 			}
 		}catch(Exception $error){
-			Error::onErrorRoute($error);
+			ErrorManager::onErrorRoute($error);
 			return $this->error();
 		}
 	}
@@ -96,12 +96,12 @@ class Manager extends Auth
 	
 	}
 
-	private function update ()
+	private function update()
 	{
 	
 	}
 
-	private function delete ()
+	private function delete()
 	{
 	
 	}
@@ -166,24 +166,5 @@ class Manager extends Auth
 		$views = new Views($routeMD->getRequest(GlobalSystem::ExpViews));
 
 		return $views->routingView();
-	}
-
-	protected function putSystemData()
-	{
-		$model = Model::getInstance();
-		$routeMD = $model->getRouteInstance;
-		$routeMD->setResponseObject();
-
-		return true;
-	}
-
-	protected function dismissSystemData()
-	{
-	
-	}
-
-	protected function updateSystemData()
-	{
-	
 	}
 }

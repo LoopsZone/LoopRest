@@ -9,7 +9,7 @@ class DB
 		try {
 			$this->dbInstance = new PDO("{$engine}: host={$host}; dbname={$db}", $user, $password);
 		}catch(PDOException $error){
-			Error::onErrorRoute($error);
+			ErrorManager::onErrorRoute($error);
 		}
 	}
 
@@ -33,7 +33,7 @@ class DB
 		}catch(PDOException $error){
 			$this->dbInstance->rollBack();
 
-			Error::onErrorRoute($error);
+			ErrorManager::onErrorRoute($error);
 			return false;
 		}
 	}
@@ -55,7 +55,7 @@ class DB
 		}catch(PDOException $error){
 			$this->dbInstance->rollBack();
 
-			Error::onErrorRoute($error);
+			ErrorManager::onErrorRoute($error);
 			return false;
 		}
 	}

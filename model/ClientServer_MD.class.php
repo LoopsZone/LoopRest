@@ -2,14 +2,15 @@
 
 class ClientServer_MD
 {
-	static private $singleton;
 	private $ip;
 	private $url;
 	private $host;
+	private $route;
 	private $domain;
 	private $method;
 	private $headers;
 	private $userAgent;
+	static private $singleton;
 
 	private function __construct()
 	{
@@ -20,6 +21,8 @@ class ClientServer_MD
 		$this->headers = apache_request_headers();
 		$this->method = $_SERVER['REQUEST_METHOD'];
 		$this->userAgent = $_SERVER['HTTP_USER_AGENT'];
+
+		$this->route = $this->setRoute();
 	}
 
 	/**
@@ -50,6 +53,21 @@ class ClientServer_MD
 		}else{
 			return $_SERVER['REMOTE_ADDR'];
 		}
+	}
+
+	/**
+	 * Set current url route
+	 *
+	 * @return bool|string
+	 */
+	private function setRoute()
+	{
+		$route = $this->url;
+		if(strpos($route, '?')){
+			$route = strstr($this->url, '?', true);
+		}
+
+		return GlobalSystem::validateData($route, GlobalSystem::ExpFormatRoutes);
 	}
 
 	/**
@@ -132,5 +150,15 @@ class ClientServer_MD
 		}
 
 		return false;
+	}
+
+	/**
+	 * Get current url route
+	 *
+	 * @return bool|string
+	 */
+	public function getRoute()
+	{
+		return $this->route;
 	}
 }
