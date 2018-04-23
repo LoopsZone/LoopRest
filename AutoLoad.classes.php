@@ -2,10 +2,9 @@
 define('DS', DIRECTORY_SEPARATOR);
 define('DIRECTORY', __DIR__ . DS);
 
-require_once 'system/GlobalSystem.class.php';
-require_once 'system/config/CoreConfig.php';
-
 require_once 'system/Cache.class.php';
+require_once 'system/config/CoreConfig.php';
+require_once 'system/GlobalSystem.class.php';
 require_once 'system/DirectoryManager.class.php';
 
 /**
@@ -13,7 +12,7 @@ require_once 'system/DirectoryManager.class.php';
  *
  * @author   Mario Henmanuel Vargas Ugalde <hemma.hvu@gmail.com>
  */
-class AutoLoad extends GlobalSystem
+class AutoLoad
 {
 	const CacheDocSystemPath = 'SYSTEM_PATH';
 
@@ -67,7 +66,7 @@ class AutoLoad extends GlobalSystem
 
 		foreach($folders as $check){
 			if(is_dir($directory . $check)){
-				$ignoreDirectory = preg_match('[^\.' . self::ignoreDirectories() . ']', $check);
+				$ignoreDirectory = preg_match('[^\.' . GlobalSystem::ignoreDirectories() . ']', $check);
 				if(!$ignoreDirectory){
 					$found = self::findClass($className, $directory . $check . DS);
 					if($found){
@@ -82,3 +81,4 @@ class AutoLoad extends GlobalSystem
 }
 
 spl_autoload_register('AutoLoad::loadClass');
+register_shutdown_function(['ErrorManager', 'onErrorRoute']);

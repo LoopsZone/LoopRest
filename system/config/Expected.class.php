@@ -79,4 +79,8 @@ class Expected
 	const ExpFormatHeaders = 'headers';
 	const ExpFormatTriggers = 'triggers';
 	const ExpFormatVariable = 'variable';
+
+	const  ExceptionCode = 'exceptionCode';
+	const  ExceptionDesc = 'exceptionDescription';
+	const  ExceptionTriggers = 'exceptionTriggers';
 }

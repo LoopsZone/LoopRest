@@ -26,7 +26,7 @@ class Input extends Manager
 				return $this->checkInput($clientInfoMD->getRoute(), $_REQUEST);
 			}
 
-			throw new Exception(ErrorManager::Method, ErrorManager::MethodCode);
+			ErrorManager::throwException(ErrorManager::MetHodExc);
 
 		}catch(Exception $error){
 			ErrorManager::onErrorRoute($error);
