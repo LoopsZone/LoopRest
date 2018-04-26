@@ -135,11 +135,17 @@ class Route_MD
 		return $this->trigger;
 	}
 
+	/**
+	 * @return mixed
+	 */
 	public function getAuthorization()
 	{
 			return $this->authorization;
 	}
 
+	/**
+	 * @param $auth
+	 */
 	public function setAuthorization($auth)
 	{
 		$this->authorization = $auth;
@@ -153,6 +159,9 @@ class Route_MD
 		return $this->action;
 	}
 
+	/**
+	 * @param $action
+	 */
 	public function setAction($action)
 	{
 		$this->action = $action;

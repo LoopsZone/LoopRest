@@ -7,21 +7,28 @@
  */
 class AccessDB
 {
-	private $host;
-	private $user;
-	private $password;
-	private $dataBase;
 	private $connectionDB;
 
-	protected function connectionDB()
+	function __construct()
 	{
-		$this->connectionDB = new DB(
-			CoreConfig::DB_SYSTEM_ENGINE_USE,
-			CoreConfig::DB_SYSTEM_HOST,
-			CoreConfig::DB_SYSTEM,
-			CoreConfig::DB_SYSTEM_USERNAME,
-			CoreConfig::DB_SYSTEM_PASSWORD
-		);
+		$model = Model::getInstance();
+		$db = $model->getDataBaseInstance;
+
+		$dbHost = $db->getHost();
+		$dbUser = $db->getUser();
+		$dbSystem = $db->getDataBase();
+		$dbPassword = $db->getPassword();
+		$dbEngine = $db->getDataBaseEngine();
+
+		$this->connectionDB = new DB($dbEngine, $dbHost, $dbSystem, $dbUser, $dbPassword);
+	}
+
+	/**
+	 * Close current connection
+	 */
+	public function close()
+	{
+		$this->connectionDB = null;
 	}
 
 	/**
@@ -30,21 +37,20 @@ class AccessDB
 	 * @param $user
 	 * @return mixed
 	 */
-	protected function getUser($userEmail){
-		$this->connectionDB();
-		$result = $this->connectionDB->query("CALL lpGetUserByEmail({$userEmail})");
+	public function getUser($userEmail)
+	{
+		$result = $this->connectionDB->query("CALL lpGetUserByEmail('{$userEmail}')");
 
 		return $result;
 	}
 
-	protected function newUser($request){
-		$this->connectionDB();
-
+	public function newUser($request)
+	{
 		$userName = $request['name'];
 		$userEmail = $request['email'];
 		$userBirthday = $request['birthday'];
 
-		$result = $this->connectionDB->execute("CALL lpNewUser({$userName}, {$userEmail}, {$userBirthday})");
+		$result = $this->connectionDB->execute("CALL lpNewUser('{$userName}', '{$userEmail}', {$userBirthday})");
 
 		return $result;
 	}
@@ -57,9 +63,8 @@ class AccessDB
 	 * @param bool $print
 	 * @return bool|array
 	 */
-	protected function requestSystemData($object, $registry)
+	public function requestSystemData($object, $registry)
 	{
-		$this->connectionDB();
 		$result = $this->connectionDB->execute('CALL test');
 
 		return $result;
@@ -72,9 +77,8 @@ class AccessDB
 	 * @param $data
 	 * @return array|bool
 	 */
-	protected function insertSystemData($object, $data){
-		$this->connectionDB();
-		$db = $this->connectionDB;
-		return $db->insert($object, $data);
+	public function insertSystemData($object, $data)
+	{
+		return $this->connectionDB->insert($object, $data);
 	}
 }

@@ -4,6 +4,11 @@ class Model extends ModelsTracking
 {
 	private static $singleton;
 
+	function __construct()
+	{
+		$this->getSystemInstance();
+	}
+
 	/**
 	 * @return Model
 	 */
@@ -72,5 +77,16 @@ class Model extends ModelsTracking
 	private function getDataBaseInstance()
 	{
 		return DataBase_MD::getInstance();
+	}
+
+	/**
+	 * Model
+	 * get a singleton instance of System_MD
+	 * 
+	 * @return System_MD
+	 */
+	private function getSystemInstance()
+	{
+		return System_MD::getInstance();
 	}
 }

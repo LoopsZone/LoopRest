@@ -20,8 +20,8 @@ class Views extends Expected_Views
 	public function routingView()
 	{
 		$model = Model::getInstance();
-		$targetMD = $model->getViewsInstance;
-		$view = $targetMD->getView();
+		$viewMD = $model->getViewsInstance;
+		$view = $viewMD->getView();
 
 		$component = $view;
 		$parent = '';

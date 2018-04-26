@@ -7,6 +7,14 @@
  */
 class Input extends Manager
 {
+	function __construct()
+	{
+		$model = Model::getInstance();
+		$model->getClientServerInstance;
+		$system = $model->getSystemInstance;
+		$system->runInitialSystemSettings();
+	}
+
 	/**
 	 * Route action to execute set to params
 	 *
