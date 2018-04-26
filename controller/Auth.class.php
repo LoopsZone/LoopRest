@@ -49,7 +49,7 @@ class Auth extends Access
 			$token = $routeMD->getRequest(GlobalSystem::ExpRequestToken);
 			$availableTK = Token::check($token);
 
-			return ($availableTK === true) ? true : false;
+			return ($availableTK === true) ? true : $availableTK;
 		}
 
 		return true;
@@ -74,9 +74,6 @@ class Auth extends Access
 			$routeExecuting = RequestRoute::$routes[$route];
 			return $routeExecuting[GlobalSystem::ExpRouteNeedTK];
 		}
-
-		//TODO General Exception add nd yours functions of notification
-		throw new Exception('An error has occurred in system', 5);
 	}
 
 	private function checkAllowIp ()

@@ -34,7 +34,7 @@ class Manager extends Auth
 					return $this->views();
 				case GlobalSystem::ExpRequestTrigger:
 					return $this->request();
-				default: throw new Exception(ErrorManager::Action, ErrorManager::ActionCode);
+				default: ErrorManager::throwException(ErrorCodes::ActionExc);
 			}
 		}catch(Exception $error){
 			ErrorManager::onErrorRoute($error);
@@ -52,7 +52,7 @@ class Manager extends Auth
 	{
 		$availableAccess = self::checkClient();
 
-		if($availableAccess){
+		if($availableAccess === true){
 			$model = Model::getInstance();
 			$action = $this->requestAction();
 			$routeMD = $model->getRouteInstance;
@@ -66,7 +66,10 @@ class Manager extends Auth
 			return self::getData($token, $request);
 		}
 
-		throw new Exception($availableAccess, 4);
+		$errorCode = ErrorCodes::AccessExc;
+		$errorCode[GlobalSystem::ExpErrorDesc] = $availableAccess;
+
+		ErrorManager::throwException($errorCode);
 	}
 
 	/**
@@ -136,7 +139,10 @@ class Manager extends Auth
 			return self::signIn($tokenData);
 		}
 
-		throw new Exception($availableAccess, 4);
+		$errorCode = ErrorCodes::AccessExc;
+		$errorCode[GlobalSystem::ExpErrorDesc] = $availableAccess;
+
+		ErrorManager::throwException($errorCode);
 	}
 
 	/**
@@ -149,8 +155,11 @@ class Manager extends Auth
 		$model = Model::getInstance();
 		$routeMD = $model->getRouteInstance;
 		$routeMD->setResponseObject(true);
+		
+		$route = $routeMD->getRoute();
+		$request = $routeMD->getRequest();
 
-		return $routeMD->getRequest(GlobalSystem::ExpErrorDesc);
+		return [$route => $request];
 	}
 
 	/**

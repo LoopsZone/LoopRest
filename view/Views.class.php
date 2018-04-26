@@ -11,8 +11,13 @@ class Views extends Expected_Views
 		$target = ($request) ? $request : CoreConfig::PRINCIPAL_VIEW;
 		$viewMD->setView($target);
 	}
-
-	public function routingView ()
+	
+	/**
+	 * Search current component
+	 *
+	 * @return bool|string
+	 */
+	public function routingView()
 	{
 		$model = Model::getInstance();
 		$targetMD = $model->getViewsInstance;
@@ -22,7 +27,7 @@ class Views extends Expected_Views
 		$parent = '';
 
 		$explode = preg_match(self::PARENT_EXPLODE, $view);
-		if($explode) {
+		if($explode){
 			$views = explode(':', $view);
 			$component = $views[0];
 			$parent = $views[1];
@@ -30,7 +35,14 @@ class Views extends Expected_Views
 
 		return $this->render($component, $parent);
 	}
-
+	
+	/**
+	 * Render current component
+	 *
+	 * @param $component
+	 * @param $parent
+	 * @return bool|string
+	 */
 	public function render ($component, $parent)
 	{
 		$findIn = ($parent) ? DS . $component : $parent;
@@ -79,12 +91,12 @@ class Views extends Expected_Views
 	 * @param $component
 	 * @return bool
 	 */
-	private function resources ($component)
+	private function resources($component)
 	{
 		$matchesResources = array();
 		$resource = preg_match_all(self::SRC_RGX, $this->currentComponent, $matchesResources, PREG_PATTERN_ORDER);
 
-		if($resource) {
+		if($resource){
 			$clear[] = self::CLEAR;
 			$clear[] = self::CLEAR;
 			$namePatrons[] = self::SRC_INIT;
@@ -93,10 +105,10 @@ class Views extends Expected_Views
 			$nameResource = preg_replace($namePatrons, $clear, $matchesResources[0]);
 			$count = count($nameResource);
 
-			for($i = 0; $i < $count; $i++) {
+			for($i = 0; $i < $count; $i++){
 				$extra = '';
 				$fileType = $matchesResources[1][$i];
-				if($fileType == 'png') {
+				if($fileType == 'png'){
 					$fileType = 'img';
 					$extra = $nameResource[$i];
 				}
@@ -107,7 +119,7 @@ class Views extends Expected_Views
 				$content = str_replace('{file}', $file, self::NOT_FOUND_COMP);
 
 				$found = in_array($file, $resources);
-				if($found) {
+				if($found){
 					$type = strtoupper($fileType);
 					$methodTypeResource = constant("self::SRC_{$type}");
 					$methodTypeResource = str_replace('{id}', $extra, $methodTypeResource);

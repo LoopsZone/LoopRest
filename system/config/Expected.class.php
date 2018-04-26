@@ -44,6 +44,7 @@ class Expected
 	const ExpErrorLine = 'line';
 	const ExpErrorCode = 'code';
 	const ExpErrorDoc = 'document';
+	const ExpErrorMessage = 'message';
 	const ExpErrorDesc = 'description';
 	//Set trigger route name
 	const ExpErrorTrigger = 'ERROR';
@@ -79,8 +80,4 @@ class Expected
 	const ExpFormatHeaders = 'headers';
 	const ExpFormatTriggers = 'triggers';
 	const ExpFormatVariable = 'variable';
-
-	const  ExceptionCode = 'exceptionCode';
-	const  ExceptionDesc = 'exceptionDescription';
-	const  ExceptionTriggers = 'exceptionTriggers';
 }

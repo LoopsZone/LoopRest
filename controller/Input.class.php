@@ -26,7 +26,7 @@ class Input extends Manager
 				return $this->checkInput($clientInfoMD->getRoute(), $_REQUEST);
 			}
 
-			ErrorManager::throwException(ErrorManager::MetHodExc);
+			ErrorManager::throwException(ErrorCodes::MetHodExc);
 
 		}catch(Exception $error){
 			ErrorManager::onErrorRoute($error);
@@ -71,8 +71,8 @@ class Input extends Manager
 				if(!$route){
 					$countParams = count($method);
 					if($countParams){
-						$incongruentRoute = array_diff_key($routeParams, $method);
-						if(!count($incongruentRoute)){
+						$inconsistentRoute = array_diff_key($routeParams, $method);
+						if(!count($inconsistentRoute)){
 							$serverMD = $model->getClientServerInstance;
 							$authHeader = $serverMD->getHeader(GlobalSystem::ExpHeaderAuth);
 
@@ -99,21 +99,16 @@ class Input extends Manager
 							return true;
 						}
 
-						throw new Exception(ErrorManager::HttpParams, ErrorManager::HttpParamsCode);
+						ErrorManager::throwException(ErrorCodes::HttpParamsExc);
 					}
 				}
 
-				throw new Exception(ErrorManager::HttpParams, ErrorManager::HttpParamsCode);
+				ErrorManager::throwException(ErrorCodes::HttpParamsExc);
 			}
 		}
 
 		if(count($method)){
-			$message = [
-				'params' => $method,
-				'description' => ErrorManager::HttpParams
-			];
-
-			throw new Exception(ErrorManager::HttpParams, ErrorManager::HttpParamsCode);
+			ErrorManager::throwException(ErrorCodes::HttpParamsExc);
 		}
 
 		$routeMD->setRoute(GlobalSystem::ExpRouteViews);

@@ -128,12 +128,4 @@ class GlobalSystem extends GlobalConstants
 
 		return false;
 	}
-
-	/**
-	 * Check if the environment is development
-	 */
-	public static function isDEV()
-	{
-		return CoreConfig::DEV;
-	}
 }

@@ -52,9 +52,6 @@ class Route_MD
 				if(key_exists($param, $this->request[$this->route])){
 					return $this->request[$this->route][$param];
 				}
-
-				$message = "Error get param {$param} in this request";
-				throw new Exception($message, 5);
 			}
 
 			return $this->request[$this->route];
@@ -87,12 +84,12 @@ class Route_MD
 			if(is_array($value) || is_object($value)){
 				foreach($value as $subKey => $subValue){
 					if($subValue === false){
-						$error[$key][$subKey] = "Invalid value in {$subValue} key to this request";
+						$error[$subKey] = "Invalid value in {$subValue} key to this request";
 					}
 				}
 			}else{
 				if($value == false){
-					$error[$key] = "Invalid empty value in {$key} key to this request";
+					$error= "Invalid empty value in {$key} key to this request";
 				}
 			}
 		}
@@ -101,8 +98,11 @@ class Route_MD
 		if(count($error) > 0){
 			$this->route = RequestRoute::ExpRouteError;
 			$this->request[GlobalSystem::ExpRouteError] = $error;
-			$message = json_encode($error);
-			throw  new Exception($message, 3);
+
+			$errorCode = ErrorCodes::HttpParamsExc;
+			$errorCode[GlobalSystem::ExpErrorDesc] = json_encode($error);
+
+			ErrorManager::throwException($errorCode);
 		}
 
 		$this->request = $request;

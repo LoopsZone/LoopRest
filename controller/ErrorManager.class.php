@@ -2,21 +2,6 @@
 
 class ErrorManager
 {
-	const MetHodExc = [
-		GlobalSystem::ExceptionCode => 0,
-		GlobalSystem::ExceptionDesc => 'Method selected no valid or implemented'
-	];
-
-	const HttpParamsExc = [
-		GlobalSystem::ExceptionCode => 1,
-		GlobalSystem::ExceptionDesc => 'Invalid input params'
-	];
-
-	const ActionExc = [
-		GlobalSystem::ExceptionCode => 2,
-		GlobalSystem::ExceptionDesc => 'Action selected no valid'
-	];
-
 	/**
 	 * If an exception is activated, an error path is activated in the system
 	 *
@@ -24,28 +9,46 @@ class ErrorManager
 	 */
 	public static function onErrorRoute($error = false)
 	{
-		$model = Model::getInstance();
-		$routeMD = $model->getRouteInstance;
+		if(!Response::getReadyResponse()){
+			$request = [];
+			$routeResponse = false;
+			$model = Model::getInstance();
+			$routeMD = $model->getRouteInstance;
+			$routeMD->setRoute(GlobalSystem::ExpRouteError);
 
-		$routeMD->setRoute(GlobalSystem::ExpRouteError);
-		$route = $routeMD->getRoute();
+			if(!$error){
+				$routeResponse = true;
+				$lastError = error_get_last();
 
-		$error = ($error) ? $error : error_get_last();
-		$request[$route][GlobalSystem::ExpErrorDoc] = $error->getFile();
-		$request[$route][GlobalSystem::ExpErrorLine] = $error->getLine();
-		$request[$route][GlobalSystem::ExpErrorCode] = $error->getCode();
-		$request[$route][GlobalSystem::ExpErrorDesc] = $error->getMessage();
+				if($lastError){
+					$error = new Exception(
+						$lastError[GlobalSystem::ExpErrorMessage],
+						ErrorCodes::SystemError[GlobalSystem::ExpErrorCode]
+					);
+				}
+			}
 
-		$routeMD->setRequest($request);
-		$routeMD->setResponseObject(true);
+			$route = $routeMD->getRoute();
+			$request[$route][GlobalSystem::ExpErrorCode] = $error->getCode();
+			$request[$route][GlobalSystem::ExpErrorDesc] = $error->getMessage();
 
-		if(!$error){
-			new Response($request);
+			$routeMD->setRequest($request);
+			$routeMD->setResponseObject(true);
+
+			if($routeResponse){
+				new Response($request);
+			}
 		}
 	}
 
+	/**
+	 * throw new exception in system
+	 *
+	 * @param $currentException
+	 * @throws Exception
+	 */
 	public static function throwException($currentException)
 	{
-		throw new Exception($currentException[GlobalSystem::ExceptionDesc], $currentException[GlobalSystem::ExceptionCode]);
+		throw new Exception($currentException[GlobalSystem::ExpErrorDesc], $currentException[GlobalSystem::ExpErrorCode]);
 	}
 }

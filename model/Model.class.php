@@ -25,12 +25,9 @@ class Model extends ModelsTracking
 	 */
 	public function __get($method)
 	{
-		try{
 			self::TrackExecution(get_class(), $method);
-			return false;
-		}catch(Exception $e){
+
 			return $this->$method();
-		}
 	}
 
 	/**

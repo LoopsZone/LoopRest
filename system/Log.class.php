@@ -51,13 +51,13 @@ class Log
 	 */
 	private static function logDirectory()
 	{
-		if(defined('CoreConfig::LOG_PATH')) {
+		if(defined('CoreConfig.class::LOG_PATH')) {
 			if(!is_dir(CoreConfig::LOG_PATH)){
 				return DirectoryManager::makeDir(CoreConfig::LOG_PATH);
 			}
 		}
 
-		return false;//TODO throw new exception system error in @see ErrorManager::onErrorRoute
+		return false;
 	}
 
 	/**

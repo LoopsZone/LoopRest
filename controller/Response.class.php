@@ -5,6 +5,8 @@
  */
 class Response extends ModelsTracking
 {
+	private static $readyResponse = false;
+	
 	/**
 	 * Response constructor.
 	 * @param $response
@@ -22,9 +24,20 @@ class Response extends ModelsTracking
 			$response = ($_GET["callback"] . "({$response});");
 		}
 
+		self::$readyResponse= true;
 		echo $response;
 	}
 
+	/**
+	 * Get if response its ready
+	 *
+	 * @return bool
+	 */
+	public static function getReadyResponse()
+	{
+		return self::$readyResponse;
+	}
+	
 	/**
 	 * Used to complete the steps of executing model tracking
 	 *
