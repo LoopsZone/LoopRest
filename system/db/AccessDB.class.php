@@ -44,6 +44,12 @@ class AccessDB
 		return $result;
 	}
 
+	/**
+	 * Register new user
+	 *
+	 * @param $request
+	 * @return bool
+	 */
 	public function newUser($request)
 	{
 		$userName = $request['name'];

@@ -56,7 +56,7 @@ class Route_MD
 
 			return $this->request[$this->route];
 		}
-
+ 
 		return false;
 	}
 
@@ -80,7 +80,7 @@ class Route_MD
 	{
 		$error = array();
 		//Validate if value to key in data is false or not valid and return
-		foreach($request as $key => $value) {
+		foreach($request as $key => $value){
 			if(is_array($value) || is_object($value)){
 				foreach($value as $subKey => $subValue){
 					if($subValue === false){
