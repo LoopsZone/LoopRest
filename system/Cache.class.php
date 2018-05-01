@@ -79,7 +79,42 @@ class CacheManager
 class Cache
 {
   private static $singleton;
+	private static $format = '%i';
+	private static  $dateFormat = 'Y-m-d H:i:s';
+	private static $expiredDocument = 'expired';
+	private static $documentContent = 'document';
+	
+	/**
+	 * Check expiration cache document
+	 *
+	 * @param $fileName
+	 * @return bool
+	 */
+  private static function expiredTime($fileName)
+  {
+	  $document = json_decode(
+		  file_get_contents($fileName),
+		  true
+	  );
 
+	  if($document){
+		  $dateCreatedDocument = filectime($fileName);
+		  $expiredDocument = $document[self::$expiredDocument];
+		  $createdDocumentDay = gmdate(self::$dateFormat, $dateCreatedDocument);
+		  $documentCreated = new DateTime($createdDocumentDay);
+		  $currentDate = new DateTime(date(self::$dateFormat));
+		  $daysToRenew = $documentCreated->diff($currentDate);
+
+		  if($daysToRenew->format(self::$format) > $expiredDocument){
+			  unlink($fileName);
+
+			  return true;
+		  }
+	  }
+
+	  return false;
+  }
+  
   /**
    * Load new document in the cache path
    *
@@ -87,11 +122,20 @@ class Cache
    * @param $document
    * @return bool
    */
-  public static function loadDocument($name, $document)
+  public static function loadDocument($name, $document, $expiredDays = null)
   {
     if(!is_dir(CoreConfig::CACHE_PATH)){
       DirectoryManager::makeDir(CoreConfig::CACHE_PATH);
     }
+
+    if($expiredDays !== false){
+		    $expiredDays = ($expiredDays) ?  $expiredDays : CoreConfig::CACHE_EXPIRED_DAYS;
+    }
+
+    $document = [
+    	self::$expiredDocument => $expiredDays,
+	    self::$documentContent => $document
+    ];
 
     return(
       @file_put_contents(
@@ -110,15 +154,14 @@ class Cache
   public static function payload($document)
   {
     if(is_null(self::$singleton)){
-      if(file_exists(CoreConfig::CACHE_PATH . DS . $document . CoreConfig::CACHE_SUFFIX_FILE)){
-        $payload = json_decode(
-          file_get_contents(CoreConfig::CACHE_PATH . DS . $document . CoreConfig::CACHE_SUFFIX_FILE), true
-        );
+    	$payload = self::getDocument($document);
+    	if($payload){
+		    self::$singleton = new CacheManager($document, $payload);
 
-        self::$singleton = new CacheManager($document, $payload);
-      }
+		    return self::$singleton;
+	    }
 
-      return false;
+	    return false;
     }
 
     return self::$singleton;
@@ -132,11 +175,16 @@ class Cache
    */
   public static function getDocument($name)
   {
-    if(file_exists(CoreConfig::CACHE_PATH . DS . $name . CoreConfig::CACHE_SUFFIX_FILE)){
-      return json_decode(
-        file_get_contents(CoreConfig::CACHE_PATH . DS . $name . CoreConfig::CACHE_SUFFIX_FILE),
-        true
-      );
+  	$currentFile = CoreConfig::CACHE_PATH . DS . $name . CoreConfig::CACHE_SUFFIX_FILE;
+    if(file_exists($currentFile)){
+	    $document = json_decode(
+		    file_get_contents($currentFile),
+		    true
+	    );
+
+	    $expiredDocument = self::expiredTime($currentFile);
+
+	    return (!$expiredDocument) ? $document[self::$documentContent] : false;
     }
 
     return false;

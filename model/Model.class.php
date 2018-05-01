@@ -6,7 +6,7 @@ class Model extends ModelsTracking
 
 	function __construct()
 	{
-		$this->getSystemInstance();
+		$this->getSystemInstance;
 	}
 
 	/**

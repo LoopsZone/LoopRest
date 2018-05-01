@@ -21,6 +21,11 @@ class CoreConfig
    * User owner of the directory system
    */
   const USER_DIRECTORY = 'root';
+	
+	/**
+	 * Expired days from cache documents
+	 */
+  const CACHE_EXPIRED_DAYS = 3;
 
   /**
    * Cache save documents path
