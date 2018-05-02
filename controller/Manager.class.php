@@ -155,12 +155,25 @@ class Manager extends Auth
 	{
 		$model = Model::getInstance();
 		$routeMD = $model->getRouteInstance;
+
 		$routeMD->setResponseObject(true);
+		$errorRequest = $routeMD->getRequest();
+		$errorCode = $errorRequest[GlobalSystem::ExpErrorCode];
 
-		$route = $routeMD->getRoute();
-		$request = $routeMD->getRequest();
+		if($errorCode == 1045){
+			$request = [
+				GlobalSystem::ExpRouteViews => [
+					GlobalSystem::ExpViews => 'Test'
+				]
+			];
 
-		return [$route => $request];
+			$routeMD->setRequest($request);
+			$routeMD->setRoute(GlobalSystem::ExpRouteViews);
+
+			return $this->views();
+		}
+
+		return [$routeMD->getRoute() => $errorRequest];
 	}
 
 	/**

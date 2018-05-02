@@ -4,14 +4,14 @@ class Views extends Expected_Views
 {
 	private $currentComponent;
 
-	function __construct ($request)
+	function __construct ($view)
 	{
 		$model = Model::getInstance();
 		$viewMD = $model->getViewsInstance;
-		$target = ($request) ? $request : CoreConfig::PRINCIPAL_VIEW;
+		$target = ($view) ? $view : CoreConfig::PRINCIPAL_VIEW;
 		$viewMD->setView($target);
 	}
-	
+
 	/**
 	 * Search current component
 	 *
@@ -35,7 +35,7 @@ class Views extends Expected_Views
 
 		return $this->render($component, $parent);
 	}
-	
+
 	/**
 	 * Render current component
 	 *

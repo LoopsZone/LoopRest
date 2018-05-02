@@ -6,11 +6,7 @@ class DB
 
 	function __construct ($engine, $host, $db, $user, $password)
 	{
-		try {
-			$this->dbInstance = new PDO("{$engine}: host={$host}; dbname={$db}", $user, $password);
-		}catch(PDOException $error){
-			ErrorManager::onErrorRoute($error);
-		}
+		$this->dbInstance = new PDO("{$engine}: host={$host}; dbname={$db}", $user, $password);
 	}
 
 	/**

@@ -7,11 +7,10 @@ class ErrorManager
 	 *
 	 * @param $error
 	 */
-	public static function onErrorRoute($error = false)
+	public static function onErrorRoute($error = false, $routeResponse = false)
 	{
 		if(!Response::getReadyResponse()){
 			$request = [];
-			$routeResponse = false;
 			$model = Model::getInstance();
 			$routeMD = $model->getRouteInstance;
 			$routeMD->setRoute(GlobalSystem::ExpRouteError);
@@ -38,6 +37,20 @@ class ErrorManager
 			if($routeResponse){
 				new Response($request);
 			}
+		}
+	}
+
+	/**
+	 * Throw error route
+	 */
+	public static function checkErrorRoute()
+	{
+		$model = Model::getInstance();
+		$routeMD = $model->getRouteInstance;
+		$route = $routeMD->getRoute();
+
+		if($route == GlobalSystem::ExpRouteError){
+			self::throwException($routeMD->getRequest());
 		}
 	}
 

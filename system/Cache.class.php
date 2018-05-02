@@ -79,23 +79,25 @@ class CacheManager
 class Cache
 {
   private static $singleton;
-	private static $format = '%i';
+	private static $format = '%d';
 	private static  $dateFormat = 'Y-m-d H:i:s';
 	private static $expiredDocument = 'expired';
 	private static $documentContent = 'document';
-	
+
 	/**
 	 * Check expiration cache document
 	 *
 	 * @param $fileName
 	 * @return bool
 	 */
-  private static function expiredTime($fileName)
+  private static function expiredTime($fileName, $document = false)
   {
-	  $document = json_decode(
-		  file_get_contents($fileName),
-		  true
-	  );
+  	if(!$document){
+		  $document = json_decode(
+			  file_get_contents($fileName),
+			  true
+		  );
+	  }
 
 	  if($document){
 		  $dateCreatedDocument = filectime($fileName);
@@ -182,7 +184,7 @@ class Cache
 		    true
 	    );
 
-	    $expiredDocument = self::expiredTime($currentFile);
+	    $expiredDocument = self::expiredTime($currentFile, $document);
 
 	    return (!$expiredDocument) ? $document[self::$documentContent] : false;
     }

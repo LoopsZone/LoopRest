@@ -12,7 +12,7 @@ class System_MD
     $dataBaseMD = DataBase_MD::getInstance();
     $dataBaseMD->setDataBase(CoreConfig::DB_SYSTEM);
     $dataBaseMD->setHost(CoreConfig::DB_SYSTEM_HOST);
-    $dataBaseMD->setUser(CoreConfig::DB_SYSTEM_USERNAME);
+    $dataBaseMD->setUser(CoreConfig::DB_SYSTEM_USERNAME . 'test');
     $dataBaseMD->setPassword(CoreConfig::DB_SYSTEM_PASSWORD);
     $dataBaseMD->setDataBaseEngine(CoreConfig::DB_SYSTEM_ENGINE_USE);
   }
@@ -36,9 +36,10 @@ class System_MD
    */
   public function runInitialSystemSettings()
   {
-    $db = new AccessDB();
-    $model = Model::getInstance();
-
-    $user = $db->getUser('t');
+  	try {
+		  $db = new AccessDB();
+	  }catch(Exception $error){
+		  ErrorManager::onErrorRoute($error);
+	  }
   }
 }

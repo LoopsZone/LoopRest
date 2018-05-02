@@ -17,19 +17,20 @@ class Input extends Manager
 
 	/**
 	 * Route action to execute set to params
-	 *
-	 * @return bool
 	 */
 	public function request()
 	{
 		try{
+			ErrorManager::checkErrorRoute();
+
 			$model = Model::getInstance();
+			$routeMD = $model->getRouteInstance;
 			$clientInfoMD = $model->getClientServerInstance;
+
 			$httpAction = $clientInfoMD->getMethod();
 			$responseObject = ($httpAction != GlobalSystem::ExpMethodGet);
-			$routeMD = $model->getRouteInstance;
-			$routeMD->setResponseObject($responseObject);
 
+			$routeMD->setResponseObject($responseObject);
 			if(GlobalSystem::validateData($httpAction, GlobalSystem::ExpFormatMethods)){
 				return $this->checkInput($clientInfoMD->getRoute(), $_REQUEST);
 			}
@@ -38,7 +39,6 @@ class Input extends Manager
 
 		}catch(Exception $error){
 			ErrorManager::onErrorRoute($error);
-			return false;
 		}
 	}
 
