@@ -80,7 +80,7 @@ class Cache
 {
   private static $singleton;
 	private static $format = '%d';
-	private static  $dateFormat = 'Y-m-d H:i:s';
+	private static $dateFormat = 'Y-m-d H:i:s';
 	private static $expiredDocument = 'expired';
 	private static $documentContent = 'document';
 
