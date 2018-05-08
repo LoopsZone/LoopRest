@@ -236,7 +236,4 @@ class Encrypt
 		// Return the encrypt text in 64 bits code
 		return base64_encode($encrypt64);
 	}
-	
 }
-
-?>

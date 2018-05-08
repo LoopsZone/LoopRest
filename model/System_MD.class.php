@@ -37,6 +37,9 @@ class System_MD
   public function runInitialSystemSettings()
   {
   	try {
+  		$firstStep = new ExecutionStep();
+  		$firstStep->checkSecretKey;
+  		
 		  $db = new AccessDB();
 	  }catch(Exception $error){
 		  ErrorManager::onErrorRoute($error);
