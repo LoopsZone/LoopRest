@@ -2,9 +2,6 @@
 
 class System_MD
 {
-  private $domain;
-  private $superOwner;
-  private $routesFixed;
   static private $singleton;
 
   private function __construct()
@@ -37,8 +34,8 @@ class System_MD
   public function runInitialSystemSettings()
   {
   	try {
-  		$firstStep = new ExecutionStep();
-  		$firstStep->checkSecretKey;
+  		$step = new ExecutionStep();
+  		$secretUniqueKey = $step->checkSecretKey;
   		
 		  $db = new AccessDB();
 	  }catch(Exception $error){

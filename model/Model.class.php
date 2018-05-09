@@ -21,18 +21,19 @@ class Model extends ModelsTracking
 
 		return self::$singleton;
 	}
-
+	
 	/**
 	 * Start tracking model mode
-	 * 
+	 *
 	 * @param $method
-	 * @return bool
+	 * @return mixed
+	 * @throws Exception
 	 */
 	public function __get($method)
 	{
-			self::TrackExecution(get_class(), $method);
+		self::TrackExecution(get_class(), $method);
 
-			return $this->$method();
+		return $this->$method();
 	}
 
 	/**

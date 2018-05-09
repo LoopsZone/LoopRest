@@ -7,7 +7,7 @@ class ErrorCodes
 {
 	const SystemError = [
 		GlobalSystem::ExpErrorCode => 0,
-		GlobalSystem::ExpErrorDesc => ''
+		GlobalSystem::ExpErrorDesc => false
 	];
 
 	const MetHodExc = [

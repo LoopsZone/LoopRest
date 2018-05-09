@@ -41,7 +41,9 @@ class ErrorManager
 	}
 
 	/**
-	 * Throw error route
+	 * Check if exist last error in model and throw error route
+	 *
+	 * @throws Exception
 	 */
 	public static function checkErrorRoute()
 	{
@@ -55,13 +57,17 @@ class ErrorManager
 	}
 
 	/**
-	 * throw new exception in system
+	 * Throw new exception in system
 	 *
 	 * @param $currentException
 	 * @throws Exception
 	 */
 	public static function throwException($currentException)
 	{
+		if(!$currentException[GlobalSystem::ExpErrorDesc]){
+			$currentException[GlobalSystem::ExpErrorDesc] = error_get_last();
+		}
+
 		throw new Exception($currentException[GlobalSystem::ExpErrorDesc], $currentException[GlobalSystem::ExpErrorCode]);
 	}
 }

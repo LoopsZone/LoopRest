@@ -41,12 +41,10 @@ class Manager extends Auth
 			return $this->error();
 		}
 	}
-
+	
 	/**
-	 * @param $tk
-	 * @param $request
-	 *
-	 * @return string|array
+	 * @return array|bool|mixed
+	 * @throws Exception
 	 */
 	private function request()
 	{
@@ -111,6 +109,7 @@ class Manager extends Auth
 
 	/**
 	 * @return string
+	 * @throws Exception
 	 */
 	private function auth()
 	{
@@ -159,18 +158,21 @@ class Manager extends Auth
 		$routeMD->setResponseObject(true);
 		$errorRequest = $routeMD->getRequest();
 		$errorCode = $errorRequest[GlobalSystem::ExpErrorCode];
+		$errorDesc = $errorRequest[GlobalSystem::ExpErrorDesc];
 
-		if($errorCode == 1045){
-			$request = [
-				GlobalSystem::ExpRouteViews => [
-					GlobalSystem::ExpViews => 'Test'
-				]
-			];
+		if(key_exists($errorDesc, ExecutionStep::$errorCodesSteps)){
+			if(ExecutionStep::$errorCodesSteps[$errorDesc] = $errorCode){
+				$request = [
+					GlobalSystem::ExpRouteViews => [
+						GlobalSystem::ExpViews => 'Test'
+					]
+				];
 
-			$routeMD->setRequest($request);
-			$routeMD->setRoute(GlobalSystem::ExpRouteViews);
+				$routeMD->setRequest($request);
+				$routeMD->setRoute(GlobalSystem::ExpRouteViews);
 
-			return $this->views();
+				return $this->views();
+			}
 		}
 
 		return [$routeMD->getRoute() => $errorRequest];

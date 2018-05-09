@@ -2,27 +2,36 @@
 
 class ExecutionStep
 {
-	const SystemStepError = [
-		GlobalSystem::ExpErrorCode => 0,
-		GlobalSystem::ExpErrorDesc => ''
+	static $errorCodesSteps = [
+		checkSecretKey => 101
 	];
 
-	public function __get($name)
+	/**
+	 * @param $name
+	 * @throws Exception
+	 */
+	public function __get($stepName)
 	{
 		$step = false;
-		if(method_exists($this, $name)){
-			$step = $this->$name();
+		$step = $this->$stepName();
 
-			if(!$step){
-				ErrorManager::throwException(self::SystemStepError);
-			}
+		if(!$step){
+			$error[GlobalSystem::ExpErrorDesc] = $stepName;
+			$error[GlobalSystem::ExpErrorCode] = self::$errorCodesSteps[$stepName];
+
+			ErrorManager::throwException($error);
 		}
 
-		ErrorManager::throwException(self::SystemStepError);
+		return $step;
 	}
 
-	private function  checkSecretKey()
+	/**
+	 * Check step Secret Key
+	 *
+	 * @return bool|mixed
+	 */
+	private function checkSecretKey()
 	{
-		return Cache::getDocument('SECRET_KEY');
+		return Cache::getDocument(GlobalSystem::CacheSecretKey);
 	}
 }
