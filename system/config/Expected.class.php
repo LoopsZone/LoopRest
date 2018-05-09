@@ -46,6 +46,7 @@ class Expected
 	const ExpErrorDoc = 'document';
 	const ExpErrorMessage = 'message';
 	const ExpErrorDesc = 'description';
+	const ExpErrorLast = 'lastError';
 	//Set trigger route name
 	const ExpErrorTrigger = 'ERROR';
 

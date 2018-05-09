@@ -2,8 +2,20 @@
 
 class ExecutionStep
 {
+	private $stepName;
+
 	static $errorCodesSteps = [
-		checkSecretKey => 101
+		'checkSecretKey' => [
+			GlobalSystem::ExpErrorCode => 101,
+			GlobalSystem::ExpViews => 'Test',
+			GlobalSystem::ExpErrorLast => false
+		],
+
+		'checkAccessSystemDB' => [
+			GlobalSystem::ExpErrorCode => 102,
+			GlobalSystem::ExpViews => 'Test',
+			GlobalSystem::ExpErrorLast => false
+		]
 	];
 
 	/**
@@ -12,12 +24,12 @@ class ExecutionStep
 	 */
 	public function __get($stepName)
 	{
-		$step = false;
+		$this->stepName = $stepName;
 		$step = $this->$stepName();
 
 		if(!$step){
 			$error[GlobalSystem::ExpErrorDesc] = $stepName;
-			$error[GlobalSystem::ExpErrorCode] = self::$errorCodesSteps[$stepName];
+			$error[GlobalSystem::ExpErrorCode] = self::$errorCodesSteps[$stepName][GlobalSystem::ExpErrorCode];
 
 			ErrorManager::throwException($error);
 		}
@@ -33,5 +45,25 @@ class ExecutionStep
 	private function checkSecretKey()
 	{
 		return Cache::getDocument(GlobalSystem::CacheSecretKey);
+	}
+
+	private function checkAccessSystemDB()
+	{
+		$dataBaseMD = DataBase_MD::getInstance();
+		$dataBaseMD->setDataBase(CoreConfig::DB_SYSTEM . 'test');
+		$dataBaseMD->setHost(CoreConfig::DB_SYSTEM_HOST);
+		$dataBaseMD->setUser(CoreConfig::DB_SYSTEM_USERNAME);
+		$dataBaseMD->setPassword(CoreConfig::DB_SYSTEM_PASSWORD);
+		$dataBaseMD->setDataBaseEngine(CoreConfig::DB_SYSTEM_ENGINE_USE);
+
+		try{
+			$db = new AccessDB();
+		}catch(Exception $error){
+			self::$errorCodesSteps[$this->stepName][GlobalSystem::ExpErrorLast] = error_get_last();
+
+			return false;
+		}
+
+		return $db;
 	}
 }

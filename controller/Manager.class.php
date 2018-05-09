@@ -19,7 +19,7 @@ class Manager extends Auth
 	/**
 	 * @return array|mixed|string
 	 */
-	protected function route()
+	private function route()
 	{
 		$model = Model::getInstance();
 		$routeMD = $model->getRouteInstance;
@@ -41,7 +41,7 @@ class Manager extends Auth
 			return $this->error();
 		}
 	}
-	
+
 	/**
 	 * @return array|bool|mixed
 	 * @throws Exception
@@ -161,10 +161,10 @@ class Manager extends Auth
 		$errorDesc = $errorRequest[GlobalSystem::ExpErrorDesc];
 
 		if(key_exists($errorDesc, ExecutionStep::$errorCodesSteps)){
-			if(ExecutionStep::$errorCodesSteps[$errorDesc] = $errorCode){
+			if(ExecutionStep::$errorCodesSteps[$errorDesc][GlobalSystem::ExpErrorCode] == $errorCode){
 				$request = [
 					GlobalSystem::ExpRouteViews => [
-						GlobalSystem::ExpViews => 'Test'
+						GlobalSystem::ExpViews => ExecutionStep::$errorCodesSteps[$errorDesc][GlobalSystem::ExpViews]
 					]
 				];
 
