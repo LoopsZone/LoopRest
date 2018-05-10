@@ -2,7 +2,8 @@
 
 class System_MD
 {
-  static private $singleton;
+  private $secretUniqueKey;
+  private static $singleton;
 
   /**
    * get a singleton instance of System_MD
@@ -25,7 +26,8 @@ class System_MD
   {
   	try {
   		$step = new ExecutionStep();
-  		//$secretUniqueKey = $step->checkSecretKey;
+      $this->secretUniqueKey = $step->checkSecretKey;
+      $dbHostConnexion = $step->checkConnexionHostDB;
       $accessDB = $step->checkAccessSystemDB;
 	  }catch(Exception $error){
 		  ErrorManager::onErrorRoute($error);

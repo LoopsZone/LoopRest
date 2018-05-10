@@ -4,9 +4,10 @@ class DB
 {
 	private $dbInstance;
 
-	function __construct ($engine, $host, $db, $user, $password)
+	function __construct ($engine, $host, $user, $password, $db = false)
 	{
-		$this->dbInstance = new PDO("{$engine}: host={$host}; dbname={$db}", $user, $password);
+		$db = ($db) ? ";dbname={$db}" : '';
+		$this->dbInstance = new PDO("{$engine}: host={$host}{$db}", $user, $password);
 	}
 
 	/**

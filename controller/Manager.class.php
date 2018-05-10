@@ -157,35 +157,13 @@ class Manager extends Auth
 
 		$routeMD->setResponseObject(true);
 		$errorRequest = $routeMD->getRequest();
-		$exception = ExecutionStep::$errorCodesSteps;
-		$errorCode = $errorRequest[GlobalSystem::ExpErrorCode];
-		$errorDesc = $errorRequest[GlobalSystem::ExpErrorDesc];
+    $executionStepNeedStart = ExecutionStep::stepErrorView();
 
-		if(key_exists($errorDesc, $exception)){
-			$exception = $exception[$errorDesc];
-			if($exception[GlobalSystem::ExpErrorCode] == $errorCode){
-				$view = $exception[GlobalSystem::ExpViews];
-				if(key_exists(GlobalSystem::ExpErrorLast, $exception)){
-					if($exception[GlobalSystem::ExpErrorLast]){
-						$code = $exception[GlobalSystem::ExpErrorLast]->getCode();
-						$view = ExecutionErrorView::$$code;
-					}
-				}
+    if($executionStepNeedStart){
+      return $this->views();
+    }
 
-				$request = [
-					GlobalSystem::ExpRouteViews => [
-						GlobalSystem::ExpViews => $view
-					]
-				];
-
-				$routeMD->setRequest($request);
-				$routeMD->setRoute(GlobalSystem::ExpRouteViews);
-
-				return $this->views();
-			}
-		}
-
-		return [$routeMD->getRoute() => $errorRequest];
+    return [$routeMD->getRoute() => $errorRequest];
 	}
 
 	/**

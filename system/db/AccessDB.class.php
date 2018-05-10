@@ -20,7 +20,7 @@ class AccessDB
 		$dbPassword = $db->getPassword();
 		$dbEngine = $db->getDataBaseEngine();
 
-		$this->connectionDB = new DB($dbEngine, $dbHost, $dbSystem, $dbUser, $dbPassword);
+		$this->connectionDB = new DB($dbEngine, $dbHost, $dbUser, $dbPassword, $dbSystem);
 	}
 
 	/**
