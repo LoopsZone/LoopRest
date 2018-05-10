@@ -14,14 +14,16 @@ class GlobalConstants extends Expected
 	const ExpMethodPost = 'POST';
 	const ExpMethodDelete = 'DELETE';
 
-	const CacheSecretKey = 'SECRET_KEY';
-
 	const ExpAvailableMethods = [
 		self::ExpMethodGet,
 		self::ExpMethodPut,
 		self::ExpMethodPost,
 		self::ExpMethodDelete
 	];
+
+	const CacheSecretKey = 'SECRET_KEY';
+	const StepCheckSecretKey = 'checkSecretKey';
+	const StepCheckAccessSystemDB = 'checkAccessSystemDB';
 
 	//Header Allow
 	const AllowHeaders = [

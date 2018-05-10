@@ -1,22 +1,8 @@
 <?php
 
-class ExecutionStep
+class ExecutionStep extends ExecutionStepsErrors
 {
 	private $stepName;
-
-	static $errorCodesSteps = [
-		'checkSecretKey' => [
-			GlobalSystem::ExpErrorCode => 101,
-			GlobalSystem::ExpViews => 'Test',
-			GlobalSystem::ExpErrorLast => false
-		],
-
-		'checkAccessSystemDB' => [
-			GlobalSystem::ExpErrorCode => 102,
-			GlobalSystem::ExpViews => 'Test',
-			GlobalSystem::ExpErrorLast => false
-		]
-	];
 
 	/**
 	 * @param $name
@@ -59,7 +45,7 @@ class ExecutionStep
 		try{
 			$db = new AccessDB();
 		}catch(Exception $error){
-			self::$errorCodesSteps[$this->stepName][GlobalSystem::ExpErrorLast] = error_get_last();
+			self::$errorCodesSteps[$this->stepName][GlobalSystem::ExpErrorLast] = $error;
 
 			return false;
 		}
