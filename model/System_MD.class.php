@@ -32,5 +32,7 @@ class System_MD
 	  }catch(Exception $error){
 		  ErrorManager::onErrorRoute($error);
 	  }
+
+    return true;
   }
 }

@@ -7,22 +7,12 @@
  */
 class Input extends Manager
 {
-	function __construct()
-	{
-		$model = Model::getInstance();
-		$model->getClientServerInstance;
-		$system = $model->getSystemInstance;
-		$system->runInitialSystemSettings();
-	}
-
 	/**
 	 * Route action to execute set to params
 	 */
 	public function request()
 	{
 		try{
-			ErrorManager::checkErrorRoute();
-
 			$model = Model::getInstance();
 			$routeMD = $model->getRouteInstance;
 			$clientInfoMD = $model->getClientServerInstance;
@@ -32,7 +22,12 @@ class Input extends Manager
 
 			$routeMD->setResponseObject($responseObject);
 			if(GlobalSystem::validateData($httpAction, GlobalSystem::ExpFormatMethods)){
-				return $this->checkInput($clientInfoMD->getRoute(), $_REQUEST);
+				$allowInput = $this->checkInput($clientInfoMD->getRoute(), $_REQUEST);
+
+				if($allowInput){
+					$system = $model->getSystemInstance;
+					return $system->runInitialSystemSettings();
+				}
 			}
 
 			ErrorManager::throwException(ErrorCodes::MetHodExc);
