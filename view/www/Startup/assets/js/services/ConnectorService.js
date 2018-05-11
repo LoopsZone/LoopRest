@@ -8,7 +8,7 @@ class connectorService {
      */
     httpServiceAsync(request) {
         let url = 'http://rest.loopszone:8080';
-        return new Promise(((resolve, reject) = > {
+        return new Promise(((resolve, reject) => {
                 $.post(url, request).done(function (response) {
                 if (response) {
                     try {
