@@ -5,7 +5,7 @@ class ExecutionStepsErrors
 	protected static $errorCodesSteps = [
 		GlobalSystem::StepCheckSecretKey => [
 			GlobalSystem::ExpErrorCode => 101,
-			GlobalSystem::ExpViews => 'Test'
+			GlobalSystem::ExpViews => 'Startup'
 		],
 
 		GlobalSystem::StepCheckAccessSystemDB => [

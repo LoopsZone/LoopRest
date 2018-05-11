@@ -4,7 +4,7 @@ class Views extends Expected_Views
 {
 	private $currentComponent;
 
-	function __construct ($view)
+	function __construct($view)
 	{
 		$model = Model::getInstance();
 		$viewMD = $model->getViewsInstance;

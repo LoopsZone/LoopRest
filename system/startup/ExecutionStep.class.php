@@ -113,7 +113,6 @@ class ExecutionStep extends ExecutionStepsErrors
 			$db = new AccessDB();
 		}catch(Exception $error){
 			self::$errorCodesSteps[$this->stepName][GlobalSystem::ExpErrorLast] = $error;
-
 			return false;
 		}
 
