@@ -57,6 +57,15 @@ class RequestRoute extends Expected
 			self::ExpRouteKeyTrigger => self::ExpErrorTrigger,
 			self::ExpRouteNeedTK => false,
 			self::ExpRoutesWithParams => false
+		],
+		//Startup Action 
+		self::ExpRouteStartup => [
+			self::ExpRouteKeyParams => [
+				self::ExpStartupStep => self::ExpFormatVarchar
+			],
+			self::ExpRouteKeyTrigger => self::ExpStartupTrigger,
+			self::ExpRouteNeedTK => true,
+			self::ExpRoutesWithParams => true
 		]
 	];
 }
