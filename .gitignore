@@ -1,7 +1,7 @@
-logs/
+logs
 vendor/
 system/cache/
-node_modules/
+node_modules
 
 bundle.js
 bundle.js.map
