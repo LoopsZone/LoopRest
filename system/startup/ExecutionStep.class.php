@@ -41,7 +41,7 @@ class ExecutionStep extends ExecutionStepsErrors
     if(key_exists($errorDesc, $exception)){
       $exception = $exception[$errorDesc];
       if($exception[GlobalSystem::ExpErrorCode] == $errorCode){
-        $view = $exception[GlobalSystem::ExpViews];
+        $view = $exception[GlobalSystem::ExpView];
         if(key_exists(GlobalSystem::ExpErrorLast, $exception)){
           if($exception[GlobalSystem::ExpErrorLast]){
             if(key_exists($errorDesc, ExecutionStepsErrors::$stepErrorCodeView)){
@@ -54,13 +54,13 @@ class ExecutionStep extends ExecutionStepsErrors
         }
 
         $request = [
-          GlobalSystem::ExpRouteViews => [
-            GlobalSystem::ExpViews => $view
+          GlobalSystem::ExpRouteView => [
+            GlobalSystem::ExpView => $view
           ]
         ];
 
         $routeMD->setRequest($request);
-        $routeMD->setRoute(GlobalSystem::ExpRouteViews);
+        $routeMD->setRoute(GlobalSystem::ExpRouteView);
 
         return true;
       }

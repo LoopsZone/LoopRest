@@ -1,13 +1,17 @@
 <?php
 
-class Views extends Expected_Views
+class View extends Expected_Views
 {
 	private $currentComponent;
 
-	function __construct($view)
+	function __construct()
 	{
 		$model = Model::getInstance();
 		$viewMD = $model->getViewsInstance;
+		$routeMD = $model->getRouteInstance;
+
+		$routeMD->setResponseObject(false);
+		$view = $routeMD->getRequest(GlobalSystem::ExpView);
 		$target = ($view) ? $view : CoreConfig::PRINCIPAL_VIEW;
 		$viewMD->setView($target);
 	}
@@ -43,7 +47,7 @@ class Views extends Expected_Views
 	 * @param $parent
 	 * @return bool|string
 	 */
-	public function render ($component, $parent)
+	private function render ($component, $parent)
 	{
 		$findIn = ($parent) ? DS . $component : $parent;
 		$target = ($parent) ? "{$parent}." . self::EXT : $component;

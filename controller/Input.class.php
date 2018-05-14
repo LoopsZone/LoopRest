@@ -16,11 +16,8 @@ class Input extends Manager
 			$model = Model::getInstance();
 			$routeMD = $model->getRouteInstance;
 			$clientInfoMD = $model->getClientServerInstance;
-
 			$httpAction = $clientInfoMD->getMethod();
-			$responseObject = ($httpAction != GlobalSystem::ExpMethodGet);
 
-			$routeMD->setResponseObject($responseObject);
 			if(GlobalSystem::validateData($httpAction, GlobalSystem::ExpFormatMethods)){
 				$allowInput = $this->checkInput($clientInfoMD->getRoute(), $_REQUEST);
 
@@ -48,73 +45,65 @@ class Input extends Manager
 	 * @return bool
 	 * @throws Exception
 	 */
-	protected function checkInput($route, $method)
+	private function checkInput($route, $params)
 	{
 		$model = Model::getInstance();
 		$routeMD = $model->getRouteInstance;
+		$serverMD = $model->getClientServerInstance;
 
 		if($route){
-			$validRoute = $this->validRoute($route);
-
-			if($validRoute){
-				$currentRoute = array_shift($route);
+			if($this->validRoute($route)){
+				array_shift($route);
+				$value = array_values($params);
+				$parameter = array_keys($params);
+				$currentRoute = $routeMD->getRoute();
 				$systemRoute = RequestRoute::$routes[$currentRoute];
+				$systemParams = $this->integrationRoute($currentRoute);
 				$routeParams = $systemRoute[GlobalSystem::ExpRouteKeyParams];
-				$treatAsRoute = $systemRoute[GlobalSystem::ExpRoutesWithParams];
 
-				if($treatAsRoute){
-					foreach($routeParams as $key => $value){
-						$method[$key] = current($route);
-						$currentKey = key($route);
-						next($route);
-						unset($route[$currentKey]);
-					}
-				}
-
-				if(!$route){
-					$countParams = count($method);
-					if($countParams){
-						$inconsistentRoute = array_diff_key($routeParams, $method);
-						if(!count($inconsistentRoute)){
-							$serverMD = $model->getClientServerInstance;
-							$authHeader = $serverMD->getHeader(GlobalSystem::ExpHeaderAuth);
-
-							/*Zero value get user access to principal system and one value get structure merchant access*/
-							$auth = (!$authHeader) ? 0 : 1;
-							$routeMD->setAuthorization($auth);
-
-							$request = array();
-							$value = array_values($method);
-							$parameter = array_keys($method);
-
-							foreach($routeParams as $param => $format){
-								for($i = 0; $i < $countParams; $i++){
-									if($param == $parameter[$i]){
-										$request[$currentRoute][$param] = GlobalSystem::validateData($value[$i], $format);
-									}
-								}
+				if($systemParams){
+					array_shift($route);
+					if(count($params) == count($systemParams)){
+						foreach($systemParams as $param){
+							if(!key_exists($param->name, $params)){
+								ErrorManager::throwException(ErrorCodes::HttpParamsExc);
 							}
-
-							$routeMD->setRoute($currentRoute);
-							$routeMD->setRequest($request);
-							$this->validRequestAction($currentRoute);
-
-							return true;
 						}
-
+					}else{
 						ErrorManager::throwException(ErrorCodes::HttpParamsExc);
 					}
 				}
 
-				ErrorManager::throwException(ErrorCodes::HttpParamsExc);
+				foreach($routeParams as $param => $format){
+					if($route){
+						$params[$param] = current($route);
+						$currentKey = key($route);
+						next($route);
+						unset($route[$currentKey]);
+					}
+
+					$request[$currentRoute][$param] = GlobalSystem::validateData($params[$param], $format);
+				}
+
+				$authHeader = $serverMD->getHeader(GlobalSystem::ExpHeaderAuth);
+				$auth = (!$authHeader) ? 0 : 1;/*Zero value get user access to principal system and one value get structure merchant access*/
+
+				$request[$currentRoute] = $params;
+				$routeMD->setRequest($request);
+				$routeMD->setAuthorization($auth);
+				$this->validRequestAction($currentRoute);
+
+				return true;
 			}
+
+			ErrorManager::throwException(ErrorCodes::MetHodExc);
 		}
 
-		if(count($method)){
+		if(count($params)){
 			ErrorManager::throwException(ErrorCodes::HttpParamsExc);
 		}
 
-		$routeMD->setRoute(GlobalSystem::ExpRouteViews);
+		$routeMD->setRoute(GlobalSystem::ExpRouteView);
 
 		return true;
 	}
@@ -124,13 +113,66 @@ class Input extends Manager
 	 *
 	 * @param $route
 	 * @return bool
+	 * @throws Exception
 	 */
 	private function validRoute($route)
 	{
-		return(
-			key_exists($route[0], RequestRoute::$routes) &&
-			!key_exists($route[0], GlobalSystem::UrlRouteNotAllow)
-		);
+		$model = Model::getInstance();
+		$routeMD = $model->getRouteInstance;
+		$currentRoute = array_shift($route);
+		$systemRoute = RequestRoute::$routes;
+
+		if(key_exists($currentRoute, RequestRoute::$routes)){
+			$routeMD->setRoute($currentRoute);
+			$treatAsRoute = $systemRoute[$currentRoute][GlobalSystem::ExpRoutesWithParams];
+
+			if($treatAsRoute){
+				$systemRoute = RequestRoute::$routes[$currentRoute];
+				$routeMethod = $systemRoute[GlobalSystem::ExpRouteMethod];
+
+				$countRoute = count($route);
+				$countSystemRoute = count($routeMethod);
+				if($countRoute == $countSystemRoute && $countRoute == 1){
+					$param = key($routeMethod);
+					$format  = current($routeMethod);
+					$value = GlobalSystem::validateData(current($route), $format);
+					if($value){
+						$routeMD->setMethod($value);
+					}else{
+						ErrorManager::throwException(ErrorCodes::ActionExc);
+					}
+				}
+			}
+
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Check if the route has an integrated class
+	 *
+	 * @param $integration
+	 * @return bool|ReflectionParameter[]
+	 */
+	private function integrationRoute($integration)
+	{
+		$model = Model::getInstance();
+		$routeMD = $model->getRouteInstance;
+		$systemRoute = RequestRoute::$routes;
+		$treatAsRoute = $systemRoute[$integration][GlobalSystem::ExpRoutesWithParams];
+
+		if($treatAsRoute){
+			$route = $routeMD->getRoute();
+			$integrated = class_exists(ucfirst($integration));
+			$method = ($routeMD->getMethod()) ? $routeMD->getMethod() : '__construct';
+			$reflector = new ReflectionMethod($route, $method);
+
+			return $reflector->getParameters();
+		}
+
+		return false;
 	}
 
 	/**

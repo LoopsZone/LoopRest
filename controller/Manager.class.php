@@ -26,12 +26,14 @@ class Manager extends Auth
 
 		try {
 			switch($routeMD->getTrigger()){
+				case GlobalSystem::ExpStartupTrigger:
+					return $this->startup();
 				case GlobalSystem::ExpAuthTrigger:
 					return $this->auth();
 				case GlobalSystem::ExpErrorTrigger:
 					return $this->error();
-				case GlobalSystem::ExpViewsTrigger:
-					return $this->views();
+				case GlobalSystem::ExpViewTrigger:
+					return $this->view();
 				case GlobalSystem::ExpRequestTrigger:
 					return $this->request();
 				default: ErrorManager::throwException(ErrorCodes::ActionExc);
@@ -160,7 +162,7 @@ class Manager extends Auth
     $executionStepNeedStart = ExecutionStep::stepErrorView();
 
     if($executionStepNeedStart){
-      return $this->views();
+      return $this->view();
     }
 
     return [$routeMD->getRoute() => $errorRequest];
@@ -171,13 +173,29 @@ class Manager extends Auth
 	 *
 	 * @return string
 	 */
-	private function views()
+	private function view()
+	{
+		$views = new View();
+		return $views->routingView();
+	}
+
+	/**
+	 * Startup route for initial system settings
+	 *
+	 * @return mixed
+	 */
+	private function startup()
 	{
 		$model = Model::getInstance();
 		$routeMD = $model->getRouteInstance;
-		$routeMD->setResponseObject(false);
-		$views = new Views($routeMD->getRequest(GlobalSystem::ExpViews));
 
-		return $views->routingView();
+		$class = $routeMD->getRoute();
+		$method = $routeMD->getMethod();
+		$arguments = $routeMD->getRequest();
+
+		$class = ucfirst($class);
+		$classMethod = new ReflectionMethod($class, $method);
+
+		return $classMethod->invokeArgs(new $class(), $arguments);
 	}
 }

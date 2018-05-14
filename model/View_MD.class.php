@@ -1,17 +1,17 @@
 <?php
 
-class Views_MD
+class View_MD
 {
 	private $view;
 	private static $singleton;
 
 	/**
-	 * @return Views_MD
+	 * @return View_MD
 	 */
 	public static function getInstance()
 	{
 		if(is_null(self::$singleton)){
-			self::$singleton = new Views_MD();
+			self::$singleton = new View_MD();
 		}
 
 		return self::$singleton;

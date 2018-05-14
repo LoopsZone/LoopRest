@@ -11,7 +11,7 @@ class Response extends ModelsTracking
 	 * Response constructor.
 	 * @param $response
 	 */
-	function __construct ($response)
+	function __construct($response)
 	{
 		$model = Model::getInstance();
 		$routeMD = $model->getRouteInstance;

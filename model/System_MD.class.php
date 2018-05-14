@@ -24,14 +24,19 @@ class System_MD
    */
   public function runInitialSystemSettings()
   {
-  	try {
-  		$step = new ExecutionStep();
-      $this->secretUniqueKey = $step->checkSecretKey;
-      $dbHostConnexion = $step->checkConnexionHostDB;
-      $accessDB = $step->checkAccessSystemDB;
-	  }catch(Exception $error){
-		  ErrorManager::onErrorRoute($error);
-	  }
+    $model = Model::getInstance();
+    $routeMD = $model->getRouteInstance;
+    $route = $routeMD->getRoute();
+    if($route != GlobalSystem::ExpRouteStartup){
+      try {
+        $step = new ExecutionStep();
+        $this->secretUniqueKey = $step->checkSecretKey;
+        $dbHostConnexion = $step->checkConnexionHostDB;
+        $accessDB = $step->checkAccessSystemDB;
+      }catch(Exception $error){
+        ErrorManager::onErrorRoute($error);
+      }
+    }
 
     return true;
   }

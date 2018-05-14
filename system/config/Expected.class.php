@@ -51,9 +51,9 @@ class Expected
 	const ExpErrorTrigger = 'ERROR';
 
 	//Set Error routes expected names
-	const ExpRouteViews = 'views';
-	const ExpViews = 'vw';
-	const ExpViewsTrigger = 'VIEWS';
+	const ExpRouteView = 'view';
+	const ExpView = 'vw';
+	const ExpViewTrigger = 'VIEW';
 
 	//Set Error routes expected names
 	const ExpRouteStartup = 'startup';
@@ -62,6 +62,7 @@ class Expected
 
 	//Set Keys name to expected routes params
 	const ExpRouteNeedTK = 'needTK';
+	const ExpRouteMethod = 'method';
 	const ExpRouteKeyParams = 'params';
 	const ExpRouteKeyTrigger = 'trigger';
 	const ExpErrorKeyException = 'exception';

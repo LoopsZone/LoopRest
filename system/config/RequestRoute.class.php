@@ -13,25 +13,36 @@ class RequestRoute extends Expected
 	 * @var array
 	 */
 	public static $routes = [
-		//VIEWS Action
-		self::ExpRouteViews => [
-			self::ExpRouteKeyParams => [
-				self::ExpViews => self::ExpFormatVarchar
+		//Startup Action
+		self::ExpRouteStartup => [
+			self::ExpRouteMethod => [
+				self::ExpStartupStep => self::ExpFormatVarchar
 			],
-			self::ExpRouteKeyTrigger => self::ExpViewsTrigger,
-			self::ExpRouteNeedTK => false,
+			self::ExpRouteKeyTrigger => self::ExpStartupTrigger,
+			self::ExpRouteNeedTK => true,
 			self::ExpRoutesWithParams => true
 		],
+
 		//Request Action
 		self::ExpRouteRequest => [
-			self::ExpRouteKeyParams => [
-				self::ExpRequestToken => self::ExpFormatVarchar,
+			self::ExpRouteMethod => [
 				self::ExpRequestRequest => self::ExpFormatVarchar
 			],
 			self::ExpRouteKeyTrigger => self::ExpRequestTrigger,
 			self::ExpRouteNeedTK => true,
 			self::ExpRoutesWithParams => true
 		],
+
+		//VIEWS Action
+		self::ExpRouteView => [
+			self::ExpRouteKeyParams => [
+				self::ExpView => self::ExpFormatVarchar
+			],
+			self::ExpRouteKeyTrigger => self::ExpViewTrigger,
+			self::ExpRouteNeedTK => false,
+			self::ExpRoutesWithParams => false
+		],
+
 		//AUTH action
 		self::ExpRouteAuth => [
 			self::ExpRouteKeyParams => [
@@ -44,6 +55,7 @@ class RequestRoute extends Expected
 			self::ExpRouteNeedTK => false,
 			self::ExpRoutesWithParams => false
 		],
+
 		//Error Action
 		self::ExpRouteError => [
 			self::ExpRouteKeyParams => [
@@ -57,15 +69,6 @@ class RequestRoute extends Expected
 			self::ExpRouteKeyTrigger => self::ExpErrorTrigger,
 			self::ExpRouteNeedTK => false,
 			self::ExpRoutesWithParams => false
-		],
-		//Startup Action 
-		self::ExpRouteStartup => [
-			self::ExpRouteKeyParams => [
-				self::ExpStartupStep => self::ExpFormatVarchar
-			],
-			self::ExpRouteKeyTrigger => self::ExpStartupTrigger,
-			self::ExpRouteNeedTK => true,
-			self::ExpRoutesWithParams => true
 		]
 	];
 }

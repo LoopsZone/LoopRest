@@ -4,10 +4,11 @@ class Route_MD
 {
 	private $route;
 	private $action;
+	private $method;
 	private $trigger;
 	private $authorization;
-	private $responseObject;
 	private $request = array();
+	private $responseObject = true;
 
 	private static $singleton;
 
@@ -181,5 +182,21 @@ class Route_MD
 	public  function setResponseObject($responseObject)
 	{
 		$this->responseObject = $responseObject;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getMethod()
+	{
+		return $this->method;
+	}
+
+	/**
+	 * @param mixed $method
+	 */
+	public function setMethod($method)
+	{
+		$this->method = $method;
 	}
 }

@@ -22,7 +22,7 @@ class AutoLoad
 	 * @param $className
 	 * @return bool
 	 */
-	static public function loadClass($className)
+	public static function loadClass($className)
 	{
 		$systemPath = Cache::getDocument(self::CacheDocSystemPath);
 
@@ -45,7 +45,7 @@ class AutoLoad
 	 * @param string $directory
 	 * @return bool
 	 */
-	static public function findClass($className, $directory = DIRECTORY)
+	private static function findClass($className, $directory = DIRECTORY)
 	{
 		$filePath = $directory . $className . CoreConfig::SUFFIX_FILE;
 

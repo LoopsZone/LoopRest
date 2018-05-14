@@ -14,7 +14,7 @@ class Auth extends Access
 	 * @param $request
 	 * @return mixed
 	 */
-	protected static function getData ($token, $request)
+	protected static function getData($token, $request)
 	{
 		$user = Token::getData($token);
 		return $user;//$this->auth->search($request.'/'.$user->id,TRUE);
@@ -61,7 +61,7 @@ class Auth extends Access
 	 * @param $user
 	 * @return int
 	 */
-	protected function checkUserAccess ($user)
+	protected function checkUserAccess($user)
 	{
 		$users = array_values(CoreConfig::$rootUsers);
 		return (!in_array($user, $users)) ? 0 : 1;
@@ -74,6 +74,8 @@ class Auth extends Access
 			$routeExecuting = RequestRoute::$routes[$route];
 			return $routeExecuting[GlobalSystem::ExpRouteNeedTK];
 		}
+
+		return false;
 	}
 
 	private function checkAllowIp ()

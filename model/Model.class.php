@@ -62,11 +62,11 @@ class Model extends ModelsTracking
 	 * Model
 	 * get a singleton instance of Views_MD
 	 *
-	 * @return Views_MD
+	 * @return View_MD
 	 */
 	private function getViewsInstance()
 	{
-		return Views_MD::getInstance();
+		return View_MD::getInstance();
 	}
 
 	/**
