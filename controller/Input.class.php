@@ -7,14 +7,15 @@
  */
 class Input extends Manager
 {
-	/**
-	 * Route action to execute set to params
-	 */
+  /**
+   * Route action to execute set to params
+   *
+   * @return bool
+   */
 	public function request()
 	{
 		try{
 			$model = Model::getInstance();
-			$routeMD = $model->getRouteInstance;
 			$clientInfoMD = $model->getClientServerInstance;
 			$httpAction = $clientInfoMD->getMethod();
 
