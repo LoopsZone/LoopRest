@@ -8,13 +8,16 @@ class ClientServer_MD
 	private $route;
 	private $domain;
 	private $method;
+	private $request;
 	private $headers;
 	private $userAgent;
 	static private $singleton;
 
 	private function __construct()
 	{
+		
 		$this->ip = $this->setIp();
+		$this->request = $_REQUEST;
 		$this->host = $_SERVER['HTTP_HOST'];
 		$this->url = $_SERVER['REQUEST_URI'];
 		$this->domain = $_SERVER['SERVER_NAME'];
@@ -160,5 +163,13 @@ class ClientServer_MD
 	public function getRoute()
 	{
 		return $this->route;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getRequest()
+	{
+		return $this->request;
 	}
 }

@@ -13,22 +13,13 @@ class Input extends Manager
 	public function request()
 	{
 		try{
-			$model = Model::getInstance();
-			$routeMD = $model->getRouteInstance;
-			$clientInfoMD = $model->getClientServerInstance;
-			$httpAction = $clientInfoMD->getMethod();
+			$allowInput = $this->checkInput();
 
-			if(GlobalSystem::validateData($httpAction, GlobalSystem::ExpFormatMethods)){
-				$allowInput = $this->checkInput($clientInfoMD->getRoute(), $_REQUEST);
-
-				if($allowInput){
-					$system = $model->getSystemInstance;
-					return $system->runInitialSystemSettings();
-				}
+			if($allowInput){
+				$model = Model::getInstance();
+				$system = $model->getSystemInstance;
+				return $system->runInitialSystemSettings();
 			}
-
-			ErrorManager::throwException(ErrorCodes::MetHodExc);
-
 		}catch(Exception $error){
 			ErrorManager::onErrorRoute($error);
 		}
@@ -45,67 +36,28 @@ class Input extends Manager
 	 * @return bool
 	 * @throws Exception
 	 */
-	private function checkInput($route, $params)
+	private function checkInput()
 	{
 		$model = Model::getInstance();
 		$routeMD = $model->getRouteInstance;
 		$serverMD = $model->getClientServerInstance;
 
-		if($route){
-			if($this->validRoute($route)){
-				array_shift($route);
-				$value = array_values($params);
-				$parameter = array_keys($params);
-				$currentRoute = $routeMD->getRoute();
-				$systemRoute = RequestRoute::$routes[$currentRoute];
-				$systemParams = $this->integrationRoute($currentRoute);
-				$routeParams = $systemRoute[GlobalSystem::ExpRouteKeyParams];
+		$httpAction = $serverMD->getMethod();
+		$availableMethod = GlobalSystem::validateData($httpAction, GlobalSystem::ExpFormatMethods);
 
-				if($systemParams){
-					array_shift($route);
-					if(count($params) == count($systemParams)){
-						foreach($systemParams as $param){
-							if(!key_exists($param->name, $params)){
-								ErrorManager::throwException(ErrorCodes::HttpParamsExc);
-							}
-						}
-					}else{
-						ErrorManager::throwException(ErrorCodes::HttpParamsExc);
-					}
-				}
-
-				foreach($routeParams as $param => $format){
-					if($route){
-						$params[$param] = current($route);
-						$currentKey = key($route);
-						next($route);
-						unset($route[$currentKey]);
-					}
-
-					$request[$currentRoute][$param] = GlobalSystem::validateData($params[$param], $format);
-				}
-
-				$authHeader = $serverMD->getHeader(GlobalSystem::ExpHeaderAuth);
-				$auth = (!$authHeader) ? 0 : 1;/*Zero value get user access to principal system and one value get structure merchant access*/
-
-				$request[$currentRoute] = $params;
-				$routeMD->setRequest($request);
-				$routeMD->setAuthorization($auth);
-				$this->validRequestAction($currentRoute);
-
-				return true;
-			}
-
-			ErrorManager::throwException(ErrorCodes::MetHodExc);
+		if($availableMethod){
+			$this->validRoute();
+			$this->integrationRoute();
+			
+			$authHeader = $serverMD->getHeader(GlobalSystem::ExpHeaderAuth);
+			$auth = (!$authHeader) ? 0 : 1;/*Zero value get user access to principal system and one value get structure merchant access*/
+			
+			$routeMD->setAuthorization($auth);
+			
+			return true;
 		}
 
-		if(count($params)){
-			ErrorManager::throwException(ErrorCodes::HttpParamsExc);
-		}
-
-		$routeMD->setRoute(GlobalSystem::ExpRouteView);
-
-		return true;
+		ErrorManager::throwException(ErrorCodes::MetHodExc);
 	}
 
 	/**
@@ -115,33 +67,46 @@ class Input extends Manager
 	 * @return bool
 	 * @throws Exception
 	 */
-	private function validRoute($route)
+	private function validRoute()
 	{
 		$model = Model::getInstance();
 		$routeMD = $model->getRouteInstance;
-		$currentRoute = array_shift($route);
-		$systemRoute = RequestRoute::$routes;
 
-		if(key_exists($currentRoute, RequestRoute::$routes)){
+		$route = $routeMD->getRoute();
+		$currentRoute = array_shift($route);
+
+		$systemRoute = RequestRoute::$routes;
+		$currentRoute = $this->translateSystemRoute($currentRoute);
+
+		if(key_exists($currentRoute, $systemRoute)){
+			$countRoute = count($route);
 			$routeMD->setRoute($currentRoute);
+			$systemRoute = RequestRoute::$routes[$currentRoute];
 			$treatAsRoute = $systemRoute[$currentRoute][GlobalSystem::ExpRoutesWithParams];
 
 			if($treatAsRoute){
-				$systemRoute = RequestRoute::$routes[$currentRoute];
 				$routeMethod = $systemRoute[GlobalSystem::ExpRouteMethod];
 
-				$countRoute = count($route);
 				$countSystemRoute = count($routeMethod);
-				if($countRoute == $countSystemRoute && $countRoute == 1){
+				if($countRoute == $countSystemRoute){
 					$param = key($routeMethod);
 					$format  = current($routeMethod);
-					$value = GlobalSystem::validateData(current($route), $format);
-					if($value){
-						$routeMD->setMethod($value);
+					$nextMethod = array_shift($route);
+					$method = GlobalSystem::validateData($nextMethod, $format);
+					if($method){
+						$routeMD->setMethod($method);
 					}else{
 						ErrorManager::throwException(ErrorCodes::ActionExc);
 					}
 				}
+
+				ErrorManager::throwException(ErrorCodes::ActionExc);
+			}
+
+			
+			
+			if(count($route)){
+				ErrorManager::throwException(ErrorCodes::HttpParamsExc);
 			}
 
 			return true;
@@ -156,23 +121,51 @@ class Input extends Manager
 	 * @param $integration
 	 * @return bool|ReflectionParameter[]
 	 */
-	private function integrationRoute($integration)
+	private function integrationRoute()
 	{
 		$model = Model::getInstance();
 		$routeMD = $model->getRouteInstance;
 		$systemRoute = RequestRoute::$routes;
+		$serverMD = $model->getClientServerInstance;
+
+		$integration = $routeMD->getRoute();
 		$treatAsRoute = $systemRoute[$integration][GlobalSystem::ExpRoutesWithParams];
 
 		if($treatAsRoute){
 			$route = $routeMD->getRoute();
-			$integrated = class_exists(ucfirst($integration));
-			$method = ($routeMD->getMethod()) ? $routeMD->getMethod() : '__construct';
-			$reflector = new ReflectionMethod($route, $method);
+			$integrated = ucfirst($integration);
 
-			return $reflector->getParameters();
+			if(class_exists($integrated)){
+				$currentIntegration = new $integrated();
+				$method = ($routeMD->getMethod()) ? $routeMD->getMethod() : '__construct';
+
+				$methodIntegrated = method_exists($currentIntegration, $method);
+
+				if($methodIntegrated){
+					$reflector = new ReflectionMethod($route, $method);
+					$systemParams = $reflector->getParameters();
+
+					if($systemParams){
+						$routeParams = $serverMD->getRequest();
+
+						$countRoute = count($routeParams);
+						$countSystemRoute = count($systemParams);
+
+						if($countRoute == $countSystemRoute){
+							foreach($systemParams as $param => $format){
+								$key = $systemParams[$param]->name;
+								if(key_exists($key, $routeParams)){
+									$request[$route][$key] = $routeParams[$key];
+								}
+							}
+
+							$routeMD->setRequest($request);
+							$this->validRequestAction($request);
+						}
+					}
+				}
+			}
 		}
-
-		return false;
 	}
 
 	/**
@@ -193,5 +186,14 @@ class Input extends Manager
 		}
 
 		return false;
+	}
+	
+	private function translateSystemRoute($route)
+	{
+		if($route != GlobalSystem::ExpRouteStartup){
+			//TODO translate route in model DB
+		}
+
+		return $route;
 	}
 }
