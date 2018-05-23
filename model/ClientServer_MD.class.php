@@ -105,7 +105,7 @@ class ClientServer_MD
 	{
 		return $this->host;
 	}
-	
+
 	/**
 	 * @return mixed
 	 */
@@ -113,7 +113,7 @@ class ClientServer_MD
 	{
 		return $this->method;
 	}
-	
+
 	/**
 	 * @return array
 	 */
@@ -121,7 +121,7 @@ class ClientServer_MD
 	{
 		return $this->headers;
 	}
-	
+
 	/**
 	 * @return mixed
 	 */
@@ -130,22 +130,22 @@ class ClientServer_MD
 		return $this->userAgent;
 	}
 
-    /**
-     * Get All Headers
-     *
-     * @return array
-     */
+  /**
+   * Get All Headers
+   *
+   * @return array
+   */
 	private function getAllHeaders()
-    {
-        $headers = [];
-        foreach ($_SERVER as $name => $value){
-            if (substr($name, 0, 5) == 'HTTP_'){
-                $headers[str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5)))))] = $value;
-            }
-        }
-
-        return $headers;
+  {
+    $headers = [];
+    foreach($_SERVER as $name => $value){
+      if(substr($name, 0, 5) == 'HTTP_'){
+        $headers[str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5)))))] = $value;
+      }
     }
+
+    return $headers;
+  }
 
 	/**
 	 * Get current header request
