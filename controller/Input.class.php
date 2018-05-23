@@ -20,7 +20,7 @@ class Input extends Manager
 			if($allowInput){
 				$model = Model::getInstance();
 				$system = $model->getSystemInstance;
-				return true;//$system->runInitialSystemSettings();
+				return $system->runInitialSystemSettings();
 			}
 		}catch(Exception $error){
 			ErrorManager::onErrorRoute($error);
