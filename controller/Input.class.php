@@ -99,28 +99,19 @@ class Input extends Manager
 						ErrorManager::throwException(ErrorCodes::ActionExc);
 					}
 				}
-
-				ErrorManager::throwException(ErrorCodes::ActionExc);
-			}
-
-			
-			
-			if(count($route)){
-				ErrorManager::throwException(ErrorCodes::HttpParamsExc);
 			}
 
 			return true;
 		}
 
-		return false;
+        ErrorManager::throwException(ErrorCodes::ActionExc);
 	}
 
-	/**
-	 * Check if the route has an integrated class
-	 *
-	 * @param $integration
-	 * @return bool|ReflectionParameter[]
-	 */
+    /**
+     * Check if the route has an integrated class
+     *
+     * @throws ReflectionException
+     */
 	private function integrationRoute()
 	{
 		$model = Model::getInstance();
@@ -166,6 +157,21 @@ class Input extends Manager
 				}
 			}
 		}
+
+        foreach($routeParams as $param => $format){
+            if($route){
+                $params[$param] = current($route);
+                $currentKey = key($route);
+                next($route);
+                unset($route[$currentKey]);
+            }
+
+            $request[$currentRoute][$param] = GlobalSystem::validateData($params[$param], $format);
+        }
+
+        if(count($route)){
+            ErrorManager::throwException(ErrorCodes::HttpParamsExc);
+        }
 	}
 
 	/**

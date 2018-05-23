@@ -15,13 +15,12 @@ class ClientServer_MD
 
 	private function __construct()
 	{
-		
 		$this->ip = $this->setIp();
 		$this->request = $_REQUEST;
 		$this->host = $_SERVER['HTTP_HOST'];
 		$this->url = $_SERVER['REQUEST_URI'];
 		$this->domain = $_SERVER['SERVER_NAME'];
-		$this->headers = apache_request_headers();
+		$this->headers = $this->getAllHeaders();
 		$this->method = $_SERVER['REQUEST_METHOD'];
 		$this->userAgent = $_SERVER['HTTP_USER_AGENT'];
 
@@ -130,6 +129,23 @@ class ClientServer_MD
 	{
 		return $this->userAgent;
 	}
+
+    /**
+     * Get All Headers
+     *
+     * @return array
+     */
+	private function getAllHeaders()
+    {
+        $headers = [];
+        foreach ($_SERVER as $name => $value){
+            if (substr($name, 0, 5) == 'HTTP_'){
+                $headers[str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5)))))] = $value;
+            }
+        }
+
+        return $headers;
+    }
 
 	/**
 	 * Get current header request
