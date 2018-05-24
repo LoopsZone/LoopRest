@@ -92,10 +92,19 @@ class Auth extends Access
 	{
 	
 	}
-	
-	private function giveAccess ()
+
+	/**
+	 * Give access system level
+	 */
+	protected function giveAccess()
 	{
-	
+		$model = Model::getInstance();
+		$routeMD = $model->getRouteInstance;
+		$clientServerMD = $model->getClientServerInstance;
+		$authHeader = $clientServerMD->getHeader(GlobalSystem::ExpHeaderAuth);
+		$auth = (!$authHeader) ? 0 : 1;/*Zero value get user access to principal system and one value get structure merchant access*/
+
+		$routeMD->setAuthorization($auth);
 	}
 	
 	private function getCountryByIp ()

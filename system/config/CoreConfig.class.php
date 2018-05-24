@@ -32,6 +32,11 @@ class CoreConfig
    */
   const CACHE_PATH = DIRECTORY . 'system' . DS . 'cache';
 
+	/**
+	 * Cache document translate routes
+	 */
+  const CACHE_TRANSLATE_ROUTES = 'TRANSLATE_ROUTES';
+
   /**
    * Cache file format
    */

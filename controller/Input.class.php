@@ -35,6 +35,7 @@ class Input extends Manager
    * Or return principal view to home system configured if not exist data input
    *
    * @return bool
+   * @throws Exception
    * @throws ReflectionException
    */
 	private function checkInput()
@@ -48,19 +49,13 @@ class Input extends Manager
 
 		if($availableMethod){
 			$this->validRoute();
+			$this->giveAccess();
 			$this->integrationRoute();
-
-			$authHeader = $clientServerMD->getHeader(GlobalSystem::ExpHeaderAuth);
-			$auth = (!$authHeader) ? 0 : 1;/*Zero value get user access to principal system and one value get structure merchant access*/
-
-			$routeMD->setAuthorization($auth);
 
 			return true;
 		}
 
-		ErrorManager::throwException(ErrorCodes::MetHodExc);
-
-		return false;
+		ErrorManager::throwException(ErrorCodes::HttpMetHodExc);
 	}
 
   /**
@@ -107,23 +102,24 @@ class Input extends Manager
           if(count($route)) {
             $value = array_shift($route);
             $request[$currentRoute][$param] = GlobalSystem::validateData($value, $format);
-
-            $routeMD->setRequest($request);
-            $this->validRequestAction($request);
           }else{
             ErrorManager::throwException(ErrorCodes::HttpParamsExc);
           }
         }
 
-        if(count($clientServerMD->getRequest())){
+				$routeMD->setRequest($request);
+				$this->validRequestAction($request);
+
+				$params = array_merge($clientServerMD->getRequest(), $route);
+        if(count($params)){
           ErrorManager::throwException(ErrorCodes::HttpParamsExc);
         }
       }
 
-			return true;
+      return true;
 		}
 
-		if(!count($route) && !count($clientServerMD->getRequest())){
+		if(!count($currentRoute) && !count($clientServerMD->getRequest())){
       $request[GlobalSystem::ExpRouteView][GlobalSystem::ExpView] = CoreConfig::PRINCIPAL_VIEW;
 
       $routeMD->setRequest($request);
@@ -133,15 +129,39 @@ class Input extends Manager
     }
 
     ErrorManager::throwException(ErrorCodes::ActionExc);
-
-		return false;
 	}
 
-    /**
-     * Check if the route has an integrated class
-     *
-     * @throws ReflectionException
-     */
+	/**
+	 * Translate route request to system route
+	 *
+	 * @param $route
+	 * @return bool|mixed
+	 * @throws Exception
+	 */
+	private function translateSystemRoute($route)
+	{
+		if($route != GlobalSystem::ExpRouteStartup){
+			if(!key_exists($route, RequestRoute::$routes)){
+				$translateRoutes = Cache::getDocument(CoreConfig::CACHE_TRANSLATE_ROUTES);
+
+				if(key_exists($route, $translateRoutes)){
+					return $translateRoutes[$route];
+				}
+
+				return false;
+			}
+		}
+
+		return $route;
+	}
+
+	/**
+	 * Check if the route has an integrated class
+	 *
+	 * @return bool
+	 * @throws Exception
+	 * @throws ReflectionException
+	 */
 	private function integrationRoute()
 	{
 		$model = Model::getInstance();
@@ -179,12 +199,20 @@ class Input extends Manager
 									$request[$integration][$key] = $routeParams[$key];
                   $routeMD->setRequest($request);
                   $this->validRequestAction($request);
+
+                  return true;
 								}
 							}
 						}
+
+						ErrorManager::throwException(ErrorCodes::HttpParamsExc);
 					}
 				}
+
+				ErrorManager::throwException(ErrorCodes::MetHodExc);
 			}
+
+			ErrorManager::throwException(ErrorCodes::ActionExc);
 		}
 	}
 
@@ -206,14 +234,5 @@ class Input extends Manager
 		}
 
 		return false;
-	}
-
-	private function translateSystemRoute($route)
-	{
-		if($route != GlobalSystem::ExpRouteStartup){
-			//TODO translate route in model DB
-		}
-
-		return $route;
 	}
 }
