@@ -1,4 +1,9 @@
 import {ConnectorService} from './services/ConnectorService'
 
-let connector = new ConnectorService();
-connector.httpServiceAsync('test');
+$('#btnSecretKey').click(function () {
+    let value = $('#secretUniqueKey').val();
+    let connector = new ConnectorService();
+    connector.httpServiceAsync({
+        key : value
+    });
+});

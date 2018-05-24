@@ -119,7 +119,7 @@ class Input extends Manager
       return true;
 		}
 
-		if(!count($currentRoute) && !count($clientServerMD->getRequest())){
+		if(!$currentRoute && !count($clientServerMD->getRequest())){
       $request[GlobalSystem::ExpRouteView][GlobalSystem::ExpView] = CoreConfig::PRINCIPAL_VIEW;
 
       $routeMD->setRequest($request);

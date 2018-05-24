@@ -4,26 +4,19 @@ class connectorService {
      * Http post service that returns a Promise
      *
      * @param request
-     * @returns {Promise}
+     * @param action
+     * @returns {Promise<any>}
      */
-    httpServiceAsync(request) {
-        let url = 'http://rest.loopszone:8080';
+    httpServiceAsync(request, action) {
+        let url = '/startup/secretKey';
         return new Promise(((resolve, reject) => {
                 $.post(url, request).done(function (response) {
                 if (response) {
                     try {
                         let dataResponse = JSON.parse(response);
 
-                        if (dataResponse && dataResponse.state === 'expired') {
-                            onResponseService.processResponse(actions.USER_MESSAGE, dataResponse.userMessage);
-                            reject(dataResponse);
-                        } else if (dataResponse && dataResponse.state !== 'ok') {
-                            onResponseService.processResponse(actions.USER_MESSAGE, {userMessage: dataResponse.userMessage});
-                            reject(dataResponse.userMessage);
-                        } else if (dataResponse && dataResponse.response) {
+                        if (dataResponse) {
                             resolve(dataResponse);
-                        } else {
-                            resolve([]);
                         }
                     } catch (e) {
                         console.log(e.message);
