@@ -20,8 +20,9 @@ class Response extends ModelsTracking
 			$response = json_encode($response);
 		}
 
-		if(false){
-			$response = ($_GET["callback"] . "({$response});");
+		$callback = $routeMD->getCallback();
+		if($callback){
+			$response = ("{$callback}({$response});");
 		}
 
 		self::$readyResponse = true;

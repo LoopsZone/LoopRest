@@ -1,11 +1,11 @@
-import {ConnectorService} from './services/ConnectorService'
+import {ConnectorService} from './../../../common/js/ConnectorService'
 
-$('#btnSecretKey').click(function () {
+$('#btnSecretKey').click(function(){
     let value = $('#secretUniqueKey').val();
-    let connector = new ConnectorService();
-    connector.httpServiceAsync({
-        key : value
-    }).done(function (response) {
+
+    let request = {key : value};
+    ConnectorService.makeStartupRequest('secretKey', request).then((response) => {
         alert(response)
-    });
+    };
+)
 });

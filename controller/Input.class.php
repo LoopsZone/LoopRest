@@ -41,7 +41,6 @@ class Input extends Manager
 	private function checkInput()
 	{
 		$model = Model::getInstance();
-		$routeMD = $model->getRouteInstance;
 		$clientServerMD = $model->getClientServerInstance;
 
 		$httpAction = $clientServerMD->getMethod();
@@ -188,8 +187,17 @@ class Input extends Manager
 					$systemParams = $reflector->getParameters();
 
 					if($systemParams){
-						$countRoute = count($routeParams);
-						$countSystemRoute = count($systemParams);
+            $countRoute = count($routeParams);
+            $countSystemRoute = count($systemParams);
+
+					  if(CoreConfig::DEV && key_exists(CoreConfig::XDEBUG_KEY, $routeParams)){
+					    $countRoute--;
+            }
+
+            if(key_exists(GlobalSystem::CallbackKey, $routeParams)){
+              $countRoute--;
+              $routeMD->setCallback($routeParams[GlobalSystem::CallbackKey]);
+            }
 
 						if($countRoute == $countSystemRoute){
 							foreach($systemParams as $param => $format){

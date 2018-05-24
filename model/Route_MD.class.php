@@ -7,6 +7,7 @@ class Route_MD
 	private $method;
 	private $trigger;
 	private $authorization;
+  private $callback = false;
 	private $request = array();
 	private $responseObject = true;
 
@@ -199,4 +200,20 @@ class Route_MD
 	{
 		$this->method = $method;
 	}
+
+  /**
+   * @return string
+   */
+  public function getCallback()
+  {
+    return $this->callback;
+  }
+
+  /**
+   * @param string $callback
+   */
+  public function setCallback($callback)
+  {
+    $this->callback = $callback;
+  }
 }

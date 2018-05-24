@@ -14,6 +14,8 @@ class GlobalConstants extends Expected
 	const ExpMethodPost = 'POST';
 	const ExpMethodDelete = 'DELETE';
 
+	const CallbackKey = 'callback';
+
 	const ExpAvailableMethods = [
 		self::ExpMethodGet,
 		self::ExpMethodPut,

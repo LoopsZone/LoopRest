@@ -14,12 +14,12 @@ class ErrorCodes
 		GlobalSystem::ExpErrorCode => 1,
 		GlobalSystem::ExpErrorDesc => 'Http method no implemented'
 	];
-	
+
 	const ActionExc = [
 		GlobalSystem::ExpErrorCode => 2,
 		GlobalSystem::ExpErrorDesc => 'Action selected no valid'
 	];
-	
+
 	const MetHodExc = [
 		GlobalSystem::ExpErrorCode => 3,
 		GlobalSystem::ExpErrorDesc => 'Method selected no valid or implemented'

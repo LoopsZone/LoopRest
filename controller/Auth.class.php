@@ -67,6 +67,12 @@ class Auth extends Access
 		return (!in_array($user, $users)) ? 0 : 1;
 	}
 
+  /**
+   * Check if route need token
+   *
+   * @param $route
+   * @return bool
+   */
 	private static function routeNeedTK($route)
 	{
 		if(key_exists($route, RequestRoute::$routes))
@@ -78,17 +84,17 @@ class Auth extends Access
 		return false;
 	}
 
-	private function checkAllowIp ()
+	private function checkAllowIp()
 	{
 	
 	}
-	
-	private function checkAllowCountry ()
+
+	private function checkAllowCountry()
 	{
 	
 	}
-	
-	private function checkAllowClient ()
+
+	private function checkAllowClient()
 	{
 	
 	}
@@ -107,22 +113,22 @@ class Auth extends Access
 		$routeMD->setAuthorization($auth);
 	}
 	
-	private function getCountryByIp ()
+	private function getCountryByIp()
+	{
+	
+	}
+
+	private function watchClient()
 	{
 	
 	}
 	
-	private function watchClient ()
+	private function banClient()
 	{
 	
 	}
-	
-	private function banClient ()
-	{
-	
-	}
-	
-	private function washClient ()
+
+	private function washClient()
 	{
 	
 	}
