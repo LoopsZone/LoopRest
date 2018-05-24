@@ -5,5 +5,7 @@ $('#btnSecretKey').click(function () {
     let connector = new ConnectorService();
     connector.httpServiceAsync({
         key : value
+    }).done(function (response) {
+        alert(response)
     });
 });

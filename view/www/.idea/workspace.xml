@@ -19,13 +19,18 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Startup.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Startup.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Startup/assets/js/Startup.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
-              <caret line="1" lean-forward="true" selection-start-line="1" selection-end-line="1" />
+            <state relative-caret-position="153">
+              <caret line="9" column="7" lean-forward="true" selection-start-line="9" selection-start-column="7" selection-end-line="9" selection-end-column="7" />
             </state>
           </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ConnectorService.js" pinned="false" current-in-tab="false">
+        <entry file="mock://webpack:///./Startup/assets/js/services/ConnectorService.js">
+          <provider selected="true" editor-type-id="vmFileEditor" />
         </entry>
       </file>
       <file leaf-file-name="Startup.html" pinned="false" current-in-tab="false">
@@ -37,11 +42,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ConnectorService.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="ConnectorService.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Startup/assets/js/services/ConnectorService.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="159">
-              <caret line="10" column="19" selection-start-line="10" selection-start-column="19" selection-end-line="10" selection-end-column="19" />
+            <state relative-caret-position="98">
+              <caret line="20" column="17" lean-forward="true" selection-start-line="20" selection-start-column="17" selection-end-line="20" selection-end-column="17" />
             </state>
           </provider>
         </entry>
@@ -72,9 +77,9 @@
         <option value="rest.loopszone:8080/view/www/Startup/assets/js/bundle.js" />
         <option value="$PROJECT_DIR$/Home/Home.html" />
         <option value="$PROJECT_DIR$/webpack.config.js" />
-        <option value="$PROJECT_DIR$/Startup/assets/js/Startup.js" />
         <option value="$PROJECT_DIR$/Startup/Startup.html" />
         <option value="$PROJECT_DIR$/Startup/assets/js/services/ConnectorService.js" />
+        <option value="$PROJECT_DIR$/Startup/assets/js/Startup.js" />
       </list>
     </option>
   </component>
@@ -120,6 +125,13 @@
               <item name="www" type="462c0819:PsiDirectoryNode" />
               <item name="Startup" type="462c0819:PsiDirectoryNode" />
               <item name="assets" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="www" type="b2602c69:ProjectViewProjectNode" />
+              <item name="www" type="462c0819:PsiDirectoryNode" />
+              <item name="Startup" type="462c0819:PsiDirectoryNode" />
+              <item name="assets" type="462c0819:PsiDirectoryNode" />
+              <item name="js" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -229,27 +241,27 @@
       <workItem from="1526309638439" duration="4752000" />
       <workItem from="1526348888253" duration="220000" />
       <workItem from="1526349220370" duration="1168000" />
-      <workItem from="1527138510881" duration="1221000" />
+      <workItem from="1527138510881" duration="2830000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="27569000" />
+    <option name="totallyTimeSpent" value="29178000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.16443452" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.16443452" />
       <window_info anchor="bottom" id="TODO" order="0" />
       <window_info anchor="bottom" id="Docker" order="6" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="0" sideWeight="0.50663716" side_tool="true" weight="0.3292683" />
       <window_info anchor="bottom" id="Version Control" order="0" show_stripe_button="false" />
       <window_info anchor="bottom" id="Run" order="1" />
       <window_info id="Structure" order="0" side_tool="true" />
-      <window_info anchor="bottom" id="Terminal" order="0" sideWeight="0.49336284" visible="true" weight="0.21617162" />
+      <window_info anchor="bottom" id="Terminal" order="0" sideWeight="0.49336284" weight="0.52970296" />
       <window_info id="Favorites" order="0" side_tool="true" />
-      <window_info anchor="bottom" id="Debug" order="1" weight="0.3293011" />
+      <window_info anchor="bottom" id="Debug" order="1" visible="true" weight="0.32838285" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
@@ -275,7 +287,21 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="4" />
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/Startup/assets/js/services/ConnectorService.js</url>
+          <line>16</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/Startup/assets/js/Startup.js</url>
+          <line>8</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+      </breakpoints>
+      <option name="time" value="8" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
@@ -454,13 +480,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Startup/assets/js/Startup.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="1" lean-forward="true" selection-start-line="1" selection-end-line="1" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Startup/Startup.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="153">
@@ -470,8 +489,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Startup/assets/js/services/ConnectorService.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="159">
-          <caret line="10" column="19" selection-start-line="10" selection-start-column="19" selection-end-line="10" selection-end-column="19" />
+        <state relative-caret-position="98">
+          <caret line="20" column="17" lean-forward="true" selection-start-line="20" selection-start-column="17" selection-end-line="20" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Startup/assets/js/Startup.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="9" column="7" lean-forward="true" selection-start-line="9" selection-start-column="7" selection-end-line="9" selection-end-column="7" />
         </state>
       </provider>
     </entry>

@@ -9,26 +9,24 @@ class connectorService {
      */
     httpServiceAsync(request, action) {
         let url = '/startup/secretKey';
-        return new Promise(((resolve, reject) => {
-                $.post(url, request).done(function (response) {
-                if (response) {
-                    try {
-                        let dataResponse = JSON.parse(response);
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: url,
+                contents: request
+            }).done(function(response) {
+                let dataResponse = JSON.parse(response);
 
-                        if (dataResponse) {
-                            resolve(dataResponse);
-                        }
-                    } catch (e) {
-                        console.log(e.message);
-                        console.log(response);
-                        reject(response);
-                    }
+                if (dataResponse) {
+                    resolve(dataResponse);
+                }
+            }).error(function (response) {
+                let dataResponse = JSON.parse(response);
 
-                } else {
-                    reject({userMessage: 'Error processing your request'});
+                if (dataResponse) {
+                    reject(dataResponse);
                 }
             });
-    }))
+        });
     }
 }
 
