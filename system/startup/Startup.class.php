@@ -10,14 +10,24 @@ class Startup
    */
   public function secretKey($key)
   {
+    $keyExist = Cache::getDocument(GlobalSystem::CacheSecretKey);
+
+    if($keyExist){
+      $tokenData = explode('.', $keyExist);
+      $payLoad = $tokenData[1];
+      $data = json_decode(base64_decode($payLoad), true);
+      $clientOwner = password_verify(Token::authString(), $data['aud']);
+
+      if(!$clientOwner){
+        return false;
+      }
+    }
+
     $model = Model::getInstance();
     $systemMD = $model->getSystemInstance;
     $systemMD->setSecretUniqueKey(password_hash($key, PASSWORD_DEFAULT));
 
     $secretUniqueKey = Token::signIn();
-
-    Cache::loadDocument(GlobalSystem::CacheSecretKey, $secretUniqueKey, false);
-
-    return true;
+    return Cache::loadDocument(GlobalSystem::CacheSecretKey, $secretUniqueKey, false);
   }
 }

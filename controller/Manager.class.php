@@ -195,7 +195,8 @@ class Manager extends Auth
 
 		$class = ucfirst($class);
 		$classMethod = new ReflectionMethod($class, $method);
+		$result = $classMethod->invokeArgs(new $class(), $arguments);
 
-		return $classMethod->invokeArgs(new $class(), $arguments);
+		return [$class => [$method => $result]];
 	}
 }

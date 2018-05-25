@@ -31,6 +31,23 @@ class Token
 		return JWT::encode($token, $systemMD->getSecretUniqueKey());
 	}
 
+  /**
+   * Generate unique auth string
+   *
+   * @return string
+   */
+	public static function authString()
+  {
+    $model = Model::getInstance();
+    $server = $model->getClientServerInstance;
+
+    $aud = $server->getIp();
+    $aud .= $server->getHostName();
+    $aud .= $server->getUserAgent();
+
+    return $aud;
+  }
+
 	/**
 	 * Generate unique key identity host
 	 *
@@ -38,14 +55,7 @@ class Token
 	 */
 	private static function aud()
 	{
-		$model = Model::getInstance();
-		$server = $model->getClientServerInstance;
-
-		$aud = $server->getIp();
-    $aud .= $server->getHostName();
-		$aud .= $server->getUserAgent();
-
-		return password_hash($aud, PASSWORD_DEFAULT);
+		return password_hash(self::authString(), PASSWORD_DEFAULT);
 	}
 
 	/**
@@ -61,6 +71,7 @@ class Token
       $systemMD = $model->getSystemInstance;
 			$decode = JWT::decode($token, $systemMD->getSecretUniqueKey(),CoreConfig::ENCRYPT);
 
+			//TODO password_verify
 			if($decode->aud !== self::aud()){
 				throw new Exception('Invalid user logged in.');
 			}
