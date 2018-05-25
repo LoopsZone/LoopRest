@@ -8,9 +8,9 @@ class ExecutionStepsErrors
 			GlobalSystem::ExpView => 'Startup'
 		],
 
-		GlobalSystem::StepCheckAccessSystemDB => [
+		GlobalSystem::StepCheckConnexionHostDB => [
 			GlobalSystem::ExpErrorCode => 102,
-			GlobalSystem::ExpView => 'Test'
+			GlobalSystem::ExpView => 'Startup:ConnexionHost'
 		]
 	];
 

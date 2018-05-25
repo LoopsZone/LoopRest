@@ -25,7 +25,8 @@ class GlobalConstants extends Expected
 
 	const CacheSecretKey = 'SECRET_KEY';
 	const StepCheckSecretKey = 'checkSecretKey';
-	const StepCheckAccessSystemDB = 'checkAccessSystemDB';
+  const StepCheckAccessSystemDB = 'checkConnexionHostDB';
+  const StepCheckConnexionHostDB = 'checkConnexionHostDB';
 
 	//Header Allow
 	const AllowHeaders = [

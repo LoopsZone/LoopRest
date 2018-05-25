@@ -30,4 +30,12 @@ class Startup
     $secretUniqueKey = Token::signIn();
     return Cache::loadDocument(GlobalSystem::CacheSecretKey, $secretUniqueKey, false);
   }
+
+  /**
+   *
+   */
+  public function connexionHost($host, $user, $password, $engine)
+  {
+    return $host;
+  }
 }

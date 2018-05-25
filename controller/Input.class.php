@@ -205,14 +205,14 @@ class Input extends Manager
 							foreach($systemParams as $param => $format){
 								$key = $systemParams[$param]->name;
 								if(key_exists($key, $routeParams)){
-								  array_shift($systemParams);
+								  unset($systemParams[$param]);
 									$request[$integration][$key] = $routeParams[$key];
                   $routeMD->setRequest($request);
                   $this->validRequestAction($request);
-
-                  return true;
 								}
 							}
+
+              return true;
 						}
 
 						ErrorManager::throwException(ErrorCodes::HttpParamsExc);

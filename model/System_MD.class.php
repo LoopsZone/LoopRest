@@ -30,7 +30,7 @@ class System_MD
     if($route != GlobalSystem::ExpRouteStartup){
       try {
         $step = new ExecutionStep();
-        $this->secretUniqueKey = $step->checkSecretKeyTest;
+        $this->secretUniqueKey = $step->checkSecretKey;
 
         $connexionDB = $step->checkConnexionHostDB;
         $accessDB = $step->checkAccessSystemDB;

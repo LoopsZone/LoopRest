@@ -4,10 +4,11 @@ class ExecutionStep extends ExecutionStepsErrors
 {
 	private $stepName;
 
-	/**
-	 * @param $name
-	 * @throws Exception
-	 */
+  /**
+   * @param $stepName
+   * @return mixed
+   * @throws Exception
+   */
 	public function __get($stepName)
 	{
 		$this->stepName = $stepName;
@@ -74,7 +75,7 @@ class ExecutionStep extends ExecutionStepsErrors
     $dataBaseMD = DataBase_MD::getInstance();
     $dataBaseMD->setHost(CoreConfig::DB_SYSTEM_HOST);
     $dataBaseMD->setUser(CoreConfig::DB_SYSTEM_USERNAME);
-    $dataBaseMD->setPassword(CoreConfig::DB_SYSTEM_PASSWORD);
+    $dataBaseMD->setPassword(CoreConfig::DB_SYSTEM_PASSWORD . 'test');
     $dataBaseMD->setDataBaseEngine(CoreConfig::DB_SYSTEM_ENGINE_USE);
 
     try{
