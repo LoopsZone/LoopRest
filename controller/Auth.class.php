@@ -28,7 +28,8 @@ class Auth extends Access
 	 */
 	protected static function signIn($data)
 	{
-		return Token::signIn($data);
+	  $expired = 60 * 60;
+		return Token::signIn($data, $expired);
 	}
 
 	/**

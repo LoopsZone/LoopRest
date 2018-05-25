@@ -1,7 +1,5 @@
 <?php
 
-require_once DIRECTORY . 'vendor/autoload.php';
-
 use Firebase\JWT\JWT;
 
 class Token
@@ -9,18 +7,28 @@ class Token
 	protected $auth;
 	private static $aud = null;
 
-	/**
-	 * Generate token using JWT for using request any data in the system
-	 *
-	 * @param $data
-	 * @return string
-	 */
-	public static function signIn($data)
+  /**
+   * Generate token using JWT for using request any data in the system
+   *
+   * @param array $data
+   * @param int $expiredTime
+   * @return string
+   */
+	public static function signIn(array $data = [], int $expiredTime = 0)
 	{
-		$time = time();
-		$token = array('exp' => $time + (60 * 60), 'aud' => self::aud(), 'data' => $data);
+    $model = Model::getInstance();
+    $systemMD = $model->getSystemInstance;
 
-		return JWT::encode($token, CoreConfig::SECRET_KEY);
+		$token = [
+      'data' => $data,
+		  'aud' => self::aud()
+    ];
+
+		if($expiredTime){
+		  $token['exp'] = time() + $expiredTime;
+    }
+
+		return JWT::encode($token, $systemMD->getSecretUniqueKey());
 	}
 
 	/**
@@ -32,11 +40,12 @@ class Token
 	{
 		$model = Model::getInstance();
 		$server = $model->getClientServerInstance;
-		$aud = $server->getIp();
-		$aud .= @$_SERVER['HTTP_USER_AGENT'];
-		$aud .= gethostname();
 
-		return sha1($aud);
+		$aud = $server->getIp();
+    $aud .= $server->getHostName();
+		$aud .= $server->getUserAgent();
+
+		return password_hash($aud, PASSWORD_DEFAULT);
 	}
 
 	/**
@@ -48,7 +57,9 @@ class Token
 	public static function check($token)
 	{
 		try {
-			$decode = JWT::decode($token, CoreConfig::SECRET_KEY, CoreConfig::ENCRYPT);
+      $model = Model::getInstance();
+      $systemMD = $model->getSystemInstance;
+			$decode = JWT::decode($token, $systemMD->getSecretUniqueKey(),CoreConfig::ENCRYPT);
 
 			if($decode->aud !== self::aud()){
 				throw new Exception('Invalid user logged in.');
@@ -77,7 +88,10 @@ class Token
 	 */
 	public static function getData ($token)
 	{
-		$decode = JWT::decode($token, CoreConfig::SECRET_KEY, CoreConfig::ENCRYPT);
+    $model = Model::getInstance();
+    $systemMD = $model->getSystemInstance;
+    $secretKey = $systemMD->getSecretUniqueKey();
+		$decode = JWT::decode($token, $secretKey,CoreConfig::ENCRYPT);
 
 		return $decode->data;
 	}

@@ -67,13 +67,6 @@ class CoreConfig
   const SUFFIX_FILE = '.class.php';
 
   /**
-   * Encrypt options
-   *
-   * secret key to encrypt JWT
-   */
-  const SECRET_KEY = 'Sdw1s9x8@adjnA@#Sjs#dAsdg*$*S&D&nja';
-
-  /**
    * Encrypt algorithm to use
    */
   const ENCRYPT = ['HS256'];

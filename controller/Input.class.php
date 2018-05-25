@@ -72,51 +72,53 @@ class Input extends Manager
 		$route = $clientServerMD->getRoute();
 		$currentRoute = array_shift($route);
 
-		$systemRoute = RequestRoute::$routes;
-		$currentRoute = $this->translateSystemRoute($currentRoute);
-    $systemParams = $systemRoute[$currentRoute][GlobalSystem::ExpRouteKeyParams];
+		if($currentRoute){
+      $systemRoute = RequestRoute::$routes;
+      $currentRoute = $this->translateSystemRoute($currentRoute);
+      $systemParams = $systemRoute[$currentRoute][GlobalSystem::ExpRouteKeyParams];
 
-		if(key_exists($currentRoute, $systemRoute)){
-			$countMethod = count($route);
-			$routeMD->setRoute($currentRoute);
-			$systemRoute = $systemRoute[$currentRoute];
-			$treatAsRoute = $systemRoute[GlobalSystem::ExpRoutesWithParams];
+      if(key_exists($currentRoute, $systemRoute)){
+        $countMethod = count($route);
+        $routeMD->setRoute($currentRoute);
+        $systemRoute = $systemRoute[$currentRoute];
+        $treatAsRoute = $systemRoute[GlobalSystem::ExpRoutesWithParams];
 
-			if($treatAsRoute){
-				$routeMethod = $systemRoute[GlobalSystem::ExpRouteMethod];
+        if($treatAsRoute){
+          $routeMethod = $systemRoute[GlobalSystem::ExpRouteMethod];
 
-				$countSystemRoute = count($routeMethod);
-				if($countMethod == $countSystemRoute){
-					$format  = current($routeMethod);
-					$nextMethod = array_shift($route);
-					$method = GlobalSystem::validateData($nextMethod, $format);
-					if($method){
-						$routeMD->setMethod($method);
-					}else{
-						ErrorManager::throwException(ErrorCodes::ActionExc);
-					}
-				}
-			}else{
-        foreach($systemParams as $param => $format){
-          if(count($route)) {
-            $value = array_shift($route);
-            $request[$currentRoute][$param] = GlobalSystem::validateData($value, $format);
-          }else{
+          $countSystemRoute = count($routeMethod);
+          if($countMethod == $countSystemRoute){
+            $format  = current($routeMethod);
+            $nextMethod = array_shift($route);
+            $method = GlobalSystem::validateData($nextMethod, $format);
+            if($method){
+              $routeMD->setMethod($method);
+            }else{
+              ErrorManager::throwException(ErrorCodes::ActionExc);
+            }
+          }
+        }else{
+          foreach($systemParams as $param => $format){
+            if(count($route)) {
+              $value = array_shift($route);
+              $request[$currentRoute][$param] = GlobalSystem::validateData($value, $format);
+            }else{
+              ErrorManager::throwException(ErrorCodes::HttpParamsExc);
+            }
+          }
+
+          $routeMD->setRequest($request);
+          $this->validRequestAction($request);
+
+          $params = array_merge($clientServerMD->getRequest(), $route);
+          if(count($params)){
             ErrorManager::throwException(ErrorCodes::HttpParamsExc);
           }
         }
 
-				$routeMD->setRequest($request);
-				$this->validRequestAction($request);
-
-				$params = array_merge($clientServerMD->getRequest(), $route);
-        if(count($params)){
-          ErrorManager::throwException(ErrorCodes::HttpParamsExc);
-        }
+        return true;
       }
-
-      return true;
-		}
+    }
 
 		if(!$currentRoute && !count($clientServerMD->getRequest())){
       $request[GlobalSystem::ExpRouteView][GlobalSystem::ExpView] = CoreConfig::PRINCIPAL_VIEW;
@@ -147,7 +149,7 @@ class Input extends Manager
 					return $translateRoutes[$route];
 				}
 
-				return false;
+				return 'fake';
 			}
 		}
 

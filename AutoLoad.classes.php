@@ -2,6 +2,7 @@
 define('DS', DIRECTORY_SEPARATOR);
 define('DIRECTORY', __DIR__ . DS);
 
+require_once 'vendor/autoload.php';
 require_once 'system/Cache.class.php';
 require_once 'system/GlobalSystem.class.php';
 require_once 'system/DirectoryManager.class.php';

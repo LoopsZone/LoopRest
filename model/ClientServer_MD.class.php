@@ -10,6 +10,7 @@ class ClientServer_MD
 	private $method;
 	private $request;
 	private $headers;
+  private $hostName;
 	private $userAgent;
 	static private $singleton;
 
@@ -17,6 +18,7 @@ class ClientServer_MD
 	{
 		$this->ip = $this->setIp();
 		$this->request = $_REQUEST;
+    $this->hostName = gethostname();
 		$this->host = $_SERVER['HTTP_HOST'];
 		$this->url = $_SERVER['REQUEST_URI'];
 		$this->domain = $_SERVER['SERVER_NAME'];
@@ -188,4 +190,20 @@ class ClientServer_MD
 	{
 		return $this->request;
 	}
+
+  /**
+   * @return string
+   */
+  public function getHostName(): string
+  {
+    return $this->hostName;
+  }
+
+  /**
+   * @param string $hostName
+   */
+  public function setHostName(string $hostName)
+  {
+    $this->hostName = $hostName;
+  }
 }

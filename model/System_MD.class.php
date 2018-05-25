@@ -40,4 +40,20 @@ class System_MD
 
     return true;
   }
+
+  /**
+   * @return mixed
+   */
+  public function getSecretUniqueKey()
+  {
+    return $this->secretUniqueKey;
+  }
+
+  /**
+   * @param mixed $secretUniqueKey
+   */
+  public function setSecretUniqueKey($secretUniqueKey)
+  {
+    $this->secretUniqueKey = $secretUniqueKey;
+  }
 }
