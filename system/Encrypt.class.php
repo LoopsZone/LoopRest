@@ -17,26 +17,31 @@ class Encrypt
   const WARNING_OWNER_COST = 21;// 265 s
 
   /**
-   * Gen
+   * Gen salt with system secret key
    *
    * @param array $cost
    * @return bool|string
    */
-  private static function genSalt($cost = [])
+  public static function genSalt($cost = [])
   {
     return password_hash(Cache::getDocument(GlobalSystem::CacheSecretKey), PASSWORD_BCRYPT, $cost);
   }
 
   /**
-   * @param $password
-   * @return string
+   * Generate hash one way
+   *
+   * @param $string
+   * @param array $cost
+   * @return bool|string
    */
-  public static function oneWayHash($password)
+  public static function oneWayHash($string, $cost = self::ATTENTIVE_CLIENT_COST)
   {
-    return crypt($password , self::genSalt(self::ATTENTIVE_CLIENT_COST));
+    return password_hash($string,PASSWORD_DEFAULT, ['cost' => $cost]);
   }
 
   /**
+   * Generate hash with system salt
+   *
    * @param $text
    * @param array $cost
    * @return string
@@ -59,6 +64,8 @@ class Encrypt
   }
 
   /**
+   * Decrypt hast with system salt
+   *
    * @param $hash
    * @param array $cost
    * @return string

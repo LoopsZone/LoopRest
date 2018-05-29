@@ -21,7 +21,8 @@ class Token
 
 		$token = [
       'data' => $data,
-		  'aud' => self::aud()
+		  'auth' => self::auth(),
+      'secretKey' => $systemMD->getSecretUniqueKey()
     ];
 
 		if($expiredTime){
@@ -53,7 +54,7 @@ class Token
 	 *
 	 * @return string
 	 */
-	private static function aud()
+	private static function auth()
 	{
 		return password_hash(self::authString(), PASSWORD_DEFAULT);
 	}
@@ -72,7 +73,7 @@ class Token
 			$decode = JWT::decode($token, $systemMD->getSecretUniqueKey(),CoreConfig::ENCRYPT);
 
 			//TODO password_verify
-			if($decode->aud !== self::aud()){
+			if($decode->aud !== self::auth()){
 				throw new Exception('Invalid user logged in.');
 			}
 

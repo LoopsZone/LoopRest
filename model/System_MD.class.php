@@ -6,7 +6,7 @@ class System_MD
   private static $singleton;
 
   /**
-   * get a singleton instance of System_MD
+   * Get a singleton instance of System_MD
    *
    * @return System_MD
    */
@@ -21,6 +21,9 @@ class System_MD
 
   /**
    * Run initials system settings
+   *
+   * @throws Exception
+   * @return bool
    */
   public function runInitialSystemSettings()
   {

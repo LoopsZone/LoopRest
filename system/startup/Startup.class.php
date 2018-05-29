@@ -10,25 +10,45 @@ class Startup
    */
   public function secretKey($key)
   {
+    $model = Model::getInstance();
+    $systemMD = $model->getSystemInstance;
+    $keyExist = Cache::getDocument(GlobalSystem::CacheSecretKey);
+
+    if(!$keyExist){
+      $systemMD->setSecretUniqueKey(Encrypt::oneWayHash($key, Encrypt::DEFAULT_OWNER_COST));
+
+      $secretUniqueKey = Token::signIn();
+      return Cache::loadDocument(GlobalSystem::CacheSecretKey, $secretUniqueKey, false);
+    }
+
+    return false;
+  }
+
+  /**
+   * Renew secret unique key
+   *
+   * @param $key
+   * @param $newKey
+   * @return bool
+   */
+  public function resetKey($key, $newKey)
+  {
     $keyExist = Cache::getDocument(GlobalSystem::CacheSecretKey);
 
     if($keyExist){
       $tokenData = explode('.', $keyExist);
       $payLoad = $tokenData[1];
       $data = json_decode(base64_decode($payLoad), true);
-      $clientOwner = password_verify(Token::authString(), $data['aud']);
+      $clientOwner = password_verify(Token::authString(), $data['auth']);
 
-      if(!$clientOwner){
-        return false;
+      if($clientOwner && password_verify($key, $data['secretKey'])){
+        if(Cache::clearCache(GlobalSystem::CacheSecretKey)){
+          return $this->secretKey($newKey);
+        }
       }
     }
 
-    $model = Model::getInstance();
-    $systemMD = $model->getSystemInstance;
-    $systemMD->setSecretUniqueKey(password_hash($key, PASSWORD_DEFAULT, ['cost' => Encrypt::WARNING_OWNER_COST]));
-
-    $secretUniqueKey = Token::signIn();
-    return Cache::loadDocument(GlobalSystem::CacheSecretKey, $secretUniqueKey, false);
+    return false;
   }
 
   /**

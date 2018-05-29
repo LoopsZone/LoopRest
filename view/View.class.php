@@ -127,7 +127,7 @@ class View extends Expected_Views
 					$type = strtoupper($fileType);
 					$methodTypeResource = constant("self::SRC_{$type}");
 					$methodTypeResource = str_replace('{id}', $extra, $methodTypeResource);
-					$methodTypeResource = str_replace('{path}', $resourcesPath . $file, $methodTypeResource);
+					$methodTypeResource = str_replace('{path}', DS . $resourcesPath . $file, $methodTypeResource);
 					$content = $methodTypeResource;
 				}
 

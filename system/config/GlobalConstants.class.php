@@ -44,5 +44,5 @@ class GlobalConstants extends Expected
 		self::ExpRouteRequest
 	];
 
-	const DB_ENGINE_MYSQL = 'mysql';
+	const DBEngineMysql = 'mysql';
 }
