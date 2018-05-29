@@ -25,7 +25,7 @@ class Startup
 
     $model = Model::getInstance();
     $systemMD = $model->getSystemInstance;
-    $systemMD->setSecretUniqueKey(password_hash($key, PASSWORD_DEFAULT));
+    $systemMD->setSecretUniqueKey(password_hash($key, PASSWORD_DEFAULT, ['cost' => Encrypt::WARNING_OWNER_COST]));
 
     $secretUniqueKey = Token::signIn();
     return Cache::loadDocument(GlobalSystem::CacheSecretKey, $secretUniqueKey, false);
