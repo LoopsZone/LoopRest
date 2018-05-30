@@ -20,20 +20,20 @@ class Token
     $systemMD = $model->getSystemInstance;
 
 		$token = [
-      'data' => $data,
-		  'auth' => self::auth(),
-      'secretKey' => $systemMD->getSecretUniqueKey()
+      GlobalSystem::ExpDataTK => $data,
+      GlobalSystem::ExpAudTK => self::aud(),
+      GlobalSystem::ExpSecretKeyTK => $systemMD->getSecretUniqueKey()
     ];
 
 		if($expiredTime){
-		  $token['exp'] = time() + $expiredTime;
+		  $token[GlobalSystem::ExpExpTK] = time() + $expiredTime;
     }
 
 		return JWT::encode($token, $systemMD->getSecretUniqueKey());
 	}
 
   /**
-   * Generate unique auth string
+   * Generate unique aud string
    *
    * @return string
    */
@@ -54,9 +54,9 @@ class Token
 	 *
 	 * @return string
 	 */
-	private static function auth()
+	public static function aud()
 	{
-		return password_hash(self::authString(), PASSWORD_DEFAULT);
+		return Encrypt::oneWayHash(self::authString());
 	}
 
 	/**
@@ -70,15 +70,12 @@ class Token
 		try {
       $model = Model::getInstance();
       $systemMD = $model->getSystemInstance;
-			$decode = JWT::decode($token, $systemMD->getSecretUniqueKey(),CoreConfig::ENCRYPT);
+      $secretKey = $systemMD->getSecretUniqueKey();
 
-			//TODO password_verify
-			if($decode->aud !== self::auth()){
+			$decode = JWT::decode($token, $secretKey,CoreConfig::ENCRYPT);
+
+			if(!password_verify(self::authString(), $decode->aud)){
 				throw new Exception('Invalid user logged in.');
-			}
-
-			if(empty($token)){
-				throw new Exception('Invalid token supplied.');
 			}
 
 			return true;
@@ -98,7 +95,7 @@ class Token
 	 * @param $token
 	 * @return mixed
 	 */
-	public static function getData ($token)
+	public static function getData($token)
 	{
     $model = Model::getInstance();
     $systemMD = $model->getSystemInstance;

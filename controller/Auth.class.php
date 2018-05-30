@@ -17,7 +17,7 @@ class Auth extends Access
 	protected static function getData($token, $request)
 	{
 		$user = Token::getData($token);
-		return $user;//$this->auth->search($request.'/'.$user->id,TRUE);
+		return $user;//$this->aud->search($request.'/'.$user->id,TRUE);
 	}
 
 	/**

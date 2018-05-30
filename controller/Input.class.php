@@ -74,13 +74,13 @@ class Input extends Manager
 
 		if($currentRoute){
       $systemRoute = RequestRoute::$routes;
-      $currentRoute = $this->translateSystemRoute($currentRoute);
-      $systemParams = $systemRoute[$currentRoute][GlobalSystem::ExpRouteKeyParams];
+      $translatedRoute = GlobalSystem::translateSystemRoute($currentRoute);
+      $systemParams = $systemRoute[$translatedRoute][GlobalSystem::ExpRouteKeyParams];
 
-      if(key_exists($currentRoute, $systemRoute)){
+      if(key_exists($translatedRoute, $systemRoute)){
         $countMethod = count($route);
         $routeMD->setRoute($currentRoute);
-        $systemRoute = $systemRoute[$currentRoute];
+        $systemRoute = $systemRoute[$translatedRoute];
         $treatAsRoute = $systemRoute[GlobalSystem::ExpRoutesWithParams];
 
         if($treatAsRoute){
@@ -99,9 +99,9 @@ class Input extends Manager
           }
         }else{
           foreach($systemParams as $param => $format){
-            if(count($route)) {
+            if(count($route)){
               $value = array_shift($route);
-              $request[$currentRoute][$param] = GlobalSystem::validateData($value, $format);
+              $request[$translatedRoute][$param] = GlobalSystem::validateData($value, $format);
             }else{
               ErrorManager::throwException(ErrorCodes::HttpParamsExc);
             }
@@ -133,30 +133,6 @@ class Input extends Manager
 	}
 
 	/**
-	 * Translate route request to system route
-	 *
-	 * @param $route
-	 * @return bool|mixed
-	 * @throws Exception
-	 */
-	private function translateSystemRoute($route)
-	{
-		if($route != GlobalSystem::ExpRouteStartup){
-			if(!key_exists($route, RequestRoute::$routes)){
-				$translateRoutes = Cache::getDocument(CoreConfig::CACHE_TRANSLATE_ROUTES);
-
-				if(key_exists($route, $translateRoutes)){
-					return $translateRoutes[$route];
-				}
-
-				return 'fake';
-			}
-		}
-
-		return $route;
-	}
-
-	/**
 	 * Check if the route has an integrated class
 	 *
 	 * @return bool
@@ -172,7 +148,9 @@ class Input extends Manager
 
 		$integration = $routeMD->getRoute();
     $routeParams = $serverMD->getRequest();
-    $systemRoute = $systemRoute[$integration];
+    $translateRoute = GlobalSystem::translateSystemRoute($integration);
+
+    $systemRoute = $systemRoute[$translateRoute];
 		$treatAsRoute = $systemRoute[GlobalSystem::ExpRoutesWithParams];
 
 		if($treatAsRoute){
@@ -208,7 +186,7 @@ class Input extends Manager
 								  unset($systemParams[$param]);
 									$request[$integration][$key] = $routeParams[$key];
                   $routeMD->setRequest($request);
-                  $this->validRequestAction($request);
+                  $this->validRequestAction($translateRoute);
 								}
 							}
 

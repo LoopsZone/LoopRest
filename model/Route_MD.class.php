@@ -62,9 +62,10 @@ class Route_MD
 		return false;
 	}
 
-	/**
-	 * @param mixed $request
-	 */
+  /**
+   * @param $request
+   * @throws Exception
+   */
 	public function setRequest ($request)
 	{
 		if($this->validateRequest($request)){
@@ -72,12 +73,13 @@ class Route_MD
 		}
 	}
 
-	/**
-	 * Validate data in request array and set data in $this->variables
-	 *
-	 * @param $data
-	 * @return bool
-	 */
+  /**
+   * Validate data in request array and set data in $this->variables
+   *
+   * @param $request
+   * @return bool
+   * @throws Exception
+   */
 	protected function validateRequest($request)
 	{
 		$error = array();
@@ -119,8 +121,9 @@ class Route_MD
 	 */
 	private function checkRoute()
 	{
-		if(key_exists($this->route, RequestRoute::$routes)){
-			$this->trigger = RequestRoute::$routes[$this->route][GlobalSystem::ExpRouteKeyTrigger];
+	  $route = GlobalSystem::translateSystemRoute($this->route);
+		if(key_exists($route, RequestRoute::$routes)){
+			$this->trigger = RequestRoute::$routes[$route][GlobalSystem::ExpRouteKeyTrigger];
 
 			return true;
 		}

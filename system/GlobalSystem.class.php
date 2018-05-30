@@ -128,4 +128,26 @@ class GlobalSystem extends GlobalConstants
 
 		return false;
 	}
+
+  /**
+   * Translate route request to system route
+   *
+   * @param $route
+   * @return string
+   */
+  public static function translateSystemRoute($route)
+  {
+    if(!key_exists($route, RequestRoute::$routes)){
+      $translateRoutes = Cache::getDocument(CoreConfig::CACHE_TRANSLATE_ROUTES);
+      $routes = ($translateRoutes) ? array_merge($translateRoutes, GlobalSystem::TranslatedRequestRoutes) : GlobalSystem::TranslatedRequestRoutes;
+
+      if(key_exists($route, $routes)){
+        return $routes[$route];
+      }
+
+      return 'fake';
+    }
+
+    return $route;
+  }
 }

@@ -30,7 +30,7 @@ class System_MD
     $model = Model::getInstance();
     $routeMD = $model->getRouteInstance;
     $route = $routeMD->getRoute();
-    if($route != GlobalSystem::ExpRouteStartup){
+    if($route != GlobalSystem::ExpTranslatedRequestStartupRoute){
       try {
         $step = new ExecutionStep();
         $this->secretUniqueKey = $step->checkSecretKey;

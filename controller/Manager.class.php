@@ -26,8 +26,6 @@ class Manager extends Auth
 
 		try {
 			switch($routeMD->getTrigger()){
-				case GlobalSystem::ExpStartupTrigger:
-					return $this->startup();
 				case GlobalSystem::ExpAuthTrigger:
 					return $this->auth();
 				case GlobalSystem::ExpErrorTrigger:
@@ -53,17 +51,7 @@ class Manager extends Auth
 		$availableAccess = self::checkClient();
 
 		if($availableAccess === true){
-			$model = Model::getInstance();
-			$action = $this->requestAction();
-			$routeMD = $model->getRouteInstance;
-			$request = $routeMD->getRequest();
-			$token = $routeMD->getRequest(GlobalSystem::ExpRequestToken);
-
-			if($action){
-				return $action;
-			}
-
-			return self::getData($token, $request);
+			return $this->requestAction();
 		}
 
 		$errorCode = ErrorCodes::AccessExc;
@@ -93,6 +81,27 @@ class Manager extends Auth
 			default: return false;
 		}
 	}
+
+  /**
+   * Integrated route for current translate request
+   *
+   * @return mixed
+   */
+  private function integratedRoute()
+  {
+    $model = Model::getInstance();
+    $routeMD = $model->getRouteInstance;
+
+    $class = $routeMD->getRoute();
+    $method = $routeMD->getMethod();
+    $arguments = $routeMD->getRequest();
+
+    $class = ucfirst($class);
+    $classMethod = new ReflectionMethod($class, $method);
+    $result = $classMethod->invokeArgs(new $class(), $arguments);
+
+    return [$class => [$method => $result]];
+  }
 
 	private function post()
 	{
@@ -177,26 +186,5 @@ class Manager extends Auth
 	{
 		$views = new View();
 		return $views->routingView();
-	}
-
-	/**
-	 * Startup route for initial system settings
-	 *
-	 * @return mixed
-	 */
-	private function startup()
-	{
-		$model = Model::getInstance();
-		$routeMD = $model->getRouteInstance;
-
-		$class = $routeMD->getRoute();
-		$method = $routeMD->getMethod();
-		$arguments = $routeMD->getRequest();
-
-		$class = ucfirst($class);
-		$classMethod = new ReflectionMethod($class, $method);
-		$result = $classMethod->invokeArgs(new $class(), $arguments);
-
-		return [$class => [$method => $result]];
 	}
 }

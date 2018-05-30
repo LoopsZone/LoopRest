@@ -15,9 +15,12 @@ class Startup
     $keyExist = Cache::getDocument(GlobalSystem::CacheSecretKey);
 
     if(!$keyExist){
-      $systemMD->setSecretUniqueKey(Encrypt::oneWayHash($key, Encrypt::DEFAULT_OWNER_COST));
+      $secretUniqueKey = [
+        GlobalSystem::ExpAudTK => Token::aud(),
+        GlobalSystem::ExpSecretKeyTK => Encrypt::oneWayHash($key, Encrypt::ATTENTIVE_OWNER_COST)
+      ];
 
-      $secretUniqueKey = Token::signIn();
+      $systemMD->setSecretUniqueKey($secretUniqueKey[GlobalSystem::ExpSecretKeyTK]);
       return Cache::loadDocument(GlobalSystem::CacheSecretKey, $secretUniqueKey, false);
     }
 
@@ -33,17 +36,18 @@ class Startup
    */
   public function resetKey($key, $newKey)
   {
-    $keyExist = Cache::getDocument(GlobalSystem::CacheSecretKey);
+    $secretKey = Cache::getDocument(GlobalSystem::CacheSecretKey);
 
-    if($keyExist){
-      $tokenData = explode('.', $keyExist);
-      $payLoad = $tokenData[1];
-      $data = json_decode(base64_decode($payLoad), true);
-      $clientOwner = password_verify(Token::authString(), $data['auth']);
+    if($secretKey){
+      if(key_exists(GlobalSystem::ExpAudTK, $secretKey)){
+        if(key_exists(GlobalSystem::ExpSecretKeyTK, $secretKey)){
+          $clientOwner = password_verify(Token::authString(), $secretKey[GlobalSystem::ExpAudTK]);
 
-      if($clientOwner && password_verify($key, $data['secretKey'])){
-        if(Cache::clearCache(GlobalSystem::CacheSecretKey)){
-          return $this->secretKey($newKey);
+          if($clientOwner && password_verify($key, $secretKey[GlobalSystem::ExpSecretKeyTK])){
+            if(Cache::clearCache(GlobalSystem::CacheSecretKey)){
+              return $this->secretKey($newKey);
+            }
+          }
         }
       }
     }

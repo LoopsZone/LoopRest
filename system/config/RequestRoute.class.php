@@ -13,20 +13,10 @@ class RequestRoute extends Expected
 	 * @var array
 	 */
 	public static $routes = [
-		//Startup Action
-		self::ExpRouteStartup => [
-			self::ExpRouteMethod => [
-				self::ExpStartupStep => self::ExpFormatVarchar
-			],
-			self::ExpRouteKeyTrigger => self::ExpStartupTrigger,
-			self::ExpRouteNeedTK => true,
-			self::ExpRoutesWithParams => true
-		],
-
 		//Request Action
 		self::ExpRouteRequest => [
 			self::ExpRouteMethod => [
-				self::ExpRequestRequest => self::ExpFormatVarchar
+				self::ExpRouteMethod => self::ExpFormatVarchar
 			],
 			self::ExpRouteKeyTrigger => self::ExpRequestTrigger,
 			self::ExpRouteNeedTK => true,

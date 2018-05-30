@@ -23,6 +23,10 @@ class GlobalConstants extends Expected
 		self::ExpMethodDelete
 	];
 
+  const TranslatedRequestRoutes = [
+    self::ExpTranslatedRequestStartupRoute => self::ExpRouteRequest
+  ];
+
 	const CacheSecretKey = 'SECRET_KEY';
 	const StepCheckSecretKey = 'checkSecretKey';
   const StepCheckAccessSystemDB = 'checkConnexionHostDB';

@@ -198,12 +198,4 @@ class ClientServer_MD
   {
     return $this->hostName;
   }
-
-  /**
-   * @param string $hostName
-   */
-  public function setHostName(string $hostName)
-  {
-    $this->hostName = $hostName;
-  }
 }
