@@ -98,6 +98,11 @@ class Input extends Manager
             }
           }
         }else{
+
+          if($translatedRoute == GlobalSystem::ExpRouteView){
+            array_push($route, $currentRoute);
+          }
+
           foreach($systemParams as $param => $format){
             if(count($route)){
               $value = array_shift($route);

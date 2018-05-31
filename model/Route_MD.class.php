@@ -47,16 +47,18 @@ class Route_MD
 	 * @param null $param
 	 * @return mixed
 	 */
-	public function getRequest ($param = null)
+	public function getRequest($param = null)
 	{
-		if(key_exists($this->route, $this->request)) {
-			if($param) {
-				if(key_exists($param, $this->request[$this->route])){
-					return $this->request[$this->route][$param];
+    $route = GlobalSystem::translateSystemRoute($this->route);
+
+		if(key_exists($route, $this->request)){
+			if($param){
+				if(key_exists($param, $this->request[$route])){
+					return $this->request[$route][$param];
 				}
 			}
 
-			return $this->request[$this->route];
+			return $this->request[$route];
 		}
  
 		return false;

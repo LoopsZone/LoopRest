@@ -20,6 +20,7 @@ class Expected
 	const ExpHeaderFrom = 'From';
 	const ExpHeaderAuth = 'Authorization';
 
+	const ExpTranslatedLoopViewRoute = 'loop';
 	const ExpTranslatedRequestStartupRoute = 'startup';
 
 	const ExpAudTK = 'aud';

@@ -24,6 +24,7 @@ class GlobalConstants extends Expected
 	];
 
   const TranslatedRequestRoutes = [
+    self::ExpTranslatedLoopViewRoute => self::ExpRouteView,
     self::ExpTranslatedRequestStartupRoute => self::ExpRouteRequest
   ];
 
