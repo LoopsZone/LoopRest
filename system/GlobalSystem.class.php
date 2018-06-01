@@ -135,8 +135,12 @@ class GlobalSystem extends GlobalConstants
    * @param $route
    * @return string
    */
-  public static function translateSystemRoute($route)
+  public static function translateSystemRoute()
   {
+    $model = Model::getInstance();
+    $routeMD = $model->getRouteInstance;
+    $route = $routeMD->getRoute();
+
     if(!key_exists($route, RequestRoute::$routes)){
       $translateRoutes = Cache::getDocument(CoreConfig::CACHE_TRANSLATE_ROUTES);
       $routes = ($translateRoutes) ? array_merge($translateRoutes, GlobalSystem::TranslatedRequestRoutes) : GlobalSystem::TranslatedRequestRoutes;
@@ -149,5 +153,25 @@ class GlobalSystem extends GlobalConstants
     }
 
     return $route;
+  }
+
+  /**
+   * Translate the method to the route method with the corresponding action
+   *
+   * @return string
+   */
+  public static function translatedRouteMethod()
+  {
+    $model = Model::getInstance();
+    $routeMD = $model->getRouteInstance;
+    $clientServerMD = $model->getClientServerInstance;
+    $method = ($routeMD->getMethod()) ? $routeMD->getMethod() : '__construct';
+
+    $action = $clientServerMD->getMethod();
+    if($action != GlobalSystem::ExpMethodGet){
+      $method = strtolower($action) . ucfirst($method);
+    }
+
+    return $method;
   }
 }

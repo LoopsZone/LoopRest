@@ -49,7 +49,7 @@ class Route_MD
 	 */
 	public function getRequest($param = null)
 	{
-    $route = GlobalSystem::translateSystemRoute($this->route);
+    $route = GlobalSystem::translateSystemRoute();
 
 		if(key_exists($route, $this->request)){
 			if($param){
@@ -68,7 +68,7 @@ class Route_MD
    * @param $request
    * @throws Exception
    */
-	public function setRequest ($request)
+	public function setRequest($request)
 	{
 		if($this->validateRequest($request)){
 			$this->request[$this->route] = $request[$this->route];
@@ -123,7 +123,7 @@ class Route_MD
 	 */
 	private function checkRoute()
 	{
-	  $route = GlobalSystem::translateSystemRoute($this->route);
+	  $route = GlobalSystem::translateSystemRoute();
 		if(key_exists($route, RequestRoute::$routes)){
 			$this->trigger = RequestRoute::$routes[$route][GlobalSystem::ExpRouteKeyTrigger];
 

@@ -8,7 +8,7 @@ class Startup
    * @param $key
    * @return bool
    */
-  public function secretKey($key)
+  public function postSecretKey($key)
   {
     $model = Model::getInstance();
     $systemMD = $model->getSystemInstance;
@@ -34,7 +34,7 @@ class Startup
    * @param $newKey
    * @return bool
    */
-  public function resetKey($key, $newKey)
+  public function putSecretKey($key, $newKey)
   {
     $secretKey = Cache::getDocument(GlobalSystem::CacheSecretKey);
 

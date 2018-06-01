@@ -34,8 +34,7 @@ class System_MD
       try {
         $step = new ExecutionStep();
         $this->secretUniqueKey = $step->checkSecretKey;
-
-        //$connexionDB = $step->checkConnexionHostDB;
+        $connexionDB = $step->checkConnexionHostDB;
         $accessDB = $step->checkAccessSystemDB;
       }catch(Exception $error){
         ErrorManager::onErrorRoute($error);

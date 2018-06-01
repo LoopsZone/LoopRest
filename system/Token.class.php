@@ -16,20 +16,19 @@ class Token
    */
 	public static function signIn(array $data = [], int $expiredTime = 0)
 	{
-    $model = Model::getInstance();
-    $systemMD = $model->getSystemInstance;
+    $secretKey = Cache::getDocument(GlobalSystem::CacheSecretKey);
 
 		$token = [
       GlobalSystem::ExpDataTK => $data,
       GlobalSystem::ExpAudTK => self::aud(),
-      GlobalSystem::ExpSecretKeyTK => $systemMD->getSecretUniqueKey()
+      GlobalSystem::ExpSecretKeyTK => $secretKey[GlobalSystem::ExpSecretKeyTK]
     ];
 
 		if($expiredTime){
 		  $token[GlobalSystem::ExpExpTK] = time() + $expiredTime;
     }
 
-		return JWT::encode($token, $systemMD->getSecretUniqueKey());
+		return JWT::encode($token, $secretKey[GlobalSystem::ExpSecretKeyTK]);
 	}
 
   /**
@@ -68,11 +67,8 @@ class Token
 	public static function check($token)
 	{
 		try {
-      $model = Model::getInstance();
-      $systemMD = $model->getSystemInstance;
-      $secretKey = $systemMD->getSecretUniqueKey();
-
-			$decode = JWT::decode($token, $secretKey,CoreConfig::ENCRYPT);
+      $secretKey = Cache::getDocument(GlobalSystem::CacheSecretKey);
+			$decode = JWT::decode($token, $secretKey[GlobalSystem::ExpSecretKeyTK],CoreConfig::ENCRYPT);
 
 			if(!password_verify(self::authString(), $decode->aud)){
 				throw new Exception('Invalid user logged in.');

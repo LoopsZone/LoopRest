@@ -8,19 +8,6 @@
 class Auth extends Access
 {
 	/**
-	 * Get data from request to database
-	 *
-	 * @param $token
-	 * @param $request
-	 * @return mixed
-	 */
-	protected static function getData($token, $request)
-	{
-		$user = Token::getData($token);
-		return $user;//$this->aud->search($request.'/'.$user->id,TRUE);
-	}
-
-	/**
 	 * Return token to request any data in system
 	 *
 	 * @param $data
@@ -40,14 +27,13 @@ class Auth extends Access
 	protected static function checkClient()
 	{
 		$model = Model::getInstance();
-		$routeMD = $model->getRouteInstance;
-		$route = $routeMD->getRoute();
-		$needTK = self::routeNeedTK($route);
+		$clientServerMD = $model->getClientServerInstance;
+		$needTK = self::routeNeedTK();
 
 		//TODO Add BlackList customers
 
 		if($needTK){
-			$token = $routeMD->getRequest(GlobalSystem::ExpRequestToken);
+			$token = $clientServerMD->getHeader(GlobalSystem::ExpHeaderAuth);
 			$availableTK = Token::check($token);
 
 			return ($availableTK === true) ? true : $availableTK;
@@ -74,13 +60,21 @@ class Auth extends Access
    * @param $route
    * @return bool
    */
-	private static function routeNeedTK($route)
+	private static function routeNeedTK()
 	{
-		if(key_exists($route, RequestRoute::$routes))
-		{
-			$routeExecuting = RequestRoute::$routes[$route];
-			return $routeExecuting[GlobalSystem::ExpRouteNeedTK];
-		}
+	  $model = Model::getInstance();
+	  $routeMD = $model->getRouteInstance;
+	  $route = $routeMD->getRoute();
+
+	  if($route != GlobalSystem::ExpTranslatedRequestStartupRoute){
+      $route = GlobalSystem::translateSystemRoute();
+
+      if(key_exists($route, RequestRoute::$routes))
+      {
+        $routeExecuting = RequestRoute::$routes[$route];
+        return $routeExecuting[GlobalSystem::ExpRouteNeedTK];
+      }
+    }
 
 		return false;
 	}
