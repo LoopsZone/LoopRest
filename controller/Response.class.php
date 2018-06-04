@@ -15,6 +15,11 @@ class Response extends ModelsTracking
 	{
 		$model = Model::getInstance();
 		$routeMD = $model->getRouteInstance;
+		$clientServerMD = $model->getClientServerInstance;
+
+    $accept = $clientServerMD->getHeader(GlobalSystem::ExpHeaderAccept);
+		$contentType = $clientServerMD->getHeader(GlobalSystem::ExpHeaderContentType);
+    $accepting = explode(',', $accept);
 
     $format = $response;
 		if($routeMD->getResponseObject()){

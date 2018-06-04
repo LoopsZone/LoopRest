@@ -149,9 +149,9 @@ class Cache
 
   /**
    * Load the current document to work with it
-   * 
+   *
    * @param $document
-   * @return bool
+   * @return bool|CacheManager
    */
   public static function payload($document)
   {

@@ -79,7 +79,8 @@ class ClientServer_MD
 	 *
 	 * @return mixed
 	 */
-	public function getUrl(){
+	public function getUrl()
+  {
 		return $this->url;
 	}
 
@@ -88,7 +89,8 @@ class ClientServer_MD
 	 *
 	 * @return mixed
 	 */
-	public function getDomain(){
+	public function getDomain()
+  {
 		return $this->domain;
 	}
 

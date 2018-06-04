@@ -18,7 +18,9 @@ class Expected
 
 	//Set expected header name
 	const ExpHeaderFrom = 'From';
+	const ExpHeaderAccept = 'Accept';
 	const ExpHeaderAuth = 'Authorization';
+	const ExpHeaderContentType = 'Content-type';
 
 	const ExpTranslatedLoopViewRoute = 'loop';
 	const ExpTranslatedRequestStartupRoute = 'startup';

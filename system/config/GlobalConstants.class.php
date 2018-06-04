@@ -24,6 +24,7 @@ class GlobalConstants extends Expected
 	];
 
   const TranslatedRequestRoutes = [
+    'test' => self::ExpRouteRequest,
     self::ExpTranslatedLoopViewRoute => self::ExpRouteView,
     self::ExpTranslatedRequestStartupRoute => self::ExpRouteRequest
   ];
@@ -36,7 +37,8 @@ class GlobalConstants extends Expected
 	//Header Allow
 	const AllowHeaders = [
 		self::ExpHeaderFrom,
-		self::ExpHeaderAuth
+		self::ExpHeaderAuth,
+    self::ExpHeaderAccept
 	];
 
 	const DirectoriesToIgnore = [

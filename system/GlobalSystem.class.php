@@ -12,23 +12,6 @@ class GlobalSystem extends GlobalConstants
 	public static $ignoreDirectories;
 
 	/**
-	 * Returns the regex string of the ignored directories
-	 *
-	 * @return string
-	 */
-	public static function ignoreDirectories()
-	{
-		$folders = self::DirectoriesToIgnore;
-
-		$ignoreDirectories = '';
-		foreach($folders as $ignore){
-			$ignoreDirectories .= '|' . $ignore;
-		}
-
-		return $ignoreDirectories;
-	}
-
-	/**
 	 * Validate data to data into request array and is certificated if is right format
 	 *
 	 * @param $data
