@@ -24,7 +24,7 @@ class Encrypt
    */
   private static function genSalt($cost = [])
   {
-    return password_hash(Cache::getDocument(GlobalSystem::CacheSecretKey), PASSWORD_BCRYPT, $cost);
+    return password_hash(Cache::getDocument(GlobalSystem::CacheSecretKey), PASSWORD_DEFAULT, $cost);
   }
 
   /**
@@ -33,7 +33,7 @@ class Encrypt
    */
   public static function oneWayHash($password)
   {
-    return crypt($password , self::genSalt(self::ATTENTIVE_CLIENT_COST));
+    return password_hash($password , self::genSalt(self::ATTENTIVE_CLIENT_COST));
   }
 
   /**
