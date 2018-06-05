@@ -3,7 +3,7 @@
         Options -MultiViews
     </IfModule>
     RewriteEngine On
-
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
     # Main rewrite
     RewriteCond %{REQUEST_FILENAME} !-f [OR]
     RewriteCond %{REQUEST_URI} !^.*/view/www/.*$ [NC]

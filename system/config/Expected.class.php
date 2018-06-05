@@ -18,10 +18,17 @@ class Expected
 
 	//Set expected header name
 	const ExpHeaderFrom = 'From';
+	const ExpHeaderAccept = 'Accept';
 	const ExpHeaderAuth = 'Authorization';
+	const ExpHeaderContentType = 'Content-type';
 
-	const ExpSetVariableRoute = 'route';
-	const ExpSetVarRouteName = 'routeName';
+	const ExpTranslatedLoopViewRoute = 'loop';
+	const ExpTranslatedRequestStartupRoute = 'startup';
+
+	const ExpAudTK = 'aud';
+	const ExpExpTK = 'exp';
+	const ExpDataTK = 'data';
+	const ExpSecretKeyTK = 'secretKey';
 
 	//Set Auth route expected names
 	const ExpRouteAuth = 'auth';
@@ -54,11 +61,6 @@ class Expected
 	const ExpRouteView = 'view';
 	const ExpView = 'vw';
 	const ExpViewTrigger = 'VIEW';
-
-	//Set Error routes expected names
-	const ExpRouteStartup = 'startup';
-	const ExpStartupStep = 'step';
-	const ExpStartupTrigger = 'STARTUP';
 
 	//Set Keys name to expected routes params
 	const ExpRouteNeedTK = 'needTK';

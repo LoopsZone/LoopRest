@@ -6,7 +6,7 @@ class System_MD
   private static $singleton;
 
   /**
-   * get a singleton instance of System_MD
+   * Get a singleton instance of System_MD
    *
    * @return System_MD
    */
@@ -21,17 +21,19 @@ class System_MD
 
   /**
    * Run initials system settings
+   *
+   * @throws Exception
+   * @return bool
    */
   public function runInitialSystemSettings()
   {
     $model = Model::getInstance();
     $routeMD = $model->getRouteInstance;
     $route = $routeMD->getRoute();
-    if($route != GlobalSystem::ExpRouteStartup){
+    if($route != GlobalSystem::ExpTranslatedRequestStartupRoute){
       try {
         $step = new ExecutionStep();
         $this->secretUniqueKey = $step->checkSecretKey;
-
         $connexionDB = $step->checkConnexionHostDB;
         $accessDB = $step->checkAccessSystemDB;
       }catch(Exception $error){

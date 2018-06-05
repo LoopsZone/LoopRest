@@ -105,5 +105,5 @@ class CoreConfig
 	 * Engine controllers integrated
 	 *  MySql
 	 */
-  const DB_SYSTEM_ENGINE_USE = GlobalSystem::DB_ENGINE_MYSQL;
+  const DB_SYSTEM_ENGINE_USE = GlobalSystem::DBEngineMysql;
 }

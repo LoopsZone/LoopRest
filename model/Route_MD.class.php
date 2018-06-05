@@ -47,37 +47,41 @@ class Route_MD
 	 * @param null $param
 	 * @return mixed
 	 */
-	public function getRequest ($param = null)
+	public function getRequest($param = null)
 	{
-		if(key_exists($this->route, $this->request)) {
-			if($param) {
-				if(key_exists($param, $this->request[$this->route])){
-					return $this->request[$this->route][$param];
+    $route = GlobalSystem::translateSystemRoute();
+
+		if(key_exists($route, $this->request)){
+			if($param){
+				if(key_exists($param, $this->request[$route])){
+					return $this->request[$route][$param];
 				}
 			}
 
-			return $this->request[$this->route];
+			return $this->request[$route];
 		}
  
 		return false;
 	}
 
-	/**
-	 * @param mixed $request
-	 */
-	public function setRequest ($request)
+  /**
+   * @param $request
+   * @throws Exception
+   */
+	public function setRequest($request)
 	{
 		if($this->validateRequest($request)){
 			$this->request[$this->route] = $request[$this->route];
 		}
 	}
 
-	/**
-	 * Validate data in request array and set data in $this->variables
-	 *
-	 * @param $data
-	 * @return bool
-	 */
+  /**
+   * Validate data in request array and set data in $this->variables
+   *
+   * @param $request
+   * @return bool
+   * @throws Exception
+   */
 	protected function validateRequest($request)
 	{
 		$error = array();
@@ -119,8 +123,9 @@ class Route_MD
 	 */
 	private function checkRoute()
 	{
-		if(key_exists($this->route, RequestRoute::$routes)){
-			$this->trigger = RequestRoute::$routes[$this->route][GlobalSystem::ExpRouteKeyTrigger];
+	  $route = GlobalSystem::translateSystemRoute();
+		if(key_exists($route, RequestRoute::$routes)){
+			$this->trigger = RequestRoute::$routes[$route][GlobalSystem::ExpRouteKeyTrigger];
 
 			return true;
 		}

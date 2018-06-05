@@ -15,18 +15,25 @@ class Response extends ModelsTracking
 	{
 		$model = Model::getInstance();
 		$routeMD = $model->getRouteInstance;
+		$clientServerMD = $model->getClientServerInstance;
 
+    $accept = $clientServerMD->getHeader(GlobalSystem::ExpHeaderAccept);
+		$contentType = $clientServerMD->getHeader(GlobalSystem::ExpHeaderContentType);
+    $accepting = explode(',', $accept);
+
+    $format = $response;
 		if($routeMD->getResponseObject()){
-			$response = json_encode($response);
+		  $format = '<pre>%s</pre>';
+			$response = json_encode($response, JSON_PRETTY_PRINT);
 
       $callback = $routeMD->getCallback();
       if($callback){
-        $response = ("{$callback}({$response});");
+        $format = ("{$callback}({$response});");
       }
     }
 
 		self::$readyResponse = true;
-		echo $response;
+    printf($format, $response);
 	}
 
 	/**

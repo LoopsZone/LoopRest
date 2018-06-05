@@ -12,7 +12,7 @@ class View extends Expected_Views
 
 		$routeMD->setResponseObject(false);
 		$view = $routeMD->getRequest(GlobalSystem::ExpView);
-		$target = ($view) ? $view : CoreConfig::PRINCIPAL_VIEW;
+		$target = ($view) ? ucfirst($view) : CoreConfig::PRINCIPAL_VIEW;
 		$viewMD->setView($target);
 	}
 
@@ -37,7 +37,9 @@ class View extends Expected_Views
 			$parent = $views[1];
 		}
 
-		return $this->render($component, $parent);
+		$render = $this->render($component, $parent);
+
+		return ($render) ? $render : $this->render(CoreConfig::PRINCIPAL_VIEW, '404');
 	}
 
 	/**
@@ -127,7 +129,7 @@ class View extends Expected_Views
 					$type = strtoupper($fileType);
 					$methodTypeResource = constant("self::SRC_{$type}");
 					$methodTypeResource = str_replace('{id}', $extra, $methodTypeResource);
-					$methodTypeResource = str_replace('{path}', $resourcesPath . $file, $methodTypeResource);
+					$methodTypeResource = str_replace('{path}', DS . $resourcesPath . $file, $methodTypeResource);
 					$content = $methodTypeResource;
 				}
 

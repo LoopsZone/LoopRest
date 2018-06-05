@@ -26,8 +26,6 @@ class Manager extends Auth
 
 		try {
 			switch($routeMD->getTrigger()){
-				case GlobalSystem::ExpStartupTrigger:
-					return $this->startup();
 				case GlobalSystem::ExpAuthTrigger:
 					return $this->auth();
 				case GlobalSystem::ExpErrorTrigger:
@@ -53,17 +51,7 @@ class Manager extends Auth
 		$availableAccess = self::checkClient();
 
 		if($availableAccess === true){
-			$model = Model::getInstance();
-			$action = $this->requestAction();
-			$routeMD = $model->getRouteInstance;
-			$request = $routeMD->getRequest();
-			$token = $routeMD->getRequest(GlobalSystem::ExpRequestToken);
-
-			if($action){
-				return $action;
-			}
-
-			return self::getData($token, $request);
+			return $this->integratedRoute();
 		}
 
 		$errorCode = ErrorCodes::AccessExc;
@@ -72,42 +60,31 @@ class Manager extends Auth
 		ErrorManager::throwException($errorCode);
 	}
 
-	/**
-	 * Active action in request and execute this
-	 *
-	 * @return array|bool
-	 * @throws Exception
-	 */
-	private function requestAction()
-	{
-		$model = Model::getInstance();
-		$routeMD = $model->getRouteInstance;
+  /**
+   * Integrated route for current translate request
+   *
+   * @return mixed
+   */
+  private function integratedRoute()
+  {
+    $model = Model::getInstance();
+    $routeMD = $model->getRouteInstance;
+    $class = $routeMD->getRoute();
 
-		switch($routeMD->getAction()){
-			case GlobalSystem::ExpMethodPost:
-				return $this->post();
-			case GlobalSystem::ExpMethodPut:
-				return $this->update();
-			case GlobalSystem::ExpMethodDelete:
-				return $this->delete();
-			default: return false;
-		}
-	}
+    $class = ucfirst($class);
+    $object = new $class();
+    $arguments = $routeMD->getRequest();
+    $method = GlobalSystem::translatedRouteMethod();
 
-	private function post()
-	{
-	
-	}
+    if($arguments){
+      $classMethod = new ReflectionMethod($class, $method);
+      $result = $classMethod->invokeArgs($object, $arguments);
+    }else{
+      $result = $object->$method();
+    }
 
-	private function update()
-	{
-	
-	}
-
-	private function delete()
-	{
-	
-	}
+    return [$class => [$routeMD->getMethod() => $result]];
+  }
 
 	/**
 	 * @return string
@@ -119,32 +96,24 @@ class Manager extends Auth
 		$routeMD = $model->getRouteInstance;
 		$authorization = $routeMD->getAuthorization();
 
-		$availableAccess = self::checkClient();
-		if($availableAccess){
-			$routeMD->setResponseObject(false);
-			$userEmail = $routeMD->getRequest(GlobalSystem::ExpAuthEmail);
-			$userAccess = self::checkUserAccess($userEmail);
+    $routeMD->setResponseObject(false);
+    $userEmail = $routeMD->getRequest(GlobalSystem::ExpAuthEmail);
+    $userAccess = self::checkUserAccess($userEmail);
 
-			$db = new AccessDB();
-			$isUser = $db->getUser($userEmail);
+    $db = new AccessDB();
+    $isUser = $db->getUser($userEmail);
 
-			if(!$isUser){
-				$db->newUser($routeMD->getRequest());
-			}
+    if(!$isUser){
+      $db->newUser($routeMD->getRequest());
+    }
 
-			$tokenData = [
-				'access' => $userAccess,
-				'id' => $routeMD->getRequest(RequestRoute::ExpAuthId),
-				'name' => $routeMD->getRequest(RequestRoute::ExpAuthName)
-			];
+    $tokenData = [
+      'access' => $userAccess,
+      'id' => $routeMD->getRequest(RequestRoute::ExpAuthId),
+      'name' => $routeMD->getRequest(RequestRoute::ExpAuthName)
+    ];
 
-			return self::signIn($tokenData);
-		}
-
-		$errorCode = ErrorCodes::AccessExc;
-		$errorCode[GlobalSystem::ExpErrorDesc] = $availableAccess;
-
-		ErrorManager::throwException($errorCode);
+    return self::signIn($tokenData);
 	}
 
 	/**
@@ -177,26 +146,5 @@ class Manager extends Auth
 	{
 		$views = new View();
 		return $views->routingView();
-	}
-
-	/**
-	 * Startup route for initial system settings
-	 *
-	 * @return mixed
-	 */
-	private function startup()
-	{
-		$model = Model::getInstance();
-		$routeMD = $model->getRouteInstance;
-
-		$class = $routeMD->getRoute();
-		$method = $routeMD->getMethod();
-		$arguments = $routeMD->getRequest();
-
-		$class = ucfirst($class);
-		$classMethod = new ReflectionMethod($class, $method);
-		$result = $classMethod->invokeArgs(new $class(), $arguments);
-
-		return [$class => [$method => $result]];
 	}
 }

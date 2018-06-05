@@ -79,7 +79,8 @@ class ClientServer_MD
 	 *
 	 * @return mixed
 	 */
-	public function getUrl(){
+	public function getUrl()
+  {
 		return $this->url;
 	}
 
@@ -88,7 +89,8 @@ class ClientServer_MD
 	 *
 	 * @return mixed
 	 */
-	public function getDomain(){
+	public function getDomain()
+  {
 		return $this->domain;
 	}
 
@@ -197,13 +199,5 @@ class ClientServer_MD
   public function getHostName(): string
   {
     return $this->hostName;
-  }
-
-  /**
-   * @param string $hostName
-   */
-  public function setHostName(string $hostName)
-  {
-    $this->hostName = $hostName;
   }
 }

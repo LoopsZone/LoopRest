@@ -149,9 +149,9 @@ class Cache
 
   /**
    * Load the current document to work with it
-   * 
+   *
    * @param $document
-   * @return bool
+   * @return bool|CacheManager
    */
   public static function payload($document)
   {
@@ -187,6 +187,34 @@ class Cache
 	    $expiredDocument = self::expiredTime($currentFile, $document);
 
 	    return (!$expiredDocument) ? $document[self::$documentContent] : false;
+    }
+
+    return false;
+  }
+
+  /**
+   * Clear a document or all cache
+   *
+   * @param null $name
+   * @return bool
+   */
+  public static function clearCache($name = null)
+  {
+    if(!$name){
+      if(is_dir(CoreConfig::CACHE_PATH)){
+        $files = glob(CoreConfig::CACHE_PATH . DS . '{,.}*', GLOB_BRACE);
+
+        foreach($files as $file){
+          unlink($file);
+        }
+
+        return true;
+      }
+    }else{
+      $currentFile = CoreConfig::CACHE_PATH . DS . $name . CoreConfig::CACHE_SUFFIX_FILE;
+      if(file_exists($currentFile)){
+        return unlink($currentFile);
+      }
     }
 
     return false;

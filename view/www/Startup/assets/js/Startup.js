@@ -6,8 +6,7 @@ $('#btnSecretKey').click(function(){
     let request = {key : value};
     ConnectorService.makeStartupRequest('secretKey', request).then((response) => {
         alert(response)
-    };
-)
+    });
 });
 
 $('#btnConnexionHost').click(function(){
@@ -25,6 +24,5 @@ $('#btnConnexionHost').click(function(){
 
     ConnectorService.makeStartupRequest('connexionHost', request).then((response) => {
         alert(response)
-    };
-)
+    });
 });

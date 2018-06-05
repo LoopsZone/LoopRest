@@ -23,6 +23,12 @@ class GlobalConstants extends Expected
 		self::ExpMethodDelete
 	];
 
+  const TranslatedRequestRoutes = [
+    'test' => self::ExpRouteRequest,
+    self::ExpTranslatedLoopViewRoute => self::ExpRouteView,
+    self::ExpTranslatedRequestStartupRoute => self::ExpRouteRequest
+  ];
+
 	const CacheSecretKey = 'SECRET_KEY';
 	const StepCheckSecretKey = 'checkSecretKey';
   const StepCheckAccessSystemDB = 'checkConnexionHostDB';
@@ -31,7 +37,8 @@ class GlobalConstants extends Expected
 	//Header Allow
 	const AllowHeaders = [
 		self::ExpHeaderFrom,
-		self::ExpHeaderAuth
+		self::ExpHeaderAuth,
+    self::ExpHeaderAccept
 	];
 
 	const DirectoriesToIgnore = [
@@ -44,5 +51,5 @@ class GlobalConstants extends Expected
 		self::ExpRouteRequest
 	];
 
-	const DB_ENGINE_MYSQL = 'mysql';
+	const DBEngineMysql = 'mysql';
 }

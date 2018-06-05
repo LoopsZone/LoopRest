@@ -12,23 +12,6 @@ class GlobalSystem extends GlobalConstants
 	public static $ignoreDirectories;
 
 	/**
-	 * Returns the regex string of the ignored directories
-	 *
-	 * @return string
-	 */
-	public static function ignoreDirectories()
-	{
-		$folders = self::DirectoriesToIgnore;
-
-		$ignoreDirectories = '';
-		foreach($folders as $ignore){
-			$ignoreDirectories .= '|' . $ignore;
-		}
-
-		return $ignoreDirectories;
-	}
-
-	/**
 	 * Validate data to data into request array and is certificated if is right format
 	 *
 	 * @param $data
@@ -128,4 +111,50 @@ class GlobalSystem extends GlobalConstants
 
 		return false;
 	}
+
+  /**
+   * Translate route request to system route
+   *
+   * @param $route
+   * @return string
+   */
+  public static function translateSystemRoute()
+  {
+    $model = Model::getInstance();
+    $routeMD = $model->getRouteInstance;
+    $route = $routeMD->getRoute();
+
+    if(!key_exists($route, RequestRoute::$routes)){
+      $translateRoutes = Cache::getDocument(CoreConfig::CACHE_TRANSLATE_ROUTES);
+      $routes = ($translateRoutes) ? array_merge($translateRoutes, GlobalSystem::TranslatedRequestRoutes) : GlobalSystem::TranslatedRequestRoutes;
+
+      if(key_exists($route, $routes)){
+        return $routes[$route];
+      }
+
+      return 'fake';
+    }
+
+    return $route;
+  }
+
+  /**
+   * Translate the method to the route method with the corresponding action
+   *
+   * @return string
+   */
+  public static function translatedRouteMethod()
+  {
+    $model = Model::getInstance();
+    $routeMD = $model->getRouteInstance;
+    $clientServerMD = $model->getClientServerInstance;
+    $method = ($routeMD->getMethod()) ? $routeMD->getMethod() : '__construct';
+
+    $action = $clientServerMD->getMethod();
+    if($action != GlobalSystem::ExpMethodGet){
+      $method = strtolower($action) . ucfirst($method);
+    }
+
+    return $method;
+  }
 }
