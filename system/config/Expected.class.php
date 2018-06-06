@@ -22,6 +22,9 @@ class Expected
 	const ExpHeaderAuth = 'Authorization';
 	const ExpHeaderContentType = 'Content-type';
 
+  const ExpContentTypeTextHTML = 'text/html';
+	const ExpContentTypeApplicationJSON = 'application/json';
+
 	const ExpTranslatedLoopViewRoute = 'loop';
 	const ExpTranslatedRequestStartupRoute = 'startup';
 

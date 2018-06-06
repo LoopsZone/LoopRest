@@ -2,6 +2,7 @@
 
 class View extends Expected_Views
 {
+  private $model;
 	private $currentComponent;
 
 	function __construct()
@@ -10,18 +11,18 @@ class View extends Expected_Views
 		$viewMD = $model->getViewsInstance;
 		$routeMD = $model->getRouteInstance;
 
-		$routeMD->setResponseObject(false);
 		$view = $routeMD->getRequest(GlobalSystem::ExpView);
 		$target = ($view) ? ucfirst($view) : CoreConfig::PRINCIPAL_VIEW;
 		$viewMD->setView($target);
 	}
 
-	/**
-	 * Search current component
-	 *
-	 * @return bool|string
-	 */
-	public function routingView()
+  /**
+   * Search current component
+   *
+   * @param array $model
+   * @return bool|string
+   */
+	public function routingView($dataModel = [])
 	{
 		$model = Model::getInstance();
 		$viewMD = $model->getViewsInstance;
@@ -30,6 +31,7 @@ class View extends Expected_Views
 		$component = $view;
 		$parent = '';
 
+		$this->model = $dataModel;
 		$explode = preg_match(self::PARENT_EXPLODE, $view);
 		if($explode){
 			$views = explode(':', $view);
@@ -82,6 +84,7 @@ class View extends Expected_Views
 					}
 				}
 
+				$this->modelView();
 				$this->resources($component);
 
 				return $this->currentComponent;
@@ -141,4 +144,16 @@ class View extends Expected_Views
 
 		return false;
 	}
+
+  /**
+   * Model value replace
+   */
+	private function modelView()
+  {
+    if($this->model){
+      foreach($this->model as $model => $value){
+        $this->currentComponent = str_replace('{' . $model . '}', $value, $this->currentComponent);
+      }
+    }
+  }
 }

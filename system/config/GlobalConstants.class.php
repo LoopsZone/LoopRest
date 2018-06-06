@@ -23,6 +23,11 @@ class GlobalConstants extends Expected
 		self::ExpMethodDelete
 	];
 
+	const ContentTypesAllows = [
+	  self::ExpContentTypeTextHTML,
+    self::ExpContentTypeApplicationJSON
+  ];
+
   const TranslatedRequestRoutes = [
     'test' => self::ExpRouteRequest,
     self::ExpTranslatedLoopViewRoute => self::ExpRouteView,

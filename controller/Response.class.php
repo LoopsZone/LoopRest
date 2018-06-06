@@ -13,28 +13,52 @@ class Response extends ModelsTracking
 	 */
 	function __construct($response)
 	{
+	  $this->responseContentType();
 		$model = Model::getInstance();
 		$routeMD = $model->getRouteInstance;
-		$clientServerMD = $model->getClientServerInstance;
 
-    $accept = $clientServerMD->getHeader(GlobalSystem::ExpHeaderAccept);
-		$contentType = $clientServerMD->getHeader(GlobalSystem::ExpHeaderContentType);
-    $accepting = explode(',', $accept);
-
-    $format = $response;
 		if($routeMD->getResponseObject()){
-		  $format = '<pre>%s</pre>';
-			$response = json_encode($response, JSON_PRETTY_PRINT);
-
       $callback = $routeMD->getCallback();
-      if($callback){
-        $format = ("{$callback}({$response});");
+      $response = json_encode($response, JSON_PRETTY_PRINT);
+      $response = ($callback) ? "{$callback}({$response});" : $response;
+    }else{
+
+		  if($routeMD->getRoute() != GlobalSystem::ExpRouteView){
+        $request = [GlobalSystem::ExpRouteView => [GlobalSystem::ExpView => '404']];
+
+        $routeMD->setRequest($request);
+        $routeMD->setRoute(GlobalSystem::ExpRouteView);
+
+        $views = new View();
+        $response = $views->routingView(['test' => 'valor', 'test2' => 'valor2']);
       }
     }
 
-		self::$readyResponse = true;
-    printf($format, $response);
+    echo($response);
+    self::$readyResponse = true;
 	}
+
+  /**
+   * Check type accept content type client
+   */
+	private function responseContentType()
+  {
+    $model = Model::getInstance();
+    $routeMD = $model->getRouteInstance;
+    $clientServerMD = $model->getClientServerInstance;
+
+    $accept = $clientServerMD->getHeader(GlobalSystem::ExpHeaderAccept);
+    $contentAccepting = explode(',', $accept);
+
+    foreach($contentAccepting as $content => $type){
+      if(in_array($type, GlobalSystem::ContentTypesAllows)){
+        if($type == GlobalSystem::ExpContentTypeTextHTML){
+          $routeMD->setResponseObject(false);
+          break;
+        }
+      }
+    }
+  }
 
 	/**
 	 * Get if response its ready
