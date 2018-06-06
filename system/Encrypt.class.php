@@ -24,7 +24,7 @@ class Encrypt
    */
   public static function genSalt($cost = [])
   {
-    return password_hash(Cache::getDocument(GlobalSystem::CacheSecretKey), PASSWORD_BCRYPT, $cost);
+    return password_hash(Cache::getDocument(GlobalSystem::CacheSecretKey), PASSWORD_DEFAULT, $cost);
   }
 
   /**
