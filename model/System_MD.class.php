@@ -31,7 +31,7 @@ class System_MD
     $routeMD = $model->getRouteInstance;
     $route = $routeMD->getRoute();
     if($route != GlobalSystem::ExpTranslatedRequestStartupRoute){
-      try {
+      try{
         $step = new ExecutionStep();
         $this->secretUniqueKey = $step->checkSecretKey;
         $connexionDB = $step->checkConnexionHostDB;

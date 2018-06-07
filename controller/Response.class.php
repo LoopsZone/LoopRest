@@ -17,20 +17,33 @@ class Response extends ModelsTracking
 		$model = Model::getInstance();
 		$routeMD = $model->getRouteInstance;
 
+    $route = $routeMD->getRoute();
 		if($routeMD->getResponseObject()){
       $callback = $routeMD->getCallback();
-      $response = json_encode($response, JSON_PRETTY_PRINT);
-      $response = ($callback) ? "{$callback}({$response});" : $response;
+      $responseObj = json_encode($response);
+      $response = ($callback) ? "{$callback}({$responseObj});" : $responseObj;
     }else{
 
 		  if($routeMD->getRoute() != GlobalSystem::ExpRouteView){
-        $request = [GlobalSystem::ExpRouteView => [GlobalSystem::ExpView => '404']];
+        $parentComponent = ucfirst($route);
+        $view = CoreConfig::PRINCIPAL_VIEW . ':' . $parentComponent;
+        $dataModel = [GlobalSystem::ExpRouteRequest => $response[$route]];
+
+		    if($routeMD->getRoute() == GlobalSystem::ExpRouteError){
+          $dataModel = [
+            GlobalSystem::ExpRouteError => $parentComponent,
+            GlobalSystem::ExpErrorCode => $response[$route][GlobalSystem::ExpErrorCode],
+            GlobalSystem::ExpErrorDesc => $response[$route][GlobalSystem::ExpErrorDesc]
+          ];
+        }
+
+        $request = [GlobalSystem::ExpRouteView => [GlobalSystem::ExpView => $view]];
 
         $routeMD->setRequest($request);
         $routeMD->setRoute(GlobalSystem::ExpRouteView);
 
         $views = new View();
-        $response = $views->routingView(['test' => 'valor', 'test2' => 'valor2']);
+        $response = $views->routingView($dataModel);
       }
     }
 

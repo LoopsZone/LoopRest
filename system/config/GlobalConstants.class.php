@@ -39,7 +39,6 @@ class GlobalConstants extends Expected
   const StepCheckAccessSystemDB = 'checkConnexionHostDB';
   const StepCheckConnexionHostDB = 'checkConnexionHostDB';
 
-	//Header Allow
 	const AllowHeaders = [
 		self::ExpHeaderFrom,
 		self::ExpHeaderAuth,

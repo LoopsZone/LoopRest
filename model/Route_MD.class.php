@@ -3,6 +3,7 @@
 class Route_MD
 {
 	private $route;
+  private $params;
 	private $action;
 	private $method;
 	private $trigger;
@@ -220,5 +221,21 @@ class Route_MD
   public function setCallback($callback)
   {
     $this->callback = $callback;
+  }
+
+  /**
+   * @return mixed
+   */
+  public function getParams()
+  {
+    return $this->params;
+  }
+
+  /**
+   * @param mixed $params
+   */
+  public function setParams($params)
+  {
+    $this->params = $params;
   }
 }

@@ -12,7 +12,7 @@ class CoreConfig
   /**
    * X debug key session use
    */
-  const XDEBUG_KEY = 'XDEBUG_SESSION_START';
+  const DEBUG_KEY = 'XDEBUG_SESSION_START';
 
   /**
    * define if we must print the exception or not.

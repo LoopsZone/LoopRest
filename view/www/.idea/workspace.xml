@@ -2,10 +2,48 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5fef70c5-26de-4f7a-a3e9-54a8fb2bdd8c" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Home/Error.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Home/Request.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/node_modules/.cache/uglifyjs-webpack-plugin/content-v2/sha512/24/bc/779471b30598dddd54502cadf54edd332aadd3111dbd11352a1b546553d6563c380dccd431ed479bfa6274e80b5140663c63af70d0cf70d64349c85f4fd6" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/node_modules/.cache/uglifyjs-webpack-plugin/content-v2/sha512/38/b9/822f20b97b993a457b07dcc5dc9406e8598e9f3c4d8bc8b2b32d3c650e80b787ffe142690041ec19274c86da332a9a6200b78387fa9492f42c051aedf4cc" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/node_modules/.cache/uglifyjs-webpack-plugin/content-v2/sha512/39/02/a788246cf8219284ad40ebdb6a312b464fff1d9be6c9a237077ab24bc1150f35ae61db24e1d973875638dbfe41b1ea9950864a00404552623cb8da4dff83" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/node_modules/.cache/uglifyjs-webpack-plugin/content-v2/sha512/42/e0/7efc20408e55234a1440ed7f3184dd477bfe538d36386c2720c308b94c3069a509e86dfcb9706b3317d49149d36e61b3bc4898df57c5cdcc2b86be589587" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/node_modules/.cache/uglifyjs-webpack-plugin/content-v2/sha512/5b/71/3944f4f7bd506f03f3e1ec8f7a218313067df9425aa6f4b83edf870a9b43110a10fb3308cf2d7be096499056f3296e3e6e34ec5bb8664df418ec38ef4ab9" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/node_modules/.cache/uglifyjs-webpack-plugin/content-v2/sha512/7c/c8/7181fb3162a7483faa5234d97e0e12e8cd1f7f2272f05c907ca7e2283998ba479355842a097c5f35a81d8d3d02ff8ed161c76648a471613963529cbbe1b2" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/node_modules/.cache/uglifyjs-webpack-plugin/content-v2/sha512/92/09/b9535c46e1d91eaf171fe4add55f33e84097673656d7484154ec3932283cf93ae51d96e03601688ccfe657d1ed4042bb221d40ee765393ce8dc316e3e22b" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/node_modules/.cache/uglifyjs-webpack-plugin/content-v2/sha512/98/5f/a0663965a60af3763098c1383c6f46a61b9fdab339d16ef1da97d713ab07a06fc23222cdfc2c042ac0a4cc849e27d174d3d621b2934a3678dcc6894fe234" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/node_modules/.cache/uglifyjs-webpack-plugin/content-v2/sha512/a8/3d/e5b20d125e280343c1511e4c84fa2cfeac7ed66add3723a2f2b7dde9f81ac429f6f58072085350cbe2793f16647557ef585e63b10dfde0d689f7ead832d8" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/node_modules/.cache/uglifyjs-webpack-plugin/content-v2/sha512/b9/59/ad4899c64646bc7400f04c356f23d3b35cceda56570c3f83db724249da98a1445310309866603bb340819e6ce5a677f20100f45454ecc55d6bacd932acab" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/node_modules/.cache/uglifyjs-webpack-plugin/content-v2/sha512/c2/9b/4575820b0aa15b57b6fc5f906ec3b5ecda60453b7d08bcd63701f0e2128a16f769b969be803581240ffbc2b8d3ad4df3fdcdcde88b439a28688e68a977a5" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/node_modules/.cache/uglifyjs-webpack-plugin/content-v2/sha512/d0/24/140b8d371c45effd3fdb6d51592b78daaae62ae471419190a00b5e0b4b4dab0737ed204cb85e0f7637ea73949a87d299e80a2b7386e059d22b0fa2b7fe9f" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/node_modules/.cache/uglifyjs-webpack-plugin/content-v2/sha512/d6/99/1f1704c6acc85af5fc45c58a6bb4316f198e3607ab3cdb2434e6f1a361a3e84626b1ff60cf97fc797b9bc65eae23060657b9ebe3afbae0256258652d5e7d" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/node_modules/.cache/uglifyjs-webpack-plugin/content-v2/sha512/e1/94/bfea119ec50a98d27dbb44cdc5637dfa143564d612390d031473acce847713f3510966117d6bdddb9fad0529d912a6ebb0527b5d1850a0ddfa7ff106f345" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/node_modules/.cache/uglifyjs-webpack-plugin/content-v2/sha512/fa/66/3b7a8aa272d5d560ea9d55cf43f0a861ca8ceb610f7bc2f72046d9870307e9c9598563e1a0d1eda8c0900ea7f8268b54a303f135ec592c56c313ceffc5f1" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/node_modules/.cache/uglifyjs-webpack-plugin/index-v5/13/63/37350094ae11a38d2b5695ee9198171e982255065dc55f2bcb07bacc61a1" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/node_modules/.cache/uglifyjs-webpack-plugin/index-v5/16/32/e9e68c605da0d9e6ae0cda964346176d96b403120848685a0a52c3f8e68f" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/node_modules/.cache/uglifyjs-webpack-plugin/index-v5/16/42/ade7516929e1c86436689bf1f4b7b931f3a968ad68409a16062026672500" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/node_modules/.cache/uglifyjs-webpack-plugin/index-v5/38/19/069d259184e0b9ac219185b16723e5f24714c30ad1e273a7c5d8b63174bb" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/node_modules/.cache/uglifyjs-webpack-plugin/index-v5/50/59/7e71dbf4b6dca8fe5cde37e26d9c7479707fe6716f775621d9f2b3ab2bc1" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/node_modules/.cache/uglifyjs-webpack-plugin/index-v5/55/3c/e4ee7a1b8734fa11036df8c56cc8097a1d7af64e978065a25c42866dd18c" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/node_modules/.cache/uglifyjs-webpack-plugin/index-v5/82/ea/5812c5a00dcdb66ef1f6366f8e0c71190a634d034d22cdfdf12c2c857840" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/node_modules/.cache/uglifyjs-webpack-plugin/index-v5/9b/b1/438e8bda71d3b58c77b332a8048793b9d6f8f55d08aff95b0f8077e8de5d" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/node_modules/.cache/uglifyjs-webpack-plugin/index-v5/9c/a9/d0894a89af77424d148fbd7fe73f08abeafe7ab703a628b1392d00c738c2" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/node_modules/.cache/uglifyjs-webpack-plugin/index-v5/a1/a8/2813e05b19394d6123642353f4223e97c7dac237ec815137ccfaf4d802c1" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/node_modules/.cache/uglifyjs-webpack-plugin/index-v5/a8/9e/0fd9ab8ca8d89e7b9b71e5a15840fa656f4c0ff66ce8cdbe2f2d50e0175a" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/node_modules/.cache/uglifyjs-webpack-plugin/index-v5/b7/6d/aca5708dd3a1af1ff3497711162e6249c51f4a354473d90c54a7066bc380" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/node_modules/.cache/uglifyjs-webpack-plugin/index-v5/c0/19/f979330086ac0cf99c4456cdd0ac7478b38221eeb3a17919cd41ffb71d07" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/node_modules/.cache/uglifyjs-webpack-plugin/index-v5/c4/82/2c6976232fbc36c821e7a9ef8d10c8313fc2a8111098f252ee09de8728f9" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/node_modules/.cache/uglifyjs-webpack-plugin/index-v5/c5/87/962acc929b6a6a3cc51bf667ff7f86ecdb2b9a126ab3b8f4964fbdc3ce81" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/node_modules/.cache/uglifyjs-webpack-plugin/index-v5/d1/49/f0817ea0bc2b6a64c458af770adbbfa1fe24c6478adb53da747d42ab27d8" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/node_modules/.cache/uglifyjs-webpack-plugin/index-v5/da/30/2bee68df97bed1c1124d69cf5a95fd14e9a69b7a6d7fda278ee7838e5f63" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/node_modules/.cache/uglifyjs-webpack-plugin/index-v5/f8/fa/1732c6ada72e831c977df3b6434c843953991fd63f4a0bc91d2d3e41e631" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../composer.json" afterPath="$PROJECT_DIR$/../../composer.json" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../composer.lock" afterPath="$PROJECT_DIR$/../../composer.lock" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../controller/Input.class.php" afterPath="$PROJECT_DIR$/../../controller/Input.class.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../controller/Response.class.php" afterPath="$PROJECT_DIR$/../../controller/Response.class.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../system/config/Expected.class.php" afterPath="$PROJECT_DIR$/../../system/config/Expected.class.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../model/Route_MD.class.php" afterPath="$PROJECT_DIR$/../../model/Route_MD.class.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../model/System_MD.class.php" afterPath="$PROJECT_DIR$/../../model/System_MD.class.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../system/config/CoreConfig.class.php" afterPath="$PROJECT_DIR$/../../system/config/CoreConfig.class.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../system/config/GlobalConstants.class.php" afterPath="$PROJECT_DIR$/../../system/config/GlobalConstants.class.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Home/404.html" afterPath="$PROJECT_DIR$/Home/404.html" />
@@ -29,11 +67,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="404.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="404.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Home/404.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="102">
-              <caret line="6" column="11" selection-start-line="6" selection-start-column="11" selection-end-line="6" selection-end-column="11" />
+            <state relative-caret-position="272">
+              <caret line="16" column="23" selection-start-line="16" selection-start-column="23" selection-end-line="16" selection-end-column="23" />
               <folding />
             </state>
           </provider>
@@ -49,14 +87,54 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="Error.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Home/Error.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="170">
+              <caret line="10" column="34" selection-start-line="10" selection-start-column="34" selection-end-line="10" selection-end-column="34" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Startup.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Startup/assets/js/Startup.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="119">
+              <caret line="7" column="23" selection-start-line="7" selection-start-column="23" selection-end-line="7" selection-end-column="23" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ConnectorService.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/common/js/ConnectorService.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="427">
+              <caret line="47" column="0" selection-start-line="47" selection-start-column="0" selection-end-line="47" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Request.html" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Home/Request.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="34">
+              <caret line="2" column="6" selection-start-line="2" selection-start-column="6" selection-end-line="2" selection-end-column="6" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
     </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="JavaScript File" />
-        <option value="HTML File" />
         <option value="CSS File" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
@@ -84,10 +162,14 @@
         <option value="$PROJECT_DIR$/Startup/ConnexionHost.html" />
         <option value="$PROJECT_DIR$/Startup/Startup.html" />
         <option value="$PROJECT_DIR$/Home/Home.html" />
-        <option value="$PROJECT_DIR$/Startup/assets/js/Startup.js" />
         <option value="$PROJECT_DIR$/Home/assets/css/404.css" />
-        <option value="$PROJECT_DIR$/common/js/ConnectorService.js" />
+        <option value="$PROJECT_DIR$/Home/response.html" />
         <option value="$PROJECT_DIR$/Home/404.html" />
+        <option value="$PROJECT_DIR$/Home/Response.html" />
+        <option value="$PROJECT_DIR$/common/js/ConnectorService.js" />
+        <option value="$PROJECT_DIR$/Startup/assets/js/Startup.js" />
+        <option value="$PROJECT_DIR$/Home/Error.html" />
+        <option value="$PROJECT_DIR$/Home/Request.html" />
       </list>
     </option>
   </component>
@@ -135,6 +217,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -163,14 +247,66 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="Startup" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="www" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="www" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Startup" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="assets" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="js" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="www" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="www" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Startup" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="assets" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="www" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="www" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="Home" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -187,15 +323,16 @@
     <property name="list.type.of.created.stylesheet" value="CSS" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="E:\desarrollo\source\test\view\www\Startup" />
-      <recent name="E:\desarrollo\source\test\view\www" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="E:\desarrollo\source\test\view\www\common\js" />
       <recent name="E:\desarrollo\source\test\view\www\common" />
       <recent name="E:\desarrollo\source\test\view\www" />
       <recent name="E:\desarrollo\source\test\view\www\Startup" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\desarrollo\source\test\view\www\Home" />
+      <recent name="E:\desarrollo\source\test\view\www\Startup" />
+      <recent name="E:\desarrollo\source\test\view\www" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -299,7 +436,8 @@
       <workItem from="1528120480526" duration="5979000" />
       <workItem from="1528219155024" duration="626000" />
       <workItem from="1528304134817" duration="13000" />
-      <workItem from="1528305881730" duration="6958000" />
+      <workItem from="1528305881730" duration="7575000" />
+      <workItem from="1528380373012" duration="10293000" />
     </task>
     <task id="LOCAL-00001" summary="View 404 render">
       <created>1527806230776</created>
@@ -312,22 +450,22 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="77264000" />
+    <option name="totallyTimeSpent" value="88174000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
+    <frame x="-8" y="-8" width="1616" height="876" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17427123" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19623657" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3293011" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17427123" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -361,27 +499,19 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="21" />
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/Startup/assets/js/Startup.js</url>
+          <line>6</line>
+          <properties />
+          <option name="timeStamp" value="24" />
+        </line-breakpoint>
+      </breakpoints>
+      <option name="time" value="25" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Startup/assets/js/Startup.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" column="30" selection-start-line="6" selection-start-column="30" selection-end-line="6" selection-end-column="30" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/common/js/ConnectorService.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Startup/assets/js/Startup.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -591,7 +721,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="357">
           <caret line="21" column="7" selection-start-line="21" selection-start-column="7" selection-end-line="21" selection-end-column="7" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -599,7 +728,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="221">
           <caret line="13" column="7" selection-start-line="13" selection-start-column="7" selection-end-line="13" selection-end-column="7" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -607,7 +735,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="26" selection-start-line="0" selection-start-column="26" selection-end-line="0" selection-end-column="26" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -615,23 +742,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="187">
           <caret line="11" column="39" selection-start-line="11" selection-start-column="20" selection-end-line="11" selection-end-column="39" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Startup/assets/js/Startup.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/common/js/ConnectorService.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="332">
-          <caret line="50" column="17" selection-start-line="50" selection-start-column="17" selection-end-line="50" selection-end-column="17" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -645,8 +755,40 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Home/404.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" column="11" selection-start-line="6" selection-start-column="11" selection-end-line="6" selection-end-column="11" />
+        <state relative-caret-position="272">
+          <caret line="16" column="23" selection-start-line="16" selection-start-column="23" selection-end-line="16" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/common/js/ConnectorService.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="427">
+          <caret line="47" column="0" selection-start-line="47" selection-start-column="0" selection-end-line="47" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Startup/assets/js/Startup.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="7" column="23" selection-start-line="7" selection-start-column="23" selection-end-line="7" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Home/Error.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="10" column="34" selection-start-line="10" selection-start-column="34" selection-end-line="10" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Home/Request.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="6" selection-start-line="2" selection-start-column="6" selection-end-line="2" selection-end-column="6" />
           <folding />
         </state>
       </provider>

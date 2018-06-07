@@ -70,7 +70,10 @@ class Input extends Manager
     $clientServerMD = $model->getClientServerInstance;
 
 		$route = $clientServerMD->getRoute();
+    $params = $clientServerMD->getRequest();
 		$currentRoute = array_shift($route);
+
+		$this->washParams();
 
 		if($currentRoute){
       $routeMD->setRoute($currentRoute);
@@ -122,16 +125,16 @@ class Input extends Manager
       }
     }
 
-		if(!$currentRoute && !count($clientServerMD->getRequest())){
-      $request[GlobalSystem::ExpRouteView][GlobalSystem::ExpView] = CoreConfig::PRINCIPAL_VIEW;
+		if(!$currentRoute){
+		  if(!count($params)){
+        $routeMD->setRoute(GlobalSystem::ExpRouteView);
+        return true;
+      }
 
-      $routeMD->setRequest($request);
-		  $routeMD->setRoute(GlobalSystem::ExpRouteView);
-
-		  return true;
+      ErrorManager::throwException(ErrorCodes::HttpParamsExc);
     }
 
-    ErrorManager::throwException(ErrorCodes::ActionExc);
+    ErrorManager::throwException(ErrorCodes::MetHodExc);
 	}
 
 	/**
@@ -146,9 +149,6 @@ class Input extends Manager
 		$model = Model::getInstance();
 		$routeMD = $model->getRouteInstance;
 		$systemRoute = RequestRoute::$routes;
-		$serverMD = $model->getClientServerInstance;
-
-    $routeParams = $serverMD->getRequest();
     $translateRoute = GlobalSystem::translateSystemRoute();
 
     $systemRoute = $systemRoute[$translateRoute];
@@ -164,20 +164,13 @@ class Input extends Manager
 
 				if($methodIntegrated){
 					$reflector = new ReflectionMethod($integrated, $method);
+
+          $routeParams = $routeMD->getParams();
 					$systemParams = $reflector->getParameters();
 
 					if($systemParams){
             $countRoute = count($routeParams);
             $countSystemRoute = count($systemParams);
-
-					  if(CoreConfig::DEV && key_exists(CoreConfig::XDEBUG_KEY, $routeParams)){
-					    $countRoute--;
-            }
-
-            if(key_exists(GlobalSystem::CallbackKey, $routeParams)){
-              $countRoute--;
-              $routeMD->setCallback($routeParams[GlobalSystem::CallbackKey]);
-            }
 
 						if($countRoute == $countSystemRoute){
 							foreach($systemParams as $param => $format){
@@ -205,4 +198,26 @@ class Input extends Manager
 			ErrorManager::throwException(ErrorCodes::ActionExc);
 		}
 	}
+
+  /**
+   * Wash route parameters of system options parameters from the request
+   */
+	private function washParams()
+  {
+    $model = Model::getInstance();
+    $routeMD = $model->getRouteInstance;
+    $clientServerMD = $model->getClientServerInstance;
+
+    $params = $clientServerMD->getRequest();
+    if(key_exists(GlobalSystem::CallbackKey, $params)){
+      $routeMD->setCallback($params[GlobalSystem::CallbackKey]);
+      unset($params[GlobalSystem::CallbackKey]);
+    }
+
+    if(CoreConfig::DEV && key_exists(CoreConfig::DEBUG_KEY, $params)){
+      unset($params[CoreConfig::DEBUG_KEY]);
+    }
+
+    $routeMD->setParams($params);
+  }
 }
