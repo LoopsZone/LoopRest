@@ -152,6 +152,7 @@ class View extends Expected_Views
   {
     if($this->model){
       foreach($this->model as $model => $value){
+        $value = (is_array($value)) ? json_encode($value) : $value;
         $this->currentComponent = str_replace('{' . $model . '}', $value, $this->currentComponent);
       }
     }

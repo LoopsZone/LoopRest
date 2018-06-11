@@ -19,6 +19,8 @@ class Response
 		$routeMD = $model->getRouteInstance;
 
     $route = $routeMD->getRoute();
+    $translateRoute = GlobalSystem::translateSystemRoute();
+
 		if($routeMD->getResponseObject()){
       $callback = $routeMD->getCallback();
       $responseObj = json_encode($response);
@@ -26,11 +28,14 @@ class Response
     }else{
 
 		  if($routeMD->getRoute() != GlobalSystem::ExpRouteView){
-        $parentComponent = ucfirst($route);
+        $parentComponent = ucfirst($translateRoute);
         $view = CoreConfig::PRINCIPAL_VIEW . ':' . $parentComponent;
-        $dataModel = [GlobalSystem::ExpRouteRequest => $response[$route]];
+        $dataModel = [$translateRoute => $response[$route]];
 
-		    if($routeMD->getRoute() == GlobalSystem::ExpRouteError){
+		    if($route == GlobalSystem::ExpRouteError){
+
+		      header("HTTP/1.0 {$response[$route][GlobalSystem::ExpErrorCode]} {$response[$route][GlobalSystem::ExpErrorDesc]}");
+
           $dataModel = [
             GlobalSystem::ExpRouteError => $parentComponent,
             GlobalSystem::ExpErrorCode => $response[$route][GlobalSystem::ExpErrorCode],
@@ -66,7 +71,7 @@ class Response
 
     foreach($contentAccepting as $content => $type){
       if(in_array($type, GlobalSystem::ContentTypesAllows)){
-        if($type == GlobalSystem::ExpContentTypeTextHTML){
+        if($type == GlobalSystem::ExpContentTypeTextHTML || $type == GlobalSystem::ExpContentTypeAll){
           $routeMD->setResponseObject(false);
           break;
         }

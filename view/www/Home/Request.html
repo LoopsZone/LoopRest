@@ -1,21 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Response</title>
-    <src type="css" name="404"/>
-</head>
-<body>
-<div id="clouds">
-    <div class="cloud x1"></div>
-    <div class="cloud x1_5"></div>
-    <div class="cloud x2"></div>
-    <div class="cloud x3"></div>
-    <div class="cloud x4"></div>
-    <div class="cloud x5"></div>
-</div>
-<div class='c'>
-    <pre>{route}</pre>
-</div>
-</body>
+    <head>
+        <meta charset="UTF-8">
+        <title>Response</title>
+        <src type="css" name="request"/>
+        <script src="/view/www/common/libs/json-viewer.js"></script>
+        <link rel="stylesheet" type="text/css" href="\view\www\common\css\json-viewer.css">
+    </head>
+    <body>
+        <div id="json"></div>
+        <script>
+            var jsonViewer = new JSONViewer();
+
+            jsonViewer.showJSON({request});
+            document.querySelector("#json").appendChild(jsonViewer.getContainer());
+        </script>
+    </body>
 </html>

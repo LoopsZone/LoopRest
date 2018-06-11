@@ -22,6 +22,7 @@ class Expected
 	const ExpHeaderAuth = 'Authorization';
 	const ExpHeaderContentType = 'Content-type';
 
+	const ExpContentTypeAll = '*/*';
   const ExpContentTypeTextHTML = 'text/html';
 	const ExpContentTypeApplicationJSON = 'application/json';
 

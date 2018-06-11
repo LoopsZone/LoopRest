@@ -66,7 +66,7 @@ class Auth extends Access
 	  $routeMD = $model->getRouteInstance;
 	  $route = $routeMD->getRoute();
 
-	  if($route != GlobalSystem::ExpTranslatedRequestStartupRoute){
+	  if(!in_array($route, GlobalSystem::PublicRoutes)){
       $route = GlobalSystem::translateSystemRoute();
 
       if(key_exists($route, RequestRoute::$routes))

@@ -69,9 +69,9 @@ class Manager extends Auth
   {
     $model = Model::getInstance();
     $routeMD = $model->getRouteInstance;
-    $class = $routeMD->getRoute();
+    $route = $routeMD->getRoute();
 
-    $class = ucfirst($class);
+    $class = ucfirst($route);
     $object = new $class();
     $arguments = $routeMD->getRequest();
     $method = GlobalSystem::translatedRouteMethod();
@@ -83,7 +83,7 @@ class Manager extends Auth
       $result = $object->$method();
     }
 
-    return [$class => [$routeMD->getMethod() => $result]];
+    return [$route => [$routeMD->getMethod() => $result]];
   }
 
 	/**
@@ -113,7 +113,7 @@ class Manager extends Auth
       'name' => $routeMD->getRequest(RequestRoute::ExpAuthName)
     ];
 
-    return self::signIn($tokenData);
+    return [$routeMD->getRoute() => self::signIn($tokenData)];
 	}
 
 	/**
