@@ -69,8 +69,8 @@ class Input extends Manager
 		$routeMD = $model->getRouteInstance;
     $clientServerMD = $model->getClientServerInstance;
 
+    $params = $routeMD->getParams();
 		$route = $clientServerMD->getRoute();
-    $params = $clientServerMD->getRequest();
 		$currentRoute = array_shift($route);
 
 		$this->washParams();

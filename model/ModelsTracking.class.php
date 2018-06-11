@@ -7,7 +7,7 @@ class ModelsTracking extends GlobalSystem
 {
 	private static $order = 0;
 	protected static $currentStep;
-	protected static $executionSteps;
+	public static $executionSteps;
 
 	/**
 	 * Start new execution system steps

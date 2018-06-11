@@ -3,12 +3,13 @@
 /**
  * Class Response
  */
-class Response extends ModelsTracking
+class Response
 {
 	private static $readyResponse = false;
 
 	/**
-	 * Response constructor.
+	 * Response Manager
+   *
 	 * @param $response
 	 */
 	function __construct($response)
@@ -92,6 +93,6 @@ class Response extends ModelsTracking
 	 */
 	public function __destruct()
 	{
-		Log::custom('ExecuteModels', json_encode(self::$executionSteps, JSON_PRETTY_PRINT));
+		Log::custom('ExecuteModels', json_encode(ModelsTracking::$executionSteps, JSON_PRETTY_PRINT));
 	}
 }
