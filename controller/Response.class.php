@@ -17,6 +17,7 @@ class Response
 	  $this->responseContentType();
 		$model = Model::getInstance();
 		$routeMD = $model->getRouteInstance;
+    $clientServerMD = $model->getClientServerInstance;
 
     $route = $routeMD->getRoute();
     $translateRoute = GlobalSystem::translateSystemRoute();
@@ -34,7 +35,8 @@ class Response
 
 		    if($route == GlobalSystem::ExpRouteError){
 
-		      header("HTTP/1.0 {$response[$route][GlobalSystem::ExpErrorCode]} {$response[$route][GlobalSystem::ExpErrorDesc]}");
+		      $protocol = $clientServerMD->getProtocol();
+		      header("{$protocol} {$response[$route][GlobalSystem::ExpErrorCode]} {$response[$route][GlobalSystem::ExpErrorDesc]}");
 
           $dataModel = [
             GlobalSystem::ExpRouteError => $parentComponent,

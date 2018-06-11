@@ -11,6 +11,7 @@ class ClientServer_MD
 	private $request;
 	private $headers;
   private $hostName;
+  private $protocol;
 	private $userAgent;
 	static private $singleton;
 
@@ -24,6 +25,7 @@ class ClientServer_MD
 		$this->domain = $_SERVER['SERVER_NAME'];
 		$this->headers = $this->getAllHeaders();
 		$this->method = $_SERVER['REQUEST_METHOD'];
+    $this->protocol = $_SERVER['SERVER_PROTOCOL'];
 		$this->userAgent = $_SERVER['HTTP_USER_AGENT'];
 
 		$this->route = $this->setRoute();
@@ -199,5 +201,13 @@ class ClientServer_MD
   public function getHostName(): string
   {
     return $this->hostName;
+  }
+
+  /**
+   * @return mixed
+   */
+  public function getProtocol()
+  {
+    return $this->protocol;
   }
 }
