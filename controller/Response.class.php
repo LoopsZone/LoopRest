@@ -30,8 +30,8 @@ class Response
 
 		  if($routeMD->getRoute() != GlobalSystem::ExpRouteView){
         $parentComponent = ucfirst($translateRoute);
-        $view = CoreConfig::PRINCIPAL_VIEW . ':' . $parentComponent;
         $dataModel = [$translateRoute => $response[$route]];
+        $view = CoreConfig::PRINCIPAL_VIEW . ':' . $parentComponent;
 
 		    if($route == GlobalSystem::ExpRouteError){
 
