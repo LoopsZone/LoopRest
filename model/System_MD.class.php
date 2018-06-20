@@ -33,9 +33,9 @@ class System_MD
     if($route != GlobalSystem::ExpTranslatedRequestStartupRoute){
       try{
         $step = new ExecutionStep();
-        //$this->secretUniqueKey = $step->checkSecretKey;
-        //$connexionDB = $step->checkConnexionHostDB;
-        //$accessDB = $step->checkAccessSystemDB;
+        $this->secretUniqueKey = $step->checkSecretKey;
+        $connexionDB = $step->checkConnexionHostDB;
+        $accessDB = $step->checkAccessSystemDB;
       }catch(Exception $error){
         ErrorManager::onErrorRoute($error);
       }
