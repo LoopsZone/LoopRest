@@ -2,6 +2,10 @@
 
 class Startup
 {
+  public function secretKey(){
+    return 'test';
+  }
+
   /**
    * Set secret unique key in system
    *

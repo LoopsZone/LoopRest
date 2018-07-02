@@ -31,6 +31,9 @@ class ErrorManager
 			$request[$route][GlobalSystem::ExpErrorCode] = $error->getCode();
 			$request[$route][GlobalSystem::ExpErrorDesc] = $error->getMessage();
 
+      $routeMD->setCodeResponse($error->getCode());
+      $routeMD->setDescriptionResponse($error->getMessage());
+
 			$routeMD->setRequest($request);
 			$routeMD->setResponseObject(true);
 

@@ -17,7 +17,6 @@ class Response
 	  $this->responseContentType();
 		$model = Model::getInstance();
 		$routeMD = $model->getRouteInstance;
-    $clientServerMD = $model->getClientServerInstance;
 
     $route = $routeMD->getRoute();
     $translateRoute = GlobalSystem::translateSystemRoute();
@@ -34,10 +33,6 @@ class Response
         $view = CoreConfig::PRINCIPAL_VIEW . ':' . $parentComponent;
 
 		    if($route == GlobalSystem::ExpRouteError){
-
-		      $protocol = $clientServerMD->getProtocol();
-		      header("{$protocol} {$response[$route][GlobalSystem::ExpErrorCode]} {$response[$route][GlobalSystem::ExpErrorDesc]}");
-
           $dataModel = [
             GlobalSystem::ExpRouteError => $parentComponent,
             GlobalSystem::ExpErrorCode => $response[$route][GlobalSystem::ExpErrorCode],
@@ -55,9 +50,31 @@ class Response
       }
     }
 
+    $this->headersResponse();
+
     echo($response);
     self::$readyResponse = true;
 	}
+
+  /**
+   * Setting current header response code
+   */
+	private function headersResponse(){
+    $model = Model::getInstance();
+    $routeMD = $model->getRouteInstance;
+    $clientServerMD = $model->getClientServerInstance;
+    $protocol = $clientServerMD->getProtocol();
+
+    $route = $routeMD->getRoute();
+    $code = $routeMD->getCodeResponse();
+    $description = ($routeMD->getDescriptionResponse()) ? $routeMD->getDescriptionResponse() : '';
+
+    header("{$protocol} {$code} {$description}");
+    if($clientServerMD->getMethod() == GlobalSystem::ExpMethodPost && $route != GlobalSystem::ExpRouteError){
+      $url = $clientServerMD->getRedirectURL();
+      header("Location: {$url}");
+    }
+  }
 
   /**
    * Check type accept content type client

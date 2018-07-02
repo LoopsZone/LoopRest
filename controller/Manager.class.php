@@ -69,8 +69,9 @@ class Manager extends Auth
   {
     $model = Model::getInstance();
     $routeMD = $model->getRouteInstance;
-    $route = $routeMD->getRoute();
+    $clientServerMD = $model->getClientServerInstance;
 
+    $route = $routeMD->getRoute();
     $class = ucfirst($route);
     $object = new $class();
     $arguments = $routeMD->getRequest();
@@ -82,6 +83,9 @@ class Manager extends Auth
     }else{
       $result = $object->$method();
     }
+
+    $code = ErrorCodes::MetHodsCodesResponse[$clientServerMD->getMethod()];
+    $routeMD->setCodeResponse($code);
 
     return [$route => [$routeMD->getMethod() => $result]];
   }

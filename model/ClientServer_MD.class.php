@@ -13,6 +13,7 @@ class ClientServer_MD
   private $hostName;
   private $protocol;
 	private $userAgent;
+	private $redirectURL;
 	static private $singleton;
 
 	private function __construct()
@@ -25,6 +26,7 @@ class ClientServer_MD
 		$this->domain = $_SERVER['SERVER_NAME'];
 		$this->headers = $this->getAllHeaders();
 		$this->method = $_SERVER['REQUEST_METHOD'];
+    $this->redirectURL = $_SERVER['REDIRECT_URL'];
     $this->protocol = $_SERVER['SERVER_PROTOCOL'];
 		$this->userAgent = $_SERVER['HTTP_USER_AGENT'];
 
@@ -85,6 +87,14 @@ class ClientServer_MD
   {
 		return $this->url;
 	}
+
+  /**
+   * @return mixed
+   */
+  public function getRedirectURL()
+  {
+    return $this->redirectURL;
+  }
 
 	/**
 	 * Get domain

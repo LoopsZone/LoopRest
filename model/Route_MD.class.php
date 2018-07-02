@@ -7,9 +7,11 @@ class Route_MD
 	private $action;
 	private $method;
 	private $trigger;
+  private $codeResponse;
 	private $authorization;
   private $callback = false;
 	private $request = array();
+  private $descriptionResponse;
 	private $responseObject = true;
 
 	private static $singleton;
@@ -237,5 +239,37 @@ class Route_MD
   public function setParams($params)
   {
     $this->params = $params;
+  }
+
+  /**
+   * @return mixed
+   */
+  public function getCodeResponse()
+  {
+    return $this->codeResponse;
+  }
+
+  /**
+   * @param mixed $codeResponse
+   */
+  public function setCodeResponse($codeResponse)
+  {
+    $this->codeResponse = $codeResponse;
+  }
+
+  /**
+   * @return mixed
+   */
+  public function getDescriptionResponse()
+  {
+    return $this->descriptionResponse;
+  }
+
+  /**
+   * @param mixed $descriptionResponse
+   */
+  public function setDescriptionResponse($descriptionResponse)
+  {
+    $this->descriptionResponse = $descriptionResponse;
   }
 }

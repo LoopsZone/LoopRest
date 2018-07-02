@@ -5,6 +5,13 @@
  */
 class ErrorCodes
 {
+  const MetHodsCodesResponse = [
+    GlobalSystem::ExpMethodGet => 200,
+    GlobalSystem::ExpMethodPut => 200,
+    GlobalSystem::ExpMethodPost => 201,
+    GlobalSystem::ExpMethodDelete => 200
+  ];
+
 	const SystemError = [
 		GlobalSystem::ExpErrorCode => 500,
 		GlobalSystem::ExpErrorDesc => false
