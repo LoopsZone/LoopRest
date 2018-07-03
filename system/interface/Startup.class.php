@@ -2,10 +2,6 @@
 
 class Startup
 {
-  public function secretKey(){
-    return 'test';
-  }
-
   /**
    * Set secret unique key in system
    *
@@ -49,7 +45,7 @@ class Startup
 
           if($clientOwner && password_verify($key, $secretKey[GlobalSystem::ExpSecretKeyTK])){
             if(Cache::clearCache(GlobalSystem::CacheSecretKey)){
-              return $this->secretKey($newKey);
+              return $this->postSecretKey($newKey);
             }
           }
         }

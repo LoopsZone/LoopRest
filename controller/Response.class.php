@@ -68,8 +68,10 @@ class Response
     $route = $routeMD->getRoute();
     $code = $routeMD->getCodeResponse();
     $description = ($routeMD->getDescriptionResponse()) ? $routeMD->getDescriptionResponse() : '';
+    $contentType = ($routeMD->getResponseObject()) ? GlobalSystem::ExpContentTypeApplicationJSON : GlobalSystem::ExpContentTypeTextHTML;
 
     header("{$protocol} {$code} {$description}");
+    header(GlobalSystem::ExpHeaderContentType . ": {$contentType}");
     if($clientServerMD->getMethod() == GlobalSystem::ExpMethodPost && $route != GlobalSystem::ExpRouteError){
       $url = $clientServerMD->getRedirectURL();
       header("Location: {$url}");
