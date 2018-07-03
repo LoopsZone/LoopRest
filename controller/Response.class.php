@@ -63,10 +63,10 @@ class Response
     $model = Model::getInstance();
     $routeMD = $model->getRouteInstance;
     $clientServerMD = $model->getClientServerInstance;
-    $protocol = $clientServerMD->getProtocol();
 
     $route = $routeMD->getRoute();
     $code = $routeMD->getCodeResponse();
+    $protocol = $clientServerMD->getProtocol();
     $description = ($routeMD->getDescriptionResponse()) ? $routeMD->getDescriptionResponse() : '';
     $contentType = ($routeMD->getResponseObject()) ? GlobalSystem::ExpContentTypeApplicationJSON : GlobalSystem::ExpContentTypeTextHTML;
 

@@ -1,6 +1,6 @@
 <?php
 
-class ErrorManager
+class ErrorManager extends ExecutionStepsErrors
 {
 	/**
 	 * If an exception is activated, an error path is activated in the system
@@ -31,7 +31,12 @@ class ErrorManager
 			$request[$route][GlobalSystem::ExpErrorCode] = $error->getCode();
 			$request[$route][GlobalSystem::ExpErrorDesc] = $error->getMessage();
 
-      $routeMD->setCodeResponse($error->getCode());
+      $codeErrorResponse = $error->getCode();
+			if(key_exists($error->getMessage(), ExecutionStepsErrors::$errorCodesSteps)){
+			  $codeErrorResponse = ErrorCodes::MetHodsCodesResponse[GlobalSystem::ExpMethodGet];
+      }
+
+      $routeMD->setCodeResponse($codeErrorResponse);
       $routeMD->setDescriptionResponse($error->getMessage());
 
 			$routeMD->setRequest($request);
