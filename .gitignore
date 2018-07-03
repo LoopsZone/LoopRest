@@ -1,5 +1,5 @@
 logs
-.idea
 vendor/
+**/.idea/
 system/cache/
 view/www/node_modules/
