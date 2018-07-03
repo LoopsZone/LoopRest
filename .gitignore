@@ -1,7 +1,5 @@
 logs
+.idea
 vendor/
 system/cache/
 view/www/node_modules/
-
-bundle.js
-bundle.js.map
