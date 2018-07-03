@@ -2,6 +2,8 @@
 
 class System_MD
 {
+  private $accessDB;
+  private $connexionDB;
   private $secretUniqueKey;
   private static $singleton;
 
@@ -34,8 +36,8 @@ class System_MD
       try{
         $step = new ExecutionStep();
         $this->secretUniqueKey = $step->checkSecretKey;
-        $connexionDB = $step->checkConnexionHostDB;
-        $accessDB = $step->checkAccessSystemDB;
+        $this->connexionDB = $step->checkConnexionHostDB;
+        $this->accessDB = $step->checkAccessSystemDB;
       }catch(Exception $error){
         ErrorManager::onErrorRoute($error);
       }

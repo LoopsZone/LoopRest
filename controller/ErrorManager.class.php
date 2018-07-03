@@ -32,12 +32,14 @@ class ErrorManager extends ExecutionStepsErrors
 			$request[$route][GlobalSystem::ExpErrorDesc] = $error->getMessage();
 
       $codeErrorResponse = $error->getCode();
+      $descriptionErrorResponse = $error->getMessage();
 			if(key_exists($error->getMessage(), ExecutionStepsErrors::$errorCodesSteps)){
+        $descriptionErrorResponse = '';
 			  $codeErrorResponse = ErrorCodes::MetHodsCodesResponse[GlobalSystem::ExpMethodGet];
       }
 
       $routeMD->setCodeResponse($codeErrorResponse);
-      $routeMD->setDescriptionResponse($error->getMessage());
+      $routeMD->setDescriptionResponse($descriptionErrorResponse);
 
 			$routeMD->setRequest($request);
 			$routeMD->setResponseObject(true);

@@ -56,10 +56,27 @@ class Startup
   }
 
   /**
+   * Set current system data base params
    *
+   * @param $host
+   * @param $user
+   * @param $password
+   * @param $engine
+   * @return bool
    */
-  public function connexionHost($host, $user, $password, $engine)
+  public function postConnexionHost($host, $user, $password, $engine)
   {
-    return $host;
+    if(!Cache::getDocument(GlobalSystem::CacheConfigDB)){
+      $config = [
+        GlobalSystem::ExpHostDB => Encrypt::passwordEncode($host),
+        GlobalSystem::ExpUserDB => Encrypt::passwordEncode($user),
+        GlobalSystem::ExpEngineDB => Encrypt::passwordEncode($engine),
+        GlobalSystem::ExpPasswordDB => Encrypt::passwordEncode($password)
+      ];
+
+      return Cache::loadDocument(GlobalSystem::CacheConfigDB, $config, false);
+    }
+
+    return false;
   }
 }

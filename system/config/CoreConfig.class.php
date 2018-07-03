@@ -26,7 +26,7 @@ class CoreConfig
    * User owner of the directory system
    */
   const USER_DIRECTORY = 'root';
-	
+
 	/**
 	 * Expired days from cache documents
 	 */
@@ -83,27 +83,4 @@ class CoreConfig
    * Use the database to establish the initial system configuration
    */
   const DB_SYSTEM = 'system_lp';
-
-	/**
-	 * Use the host's dns where your sensitive data awaits
-	 */
-  const DB_SYSTEM_HOST = 'localhost';
-
-	/**
-	 * Use to shield sensitive data
-	 */
-  const DB_SYSTEM_PASSWORD = 'loop';
-
-	/**
-	 * Use it to identify user access to the database
-	 */
-  const DB_SYSTEM_USERNAME = 'root';
-
-	/**
-	 * Use for the database controller used
-	 *
-	 * Engine controllers integrated
-	 *  MySql
-	 */
-  const DB_SYSTEM_ENGINE_USE = GlobalSystem::DBEngineMysql;
 }

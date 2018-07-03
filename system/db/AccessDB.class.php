@@ -20,7 +20,13 @@ class AccessDB
 		$dbPassword = $db->getPassword();
 		$dbEngine = $db->getDataBaseEngine();
 
-		$this->connectionDB = new DB($dbEngine, $dbHost, $dbUser, $dbPassword, $dbSystem);
+		$this->connectionDB = new DB(
+		  Encrypt::passwordDecode($dbEngine),
+      Encrypt::passwordDecode($dbHost),
+      Encrypt::passwordDecode($dbUser),
+      Encrypt::passwordDecode($dbPassword),
+      Encrypt::passwordDecode($dbSystem)
+    );
 	}
 
 	/**

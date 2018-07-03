@@ -29,10 +29,18 @@ class Expected
 	const ExpTranslatedLoopViewRoute = 'loop';
 	const ExpTranslatedRequestStartupRoute = 'startup';
 
+	//Token payload key
 	const ExpAudTK = 'aud';
 	const ExpExpTK = 'exp';
 	const ExpDataTK = 'data';
 	const ExpSecretKeyTK = 'secretKey';
+
+	//DB configs keys
+	const ExpDB = 'database';
+	const ExpHostDB = 'host';
+	const ExpUserDB = 'user';
+  const ExpEngineDB = 'engine';
+	const ExpPasswordDB = 'password';
 
 	//Set Auth route expected names
 	const ExpRouteAuth = 'auth';

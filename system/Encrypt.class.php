@@ -54,7 +54,7 @@ class Encrypt
       openssl_encrypt(
         $text,
         self::ENCRYPT_METHOD,
-        $key,
+        $key[GlobalSystem::ExpSecretKeyTK],
         OPENSSL_ZERO_PADDING,
         self::IV
       )
@@ -77,7 +77,7 @@ class Encrypt
     $decrypted = openssl_decrypt(
       base64_decode($hash),
       self::ENCRYPT_METHOD,
-      $key,
+      $key[GlobalSystem::ExpSecretKeyTK],
       OPENSSL_ZERO_PADDING,
       self::IV
     );

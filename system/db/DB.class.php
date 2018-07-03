@@ -10,11 +10,12 @@ class DB
 		$this->dbInstance = new PDO("{$engine}: host={$host}{$db}", $user, $password);
 	}
 
-	/**
-	 * Execute sql query
-	 *
-	 * @return array
-	 */
+  /**
+   * Execute sql query
+   *
+   * @param $select
+   * @return array|bool
+   */
 	public function query($select)
 	{
 		try{

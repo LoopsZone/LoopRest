@@ -70,13 +70,27 @@ class ExecutionStep extends ExecutionStepsErrors
     return false;
   }
 
+  /**
+   * Check step Secret Key
+   *
+   * @return bool|mixed
+   */
+  private function checkSecretKey()
+  {
+    return Cache::getDocument(GlobalSystem::CacheSecretKey);
+  }
+
   private function checkConnexionHostDB()
   {
-    $dataBaseMD = DataBase_MD::getInstance();
-    $dataBaseMD->setHost(CoreConfig::DB_SYSTEM_HOST);
-    $dataBaseMD->setUser(CoreConfig::DB_SYSTEM_USERNAME);
-    $dataBaseMD->setPassword(CoreConfig::DB_SYSTEM_PASSWORD . 'test');
-    $dataBaseMD->setDataBaseEngine(CoreConfig::DB_SYSTEM_ENGINE_USE);
+    $dbConfig = Cache::getDocument(GlobalSystem::CacheConfigDB);
+
+    if($dbConfig){
+      $dataBaseMD = DataBase_MD::getInstance();
+      $dataBaseMD->setHost($dbConfig[GlobalSystem::ExpHostDB]);
+      $dataBaseMD->setUser($dbConfig[GlobalSystem::ExpUserDB]);
+      $dataBaseMD->setPassword($dbConfig[GlobalSystem::ExpEngineDB]);
+      $dataBaseMD->setDataBaseEngine($dbConfig[GlobalSystem::ExpPasswordDB]);
+    }
 
     try{
       return new AccessDB();
@@ -86,16 +100,6 @@ class ExecutionStep extends ExecutionStepsErrors
     }
   }
 
-	/**
-	 * Check step Secret Key
-	 *
-	 * @return bool|mixed
-	 */
-	private function checkSecretKey()
-	{
-		return Cache::getDocument(GlobalSystem::CacheSecretKey);
-	}
-
   /**
    * Check step check access systemDB
    *
@@ -103,12 +107,10 @@ class ExecutionStep extends ExecutionStepsErrors
    */
 	private function checkAccessSystemDB()
 	{
+    $dbConfig = Cache::getDocument(GlobalSystem::CacheConfigDB);
+
 		$dataBaseMD = DataBase_MD::getInstance();
-		$dataBaseMD->setDataBase(CoreConfig::DB_SYSTEM);
-		$dataBaseMD->setHost(CoreConfig::DB_SYSTEM_HOST);
-		$dataBaseMD->setUser(CoreConfig::DB_SYSTEM_USERNAME);
-		$dataBaseMD->setPassword(CoreConfig::DB_SYSTEM_PASSWORD);
-		$dataBaseMD->setDataBaseEngine(CoreConfig::DB_SYSTEM_ENGINE_USE);
+		$dataBaseMD->setDataBase($dbConfig[GlobalSystem::ExpDB]);
 
 		try{
 			$db = new AccessDB();
