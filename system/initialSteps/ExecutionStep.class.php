@@ -43,16 +43,6 @@ class ExecutionStep extends ExecutionStepsErrors
       $exception = $exception[$errorDesc];
       if($exception[GlobalSystem::ExpErrorCode] == $errorCode){
         $view = $exception[GlobalSystem::ExpView];
-        if(key_exists(GlobalSystem::ExpErrorLast, $exception)){
-          if($exception[GlobalSystem::ExpErrorLast]){
-            if(key_exists($errorDesc, ExecutionStepsErrors::$stepErrorCodeView)){
-              $code = $exception[GlobalSystem::ExpErrorLast]->getCode();
-              if(key_exists($code, ExecutionStepsErrors::$stepErrorCodeView[$errorDesc])){
-                $view = ExecutionStepsErrors::$stepErrorCodeView[$errorDesc][$code];
-              }
-            }
-          }
-        }
 
         $request = [
           GlobalSystem::ExpRouteView => [
