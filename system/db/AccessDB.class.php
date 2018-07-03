@@ -25,7 +25,7 @@ class AccessDB
       Encrypt::passwordDecode($dbHost),
       Encrypt::passwordDecode($dbUser),
       Encrypt::passwordDecode($dbPassword),
-      Encrypt::passwordDecode($dbSystem)
+      $dbSystem
     );
 	}
 
@@ -37,60 +37,14 @@ class AccessDB
 		$this->connectionDB = null;
 	}
 
-	/**
-	 * Get user by email
-	 * 
-	 * @param $user
-	 * @return mixed
-	 */
-	public function getUser($userEmail)
-	{
-		$result = $this->connectionDB->query("CALL lpGetUserByEmail('{$userEmail}')");
-
-		return $result;
-	}
-
-	/**
-	 * Register new user
-	 *
-	 * @param $request
-	 * @return bool
-	 */
-	public function newUser($request)
-	{
-		$userName = $request['name'];
-		$userEmail = $request['email'];
-		$userBirthday = $request['birthday'];
-
-		$result = $this->connectionDB->execute("CALL lpNewUser('{$userName}', '{$userEmail}', {$userBirthday})");
-
-		return $result;
-	}
-
-	/**
-	 * Request data to system
-	 *
-	 * @param $object
-	 * @param $registry
-	 * @param bool $print
-	 * @return bool|array
-	 */
-	public function requestSystemData($object, $registry)
-	{
-		$result = $this->connectionDB->execute('CALL test');
-
-		return $result;
-	}
-
-	/**
-	 * Insert data in system
-	 *
-	 * @param $object
-	 * @param $data
-	 * @return array|bool
-	 */
-	public function insertSystemData($object, $data)
-	{
-		return $this->connectionDB->insert($object, $data);
-	}
+  /**
+   * Created new data base
+   *
+   * @param $dbName
+   * @return bool
+   */
+	public function newDB($dbName)
+  {
+    return $this->connectionDB->execute("CREATE DATABASE {$dbName}");
+  }
 }

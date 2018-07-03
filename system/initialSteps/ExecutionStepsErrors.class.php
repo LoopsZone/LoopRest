@@ -14,9 +14,7 @@ class ExecutionStepsErrors
 		]
 	];
 
-	protected static $stepErrorCodeView = [
-		GlobalSystem::StepCheckAccessSystemDB => [
-			1049 => 'Test'
-		]
+	protected static $sqlErrorCodes = [
+		GlobalSystem::StepCheckAccessSystemDB => 1049
 	];
 }

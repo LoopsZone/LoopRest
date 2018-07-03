@@ -88,8 +88,8 @@ class ExecutionStep extends ExecutionStepsErrors
       $dataBaseMD = DataBase_MD::getInstance();
       $dataBaseMD->setHost($dbConfig[GlobalSystem::ExpHostDB]);
       $dataBaseMD->setUser($dbConfig[GlobalSystem::ExpUserDB]);
-      $dataBaseMD->setPassword($dbConfig[GlobalSystem::ExpEngineDB]);
-      $dataBaseMD->setDataBaseEngine($dbConfig[GlobalSystem::ExpPasswordDB]);
+      $dataBaseMD->setPassword($dbConfig[GlobalSystem::ExpPasswordDB]);
+      $dataBaseMD->setDataBaseEngine($dbConfig[GlobalSystem::ExpEngineDB]);
     }
 
     try{
@@ -107,18 +107,27 @@ class ExecutionStep extends ExecutionStepsErrors
    */
 	private function checkAccessSystemDB()
 	{
-    $dbConfig = Cache::getDocument(GlobalSystem::CacheConfigDB);
-
-		$dataBaseMD = DataBase_MD::getInstance();
-		$dataBaseMD->setDataBase($dbConfig[GlobalSystem::ExpDB]);
+	  $model = Model::getInstance();
+		$dataBaseMD = $model->getDataBaseInstance;
+		$dataBaseMD->setDataBase(CoreConfig::DB_SYSTEM);
 
 		try{
-			$db = new AccessDB();
+      $connexionDB = new AccessDB();
 		}catch(Exception $error){
-			self::$errorCodesSteps[$this->stepName][GlobalSystem::ExpErrorLast] = $error;
-			return false;
+
+		  if($error->getCode() == self::$sqlErrorCodes[GlobalSystem::StepCheckAccessSystemDB]){
+        $dataBaseMD->setDataBase(null);
+        $connexionDB = new AccessDB();
+
+        if($connexionDB->newDB(CoreConfig::DB_SYSTEM)){
+          return true;
+        }
+      }
+
+      self::$errorCodesSteps[$this->stepName][GlobalSystem::ExpErrorLast] = $error;
+      return false;
 		}
 
-		return $db;
+		return $connexionDB;
 	}
 }
