@@ -47,4 +47,49 @@ class AccessDB
   {
     return $this->connectionDB->execute("CREATE DATABASE {$dbName}");
   }
+
+	/**
+	 * Created new table in current data base
+	 *
+	 * @param $tableName
+	 * @return bool
+	 */
+  public function newTable($tableName)
+  {
+	  $columnsSTR = 'test1 varchar(255), testo2 varchar(255)';
+  	return $this->connectionDB->execute("CREATE TABLE {$tableName} ({$columnsSTR})");
+  }
+
+	/**
+	 * Check if table exist
+	 *
+	 * @param $tableName
+	 * @return bool
+	 */
+  public function tableExist($tableName)
+  {
+  	$result = $this->connectionDB->query("SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = '{$tableName}'");
+
+  	return (count($result));
+  }
+
+	/**
+	 * Get Values from table
+	 *
+	 * @param $tableName
+	 * @param array $columnsMatch
+	 * @return array|bool
+	 */
+  public function getTableValue($tableName, $columnsMatch = [])
+  {
+  	$match = '';
+	  $matchSTR = "WHERE ";
+  	foreach($columnsMatch as $column => $value){
+  		$matchSTR .= "{$column} = {$value}";
+  		$match = $matchSTR;
+  		$matchSTR = $match . ' AND ';
+	  }
+
+	  return $this->connectionDB->query("SELECT * FROM {$tableName} {$match}");
+  }
 }

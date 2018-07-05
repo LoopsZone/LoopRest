@@ -90,4 +90,15 @@ class Model extends ModelsTracking
 	{
 		return System_MD::getInstance();
 	}
+	
+	/**
+	 * Model
+	 * get a singleton instance of UserModel_DB
+	 *
+	 * @return UserModel_DB
+	 */
+	private function getUserModelInstance()
+	{
+		return UserModel_DB::getInstance();
+	}
 }

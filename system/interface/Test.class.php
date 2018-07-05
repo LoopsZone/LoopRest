@@ -9,7 +9,10 @@ class Test
 {
   public function testo()
   {
-    return 'test';
+  	$model = Model::getInstance();
+  	$userMD = $model->getUserModelInstance;
+
+    return $userMD;
   }
 
   public function putTesto()
