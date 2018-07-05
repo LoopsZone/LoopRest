@@ -54,10 +54,21 @@ class AccessDB
 	 * @param $tableName
 	 * @return bool
 	 */
-  public function newTable($tableName)
+  public function newTable($tableName, $colunms = [])
   {
-	  $columnsSTR = 'test1 varchar(255), testo2 varchar(255)';
-  	return $this->connectionDB->execute("CREATE TABLE {$tableName} ({$columnsSTR})");
+    $columnsSTR = '';
+    foreach($colunms as $name => $schema){
+      if(is_array($schema)){
+        $length = current($schema);
+        $schema = key($schema) . "({$length})";
+      }
+
+      $columnsSTR .= "{$name} {$schema}";
+      $columnsGenerate = $columnsSTR;
+      $columnsSTR = $columnsGenerate . ', ';
+    }
+
+  	return $this->connectionDB->execute("CREATE TABLE {$tableName} ({$columnsGenerate})");
   }
 
 	/**

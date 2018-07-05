@@ -1,18 +1,22 @@
 <?php
 
-class UserModel_DB extends ModelDB
+class UserModel_DB implements ModelDB_Interface
 {
 	private $id;
 	private $email;
 	private $birthDay;
 	private $externalId;
+
 	private static $singleton;
 
 	function __construct ()
 	{
-		$this->id = 0;
-		$matcher = get_object_vars($this);
-		$model = parent::__construct($this, $matcher);
+		ModelDB::created($this, function($table){
+		  $table->int('id');
+		  $table->varchar('email');
+		  $table->date('birthDay');
+		  $table->varchar('externalId');
+    });
 	}
 
 	public static function getInstance()

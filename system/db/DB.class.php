@@ -4,11 +4,31 @@ class DB
 {
 	private $dbInstance;
 
+	const INT = 'INT';
+	const BIT = 'BIT';
+  const DATE = 'DATE';
+	const VARCHAR = 'VARCHAR';
+
 	function __construct ($engine, $host, $user, $password, $db = false)
 	{
 		$db = ($db) ? ";dbname={$db}" : '';
 		$this->dbInstance = new PDO("{$engine}: host={$host}{$db}", $user, $password);
 	}
+
+  /**
+   * Get data types sql
+   *
+   * @return array|bool
+   */
+  public static function getDataTypes(){
+    try{
+      $dbClass = new ReflectionClass(__CLASS__);
+      return $dbClass->getConstants();
+    }catch(ReflectionException $error){
+      ErrorManager::onErrorRoute($error);
+      return false;
+    }
+  }
 
   /**
    * Execute sql query

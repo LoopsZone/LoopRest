@@ -2,22 +2,26 @@
 
 class ModelDB
 {
-	function __construct($object, $matchers = [])
+  private $schema;
+  private $modelSchema;
+
+	public static function created($object, $closure)
 	{
-		$matcher = [];
-		$object = get_class($object);
-		$connexionDB = new AccessDB();
-
-		if($connexionDB->tableExist($object)){
-			foreach($matchers as $property => $value){
-				if(!is_null($value)){
-					$matcher[$property] = $value;
-				}
-			}
-		}else{
-			$newTable = $connexionDB->newTable($object);
-		}
-
-		return $connexionDB->getTableValue($object, $matcher);
+    $connexionDB = new AccessDB();
+    $objectName = get_class($object);
+    $modelDB = new ModelDB($objectName);
+    if($connexionDB->tableExist($objectName)){
+      $closure($modelDB);
+    }
 	}
+
+	function __construct($schema)
+  {
+    $this->schema = $schema;
+  }
+
+  public function int($name, $length = 0)
+  {
+
+  }
 }
