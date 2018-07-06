@@ -12,6 +12,7 @@ class Test
   	$model = Model::getInstance();
   	$userMD = $model->getUserModelInstance;
     $testMD = $model->getTestModelInstance;
+    $projectsMD = $model->getProjectsModelInstance;
 
     $testMD->record(1);
     $val = $testMD->externalId;

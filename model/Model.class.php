@@ -21,7 +21,7 @@ class Model extends ModelsTracking
 
 		return self::$singleton;
 	}
-	
+
 	/**
 	 * Start tracking model mode
 	 *
@@ -111,5 +111,16 @@ class Model extends ModelsTracking
   private function getTestModelInstance()
   {
     return TestModel_DB::getInstance();
+  }
+
+  /**
+   * Model
+   * get a singleton instance of TestModel_DB
+   *
+   * @return ModelDB
+   */
+  private function getProjectsModelInstance()
+  {
+    return ProjectsModel_DB::getInstance();
   }
 }

@@ -4,10 +4,10 @@ class DB
 {
 	private $dbInstance;
 
-	const INT = 'INT';
-	const BIT = 'BIT';
-  const DATE = 'DATE';
-	const VARCHAR = 'VARCHAR';
+	const INT = 'int';
+	const BIT = 'bit';
+  const DATE = 'date';
+	const VARCHAR = 'varchar';
 
 	function __construct ($engine, $host, $user, $password, $db = false)
 	{
