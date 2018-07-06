@@ -20,7 +20,7 @@ class ModelDataTypesDB
 	{
 		$this->schema[$this->modelManage][$this->column]['null'] = true;
 	}
-	
+
 	/**
 	 * Primary key column type
 	 */
@@ -28,7 +28,7 @@ class ModelDataTypesDB
 	{
 		$this->schema[$this->modelManage][$this->column]['primaryKey'] = true;
 	}
-	
+
 	/**
 	 * Auto increment column property
 	 */

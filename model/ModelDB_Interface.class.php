@@ -2,9 +2,11 @@
 
 interface ModelDB_Interface
 {
-  function __construct();
+  static function created($object, $closure);
 
-  public static function getInstance();
+  function __construct(ModelDataTypesDB $schema);
+
+  function __call($name, $arguments);
 
   function __set($name, $value);
 

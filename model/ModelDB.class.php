@@ -1,11 +1,11 @@
 <?php
 
-class ModelDB
+class ModelDB implements ModelDB_Interface
 {
 	public $schema;
-	public static $schemaName;
-	public static $schemaModel;
-	public static $modelManage;
+	private static $schemaName;
+	private static $schemaModel;
+	private static $modelManage;
 
   /**
    * Manage model data base
@@ -22,7 +22,7 @@ class ModelDB
 
 		$closure($modelDB);
     if(!$connexionDB->tableExist(self::$modelManage)){
-      $connexionDB->newTable(self::$modelManage, self::$schemaModel);
+      $connexionDB->newTable(self::$modelManage, self::$schemaModel[self::$modelManage]);
     }
 
     return $modelDB;
@@ -40,23 +40,32 @@ class ModelDB
    * @param $arguments
    * @return bool|ModelDataTypesDB
    */
-  function __call($type, $arguments)
+  function __call($type, $arguments = [])
   {
 	  if(key_exists(strtoupper($type), DB::getDataTypes())){
-	  	self::$schemaName = $arguments[0];
-		  $updateLength = ($arguments[1]) ? $arguments[1] : 0;
-		  $currentLength = self::$schemaModel[self::$modelManage][self::$schemaName]['length'];
+	    $countArguments = count($arguments);
+      if($countArguments && $countArguments <= 2){
+        self::$schemaName = $arguments[0];
+        $updateLength = ($arguments[1]) ? $arguments[1] : 0;
+        $currentLength = self::$schemaModel[self::$modelManage][self::$schemaName]['length'];
 
-	  	$lengthValue = ($currentLength) ? $currentLength : 0;
-	  	$length = ($updateLength) ? $updateLength : $lengthValue;
+        $lengthValue = ($currentLength) ? $currentLength : 0;
+        $length = ($updateLength) ? $updateLength : $lengthValue;
 
-	  	self::$schemaModel[self::$modelManage][self::$schemaName]['type'] = $type;
-		  self::$schemaModel[self::$modelManage][self::$schemaName]['length'] = $length;
+        self::$schemaModel[self::$modelManage][self::$schemaName]['type'] = $type;
+        self::$schemaModel[self::$modelManage][self::$schemaName]['length'] = $length;
 
-		  return $this->schema;
+        return $this->schema;
+      }
 	  }
 
 	  return false;
+  }
+
+  public function schema()
+  {
+    $schemaName = $this->schema->modelManage;
+    return self::$schemaModel[$schemaName];
   }
 
 	function __set($name, $value)

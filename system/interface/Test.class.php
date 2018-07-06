@@ -18,7 +18,7 @@ class Test
     $testMD->id = 'Mario';
     $val = $testMD->id;
 
-    return $userMD;
+    return $userMD->schema();
   }
 
   public function putTesto()
