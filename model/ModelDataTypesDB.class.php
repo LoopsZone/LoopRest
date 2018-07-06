@@ -48,6 +48,14 @@ class ModelDataTypesDB
 	}
 
   /**
+   * Set is column contain sensible information
+   */
+	public function sensitiveInfo()
+  {
+    $this->schema[$this->modelManage][$this->column]['sensitiveInfo'] = true;
+  }
+
+  /**
    * Set current column value
    *
    * @param $value

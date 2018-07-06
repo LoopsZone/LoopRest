@@ -11,8 +11,12 @@ class Test
   {
   	$model = Model::getInstance();
   	$userMD = $model->getUserModelInstance;
+    $testMD = $model->getTestModelInstance;
   	$userMD->id = 'test';
   	$value = $userMD->id;
+
+    $testMD->id = 'Mario';
+    $val = $testMD->id;
 
     return $userMD;
   }

@@ -61,8 +61,9 @@ class ModelDB
 
 	function __set($name, $value)
 	{
-		if(key_exists($name, self::$schemaModel[self::$modelManage])){
-      self::$schemaModel[self::$modelManage][$name]['value'] = $value;
+	  $schemaName = $this->schema->modelManage;
+		if(key_exists($name, self::$schemaModel[$schemaName])){
+      self::$schemaModel[$schemaName][$name]['value'] = $value;
 
       return true;
 		}
@@ -72,10 +73,9 @@ class ModelDB
 
 	function __get($name)
 	{
-    if(key_exists($name, self::$schemaModel[self::$modelManage])){
-      if(key_exists('value', self::$schemaModel[self::$modelManage][$name])){
-        return self::$schemaModel[self::$modelManage][$name]['value'];
-      }
+    $schemaName = $this->schema->modelManage;
+    if(key_exists($name, self::$schemaModel[$schemaName])){
+      return self::$schemaModel[$schemaName][$name]['value'];
     }
 
     return false;
