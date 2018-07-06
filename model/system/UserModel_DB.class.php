@@ -1,49 +1,24 @@
 <?php
 
-class UserModel_DB implements ModelDB_Interface
+class UserModel_DB
 {
-	private $id;
-	private $email;
-	private $birthDay;
-	private $externalId;
-
 	private static $singleton;
-
-	function __construct ()
-	{
-		ModelDB::created($this, function($table){
-		  $table->int('id');
-		  $table->varchar('email');
-		  $table->date('birthDay');
-		  $table->varchar('externalId');
-    });
-	}
 
 	public static function getInstance()
 	{
 		if(is_null(self::$singleton)){
-			self::$singleton = new UserModel_DB();
+			self::$singleton = ModelDB::created(self, function($table){
+				$table->int('id')->nullAble();
+				$table->int('id')->autoIncrement();
+				$table->int('id')->defaultValue(5);
+				$table->int('id', 55)->primaryKey();
+				
+				$table->varchar('email');
+				$table->date('birthDay');
+				$table->varchar('externalId');
+			});
 		}
 
 		return self::$singleton;
-	}
-
-	function __set($name, $value)
-	{
-		if(property_exists($this, $name)){
-			$this->$name = $value;
-			return true;
-		}
-
-		return false;
-	}
-
-	function __get($name)
-	{
-		if(property_exists($this, $name)){
-			return $this->$name;
-		}
-
-		return false;
 	}
 }
