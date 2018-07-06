@@ -12,14 +12,11 @@ class Test
   	$model = Model::getInstance();
   	$userMD = $model->getUserModelInstance;
     $testMD = $model->getTestModelInstance;
-  	$userMD->id = 'test';
-    $userMD->test = 'test';
-  	$value = $userMD->id;
 
-    $testMD->id = 'Mario';
-    $val = $testMD->id;
+    $testMD->record(1);
+    $val = $testMD->externalId;
 
-    return $userMD->schema();
+    return $testMD->schema();
   }
 
   public function putTesto()

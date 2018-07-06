@@ -101,12 +101,23 @@ class AccessDB
   {
   	$match = '';
 	  $matchSTR = "WHERE ";
-  	foreach($columnsMatch as $column => $value){
-  		$matchSTR .= "{$column} = {$value}";
-  		$match = $matchSTR;
-  		$matchSTR = $match . ' AND ';
+  	foreach($columnsMatch as $column => $schema){
+  	  if($schema['value']){
+        $matchSTR .= "{$column} = {$schema['value']}";
+        $match = $matchSTR;
+        $matchSTR = $match . ' AND ';
+      }
 	  }
 
-	  return $this->connectionDB->query("SELECT * FROM {$tableName} {$match}");
+	  $result = $this->connectionDB->query("SELECT * FROM {$tableName} {$match}");
+
+  	$data = [];
+  	foreach($result as $record => $schema){
+  	  $key = $schema['id'];
+  	  unset($schema['id']);
+  	  $data[$key] = $schema;
+    }
+
+    return $data;
   }
 }
