@@ -16,9 +16,9 @@ class ModelDataTypesDB
 	/**
 	 * Null available value in column
 	 */
-	public function nullAble()
+	public function notNull()
 	{
-		$this->schema[$this->modelManage][$this->column]['null'] = true;
+		$this->schema[$this->modelManage][$this->column]['null'] = false;
 	}
 
 	/**

@@ -62,6 +62,11 @@ class ModelDB implements ModelDB_Interface
 	  return false;
   }
 
+  /**
+   * Return current schema
+   *
+   * @return mixed
+   */
   public function schema()
   {
     $schemaName = $this->schema->modelManage;

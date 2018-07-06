@@ -59,7 +59,7 @@ class AccessDB
     $columnsSTR = '';
     foreach($colunms as $name => $schema){
       if(is_array($schema)){
-        $nullAble = ($schema['null']) ? ' NOT NULL' : '';
+        $nullAble = ($schema['null']) ? '' : ' NOT NULL';
         $primaryKey = ($schema['primaryKey']) ? ' PRIMARY KEY' : '';
         $length = ($schema['length']) ? "({$schema['length']})" : '';
         $autoIncrement = ($schema['autoIncrement']) ? ' AUTO_INCREMENT' : '';

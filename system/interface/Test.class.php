@@ -13,6 +13,7 @@ class Test
   	$userMD = $model->getUserModelInstance;
     $testMD = $model->getTestModelInstance;
   	$userMD->id = 'test';
+    $userMD->test = 'test';
   	$value = $userMD->id;
 
     $testMD->id = 'Mario';
