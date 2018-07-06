@@ -12,7 +12,7 @@ class ModelDataTypesDB
 		$this->column = &$column;
 		$this->modelManage = $modelManage;
 	}
-	
+
 	/**
 	 * Null available value in column
 	 */
@@ -46,4 +46,14 @@ class ModelDataTypesDB
 	{
 		$this->schema[$this->modelManage][$this->column]['default'] = $value;
 	}
+
+  /**
+   * Set current column value
+   *
+   * @param $value
+   */
+	public function value($value)
+  {
+    $this->schema[$this->modelManage][$this->column]['value'] = $value;
+  }
 }
