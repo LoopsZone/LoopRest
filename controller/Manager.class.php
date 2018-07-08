@@ -91,30 +91,38 @@ class Manager extends Auth
   }
 
 	/**
-	 * @return string
-	 * @throws Exception
+	 * @return array
 	 */
 	private function auth()
 	{
 		$model = Model::getInstance();
+		$model->getUserModelInstance;
 		$routeMD = $model->getRouteInstance;
-		$authorization = $routeMD->getAuthorization();
 
-    $routeMD->setResponseObject(false);
-    $userEmail = $routeMD->getRequest(GlobalSystem::ExpAuthEmail);
-    $userAccess = self::checkUserAccess($userEmail);
+		$name = $routeMD->getRequest(RequestRoute::ExpAuthName);
+		$email = $routeMD->getRequest(RequestRoute::ExpAuthEmail);
+		$externalId = $routeMD->getRequest(RequestRoute::ExpAuthId);
+		$birthDay = $routeMD->getRequest(RequestRoute::ExpAuthBirthday);
 
-    $db = new AccessDB();
-    $isUser = $db->getUser($userEmail);
+		$connexionDB = new AccessDB();
+		$user = $connexionDB->getTableValue(User_MD::class, [User_MD::EMAIL => $email]);
 
-    if(!$isUser){
-      $db->newUser($routeMD->getRequest());
-    }
+		if(!$user){
+			$connexionDB->insert(User_MD::class, [
+				User_MD::NAME => $name,
+				User_MD::EMAIL => $email,
+				User_MD::BIRTHDAY => $birthDay,
+				User_MD::EXTERNAL_ID => $externalId
+			]);
+		}
+
+		$routeMD->setResponseObject(false);
+		$userAccess = self::checkUserAccess($email);
 
     $tokenData = [
-      'access' => $userAccess,
-      'id' => $routeMD->getRequest(RequestRoute::ExpAuthId),
-      'name' => $routeMD->getRequest(RequestRoute::ExpAuthName)
+      GlobalSystem::ExpNameTK => $name,
+	    GlobalSystem::ExpAccessTK  => $userAccess,
+	    GlobalSystem::ExpEmailTK  => Encrypt::passwordEncode($email)
     ];
 
     return [$routeMD->getRoute() => self::signIn($tokenData)];

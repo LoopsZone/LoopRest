@@ -1,23 +1,15 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: vargasu
- * Date: 6/1/2018
- * Time: 3:48 PM
- */
+
 class Test
 {
   public function testo()
   {
   	$model = Model::getInstance();
   	$userMD = $model->getUserModelInstance;
-    $testMD = $model->getTestModelInstance;
-    $projectsMD = $model->getProjectsModelInstance;
 
-    $testMD->record(1);
-    $val = $testMD->externalId;
+    $val = $userMD->id;
 
-    return $testMD->schema();
+    return $userMD;
   }
 
   public function putTesto()

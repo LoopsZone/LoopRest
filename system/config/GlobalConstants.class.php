@@ -24,7 +24,6 @@ class GlobalConstants extends Expected
 	];
 
 	const PublicRoutes = [
-	  'test',
 	  self::ExpTranslatedRequestStartupRoute
   ];
 

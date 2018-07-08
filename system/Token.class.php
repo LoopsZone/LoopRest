@@ -101,8 +101,13 @@ class Token
     $model = Model::getInstance();
     $systemMD = $model->getSystemInstance;
     $secretKey = $systemMD->getSecretUniqueKey();
-		$decode = JWT::decode($token, $secretKey,CoreConfig::ENCRYPT);
+		$decode = JWT::decode($token, $secretKey[GlobalSystem::ExpSecretKeyTK],CoreConfig::ENCRYPT);
 
-		return $decode->data;
+		$data = [];
+		foreach ($decode->data as $key => $value){
+			$data[$key] = $value;
+		}
+
+		return $data;
 	}
 }

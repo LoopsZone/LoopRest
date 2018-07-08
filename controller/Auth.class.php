@@ -5,7 +5,7 @@
  *
  * @author   Mario Henmanuel Vargas Ugalde <hemma.hvu@gmail.com>
  */
-class Auth extends Access
+class Auth
 {
 	/**
 	 * Return token to request any data in system
@@ -27,16 +27,30 @@ class Auth extends Access
 	protected static function checkClient()
 	{
 		$model = Model::getInstance();
+		$loginMD = $model->getLoginInstance;
 		$clientServerMD = $model->getClientServerInstance;
-		$needTK = self::routeNeedTK();
 
 		//TODO Add BlackList customers
 
-		if($needTK){
+		if(self::routeNeedTK()){
 			$token = $clientServerMD->getHeader(GlobalSystem::ExpHeaderAuth);
 			$availableTK = Token::check($token);
 
-			return ($availableTK === true) ? true : $availableTK;
+			if($availableTK){
+				$userData = Token::getData($token);
+				$email = Encrypt::passwordDecode($userData[GlobalSystem::ExpEmailTK]);
+
+				$connectionDB = new AccessDB();
+				$userData = $connectionDB->getTableValue(User_MD::class, [User_MD::EMAIL => $email])[0];
+
+				$loginMD->setId($userData[User_MD::ID]);
+				$loginMD->setName($userData[User_MD::NAME]);
+				$loginMD->setEmail($userData[User_MD::EMAIL]);
+				$loginMD->setBirthday($userData[User_MD::BIRTHDAY]);
+				$loginMD->setExternalId($userData[User_MD::EXTERNAL_ID]);
+			}
+
+			return $availableTK;
 		}
 
 		return true;

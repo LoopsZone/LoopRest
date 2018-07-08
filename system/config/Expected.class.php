@@ -33,6 +33,9 @@ class Expected
 	const ExpAudTK = 'aud';
 	const ExpExpTK = 'exp';
 	const ExpDataTK = 'data';
+	const ExpNameTK = 'name';
+	const ExpEmailTK = 'email';
+	const ExpAccessTK = 'access';
 	const ExpSecretKeyTK = 'secretKey';
 
 	//DB configs keys

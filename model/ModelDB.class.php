@@ -3,7 +3,6 @@
 class ModelDB implements ModelDB_Interface
 {
 	public $schema;
-	private $record;
 	private static $schemaName;
 	private static $schemaModel;
 	private static $modelManage;
@@ -64,16 +63,6 @@ class ModelDB implements ModelDB_Interface
   }
 
   /**
-   * Set current record for manage
-   *
-   * @param $primaryKey
-   */
-  public function record($primaryKey)
-  {
-    $this->record = $primaryKey;
-  }
-
-  /**
    * Return current schema
    *
    * @return mixed
@@ -88,7 +77,7 @@ class ModelDB implements ModelDB_Interface
 	{
 	  $schemaName = $this->schema->modelManage;
 		if(key_exists($name, self::$schemaModel[$schemaName])){
-      self::$schemaModel[$schemaName][$name]['value'] = $value;
+      self::$schemaModel[$schemaName][$name] = $value;
 
       return true;
 		}
@@ -103,13 +92,9 @@ class ModelDB implements ModelDB_Interface
     $data = $connexionDB->getTableValue($schemaName, self::$schemaModel[$schemaName]);
 
     $schemaName = $this->schema->modelManage;
-    self::$schemaModel[$schemaName]['value'] = $data;
+    self::$schemaModel[$schemaName] = $data;
     if(key_exists($name, self::$schemaModel[$schemaName])){
-      if($this->record){
-        return self::$schemaModel[$schemaName]['value'][$this->record][$name];
-      }
-
-      return self::$schemaModel[$schemaName]['value'];
+	    return self::$schemaModel[$schemaName][$name];
     }
 
     return false;

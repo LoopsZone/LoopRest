@@ -91,6 +91,17 @@ class Model extends ModelsTracking
 		return System_MD::getInstance();
 	}
 
+	/**
+	 * Model
+	 * get a singleton instance of Login_MD
+	 *
+	 * @return Login_MD
+	 */
+	private function getLoginInstance()
+	{
+		return Login_MD::getInstance();
+	}
+
   /**
    * Model
    * get a singleton instance of UserModel_DB
@@ -99,7 +110,7 @@ class Model extends ModelsTracking
    */
 	private function getUserModelInstance()
 	{
-		return UserModel_DB::getInstance();
+		return User_MD::getInstance();
 	}
 
   /**

@@ -99,25 +99,37 @@ class AccessDB
 	 */
   public function getTableValue($tableName, $columnsMatch = [])
   {
-  	$match = '';
 	  $matchSTR = "WHERE ";
-  	foreach($columnsMatch as $column => $schema){
-  	  if($schema['value']){
-        $matchSTR .= "{$column} = {$schema['value']}";
-        $match = $matchSTR;
-        $matchSTR = $match . ' AND ';
-      }
+  	foreach($columnsMatch as $column => $value){
+		  $matchSTR .= "{$column} = '{$value}'";
+		  $match = $matchSTR;
+		  $matchSTR = $match . ' AND ';
 	  }
 
-	  $result = $this->connectionDB->query("SELECT * FROM {$tableName} {$match}");
+	  return $this->connectionDB->query("SELECT * FROM {$tableName} {$match}");
+  }
 
-  	$data = [];
-  	foreach($result as $record => $schema){
-  	  $key = $schema['id'];
-  	  unset($schema['id']);
-  	  $data[$key] = $schema;
-    }
+	/**
+	 * Insert registry in table
+	 *
+	 * @param $tableName
+	 * @param array $columnsMatch
+	 * @return bool
+	 */
+  public function insert($tableName, $columnsMatch = [])
+  {
+	  $valuesSTR = '';
+	  $columnsSTR = '';
+	  foreach($columnsMatch as $column => $value){
+		  $columnsSTR .= "{$column}";
+		  $columns = $columnsSTR;
+		  $columnsSTR = $columns . ', ';
 
-    return $data;
+		  $valuesSTR .= "'{$value}'";
+		  $values = $valuesSTR;
+		  $valuesSTR = $values . ', ';
+	  }
+
+	  return $this->connectionDB->execute("INSERT INTO {$tableName} ({$columns}) VALUES ({$values})");
   }
 }
