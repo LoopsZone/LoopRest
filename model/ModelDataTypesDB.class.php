@@ -2,8 +2,8 @@
 
 class ModelDataTypesDB
 {
-	public $column;
 	public $schema;
+  private $column;
 	public $modelManage;
 
 	function __construct (&$types, &$column, $modelManage)

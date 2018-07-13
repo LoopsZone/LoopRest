@@ -116,7 +116,6 @@ class Manager extends Auth
 			]);
 		}
 
-		$routeMD->setResponseObject(false);
 		$userAccess = self::checkUserAccess($email);
 
     $tokenData = [
