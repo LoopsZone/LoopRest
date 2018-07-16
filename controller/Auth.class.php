@@ -27,7 +27,6 @@ class Auth
 	protected static function checkClient()
 	{
 		$model = Model::getInstance();
-		$userMD = $model->getUserInstance;
 		$routeMD = $model->getRouteInstance;
 		$clientServerMD = $model->getClientServerInstance;
 
@@ -38,6 +37,7 @@ class Auth
 			$availableTK = Token::check($token);
 
 			if($availableTK){
+        $userMD = $model->getUserInstance;
 				$userData = Token::getData($token);
 				$email = Encrypt::passwordDecode($userData[GlobalSystem::ExpEmailTK]);
 				$userData = $userMD->getModelValue([User_MD::EMAIL => $email])[0];

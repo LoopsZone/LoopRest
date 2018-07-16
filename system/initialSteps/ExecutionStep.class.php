@@ -1,13 +1,8 @@
 <?php
 
-class ExecutionStep extends AccessDB
+class ExecutionStep
 {
 	private $stepName;
-
-	function __construct ()
-	{
-		parent::__construct();
-	}
 
 	/**
    * @param $stepName
@@ -28,7 +23,7 @@ class ExecutionStep extends AccessDB
 
 		return $step;
 	}
-	
+
 	/**
    * The execution step must begin
    *
@@ -75,6 +70,11 @@ class ExecutionStep extends AccessDB
     return Cache::getDocument(GlobalSystem::CacheSecretKey);
   }
 
+  /**
+   * Check if the system host connection is successful
+   *
+   * @return bool
+   */
   private function checkConnexionHostDB()
   {
     $dbConfig = Cache::getDocument(GlobalSystem::CacheConfigDB);
@@ -88,7 +88,8 @@ class ExecutionStep extends AccessDB
     }
 
     try{
-      return parent::__construct();
+      $connexionDB = new AccessDB();
+      return $connexionDB->connect;
     }catch(Exception $error){
 	    ExecutionStepsErrors::$errorCodesSteps[$this->stepName][GlobalSystem::ExpErrorLast] = $error;
       return false;

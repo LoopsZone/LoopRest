@@ -7,9 +7,9 @@
  */
 class AccessDB extends DB
 {
-	protected $connectionDB;
+	private $connectionDB;
 
-	protected function __construct()
+	public function __construct()
 	{
 		$model = Model::getInstance();
 		$db = $model->getDataBaseInstance;
@@ -43,7 +43,7 @@ class AccessDB extends DB
    * @param $dbName
    * @return bool
    */
-	protected function newDB($dbName)
+	public function newDB($dbName)
   {
     return $this->connectionDB->execute("CREATE DATABASE {$dbName}");
   }
@@ -54,7 +54,7 @@ class AccessDB extends DB
 	 * @param $tableName
 	 * @return bool
 	 */
-  protected function newTable($tableName, $colunms = [])
+  public function newTable($tableName, $colunms = [])
   {
     $columnsSTR = '';
     foreach($colunms as $name => $schema){
@@ -83,7 +83,7 @@ class AccessDB extends DB
 	 * @param $tableName
 	 * @return bool
 	 */
-  protected function tableExist($tableName)
+  public function tableExist($tableName)
   {
   	$result = $this->connectionDB->query("SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = '{$tableName}'");
 

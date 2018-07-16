@@ -2,6 +2,7 @@
 
 class DB
 {
+  public $connect;
 	private $dbInstance;
 
 	const INT = 'int';
@@ -9,11 +10,12 @@ class DB
   const DATE = 'date';
 	const VARCHAR = 'varchar';
 
-	protected function __construct ($engine, $host, $user, $password, $db = false)
+	protected function __construct($engine, $host, $user, $password, $db = false)
 	{
 		if($engine && $host && $user && $password){
 			$db = ($db) ? ";dbname={$db}" : '';
 			$this->dbInstance = new PDO("{$engine}: host={$host}{$db}", $user, $password);
+			$this->connect = true;
 		}
 	}
 

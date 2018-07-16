@@ -20,8 +20,8 @@ class ModelDB extends AccessDB
     $modelDB = new ModelDB(new ModelDataTypesDB(self::$schemaModel, self::$schemaName, self::$modelManage));
 
 		$closure($modelDB);
-    if(!$modelDB->connexionDB->tableExist(self::$modelManage)){
-      $modelDB->connexionDB->newTable(self::$modelManage, self::$schemaModel[self::$modelManage]);
+    if(!$modelDB->tableExist(self::$modelManage)){
+      $modelDB->newTable(self::$modelManage, self::$schemaModel[self::$modelManage]);
     }
 
     return $modelDB;
@@ -73,18 +73,30 @@ class ModelDB extends AccessDB
     return self::$schemaModel[$schemaName];
   }
 
+  /**
+   * Consult a model match values
+   *
+   * @param $columns
+   * @return array|bool
+   */
   public function getModelValue($columns)
   {
 	  $schemaName = $this->schema->modelManage;
   	return parent::getTableValue($schemaName, $columns);
   }
 
+  /**
+   * Insert new registry in current model
+   *
+   * @param $columnsMatch
+   * @return bool
+   */
   public function insert($columnsMatch)
   {
 	  $schemaName = $this->schema->modelManage;
 	  return parent::insert($schemaName, $columnsMatch);
   }
-	
+
 	function __set($name, $value)
 	{
 	  $schemaName = $this->schema->modelManage;
