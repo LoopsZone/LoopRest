@@ -24,7 +24,7 @@ class Manager extends Auth
 		$model = Model::getInstance();
 		$routeMD = $model->getRouteInstance;
 
-		try {
+		try{
 			switch($routeMD->getTrigger()){
 				case GlobalSystem::ExpAuthTrigger:
 					return $this->auth();
@@ -136,7 +136,6 @@ class Manager extends Auth
 		$model = Model::getInstance();
 		$routeMD = $model->getRouteInstance;
 
-		$routeMD->setResponseObject(true);
 		$errorRequest = $routeMD->getRequest();
     $executionStepNeedStart = ExecutionStep::stepErrorView();
 
