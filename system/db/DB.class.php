@@ -3,7 +3,7 @@
 class DB
 {
   public $connect;
-	private $dbInstance;
+	protected $dbInstance;
 
 	const INT = 'int';
 	const BIT = 'bit';

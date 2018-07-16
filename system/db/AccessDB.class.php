@@ -7,34 +7,18 @@
  */
 class AccessDB extends DB
 {
-	private $connectionDB;
-
 	public function __construct()
 	{
 		$model = Model::getInstance();
-		$db = $model->getDataBaseInstance;
+		$dbMD = $model->getDataBaseInstance;
 
-		$dbHost = $db->getHost();
-		$dbUser = $db->getUser();
-		$dbSystem = $db->getDataBase();
-		$dbPassword = $db->getPassword();
-		$dbEngine = $db->getDataBaseEngine();
-
-		$this->connectionDB = parent::__construct(
-			Encrypt::passwordDecode($dbEngine),
-			Encrypt::passwordDecode($dbHost),
-			Encrypt::passwordDecode($dbUser),
-			Encrypt::passwordDecode($dbPassword),
-			$dbSystem
-		);
-	}
-
-	/**
-	 * Close current connection
-	 */
-	protected function close()
-	{
-		$this->connectionDB = null;
+    parent::__construct(
+      Encrypt::passwordDecode($dbMD->getDataBaseEngine()),
+      Encrypt::passwordDecode($dbMD->getHost()),
+      Encrypt::passwordDecode($dbMD->getUser()),
+      Encrypt::passwordDecode($dbMD->getPassword()),
+      $dbMD->getDataBase()
+    );
 	}
 
   /**
@@ -45,7 +29,7 @@ class AccessDB extends DB
    */
 	public function newDB($dbName)
   {
-    return $this->connectionDB->execute("CREATE DATABASE {$dbName}");
+    return $this->execute("CREATE DATABASE {$dbName}");
   }
 
 	/**
@@ -74,7 +58,7 @@ class AccessDB extends DB
       $columnsSTR = $columnsGenerate . ', ';
     }
 
-  	return $this->connectionDB->execute("CREATE TABLE {$tableName} ({$columnsGenerate})");
+  	return $this->execute("CREATE TABLE {$tableName} ({$columnsGenerate})");
   }
 
 	/**
@@ -85,7 +69,7 @@ class AccessDB extends DB
 	 */
   public function tableExist($tableName)
   {
-  	$result = $this->connectionDB->query("SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = '{$tableName}'");
+  	$result = $this->query("SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = '{$tableName}'");
 
   	return (count($result));
   }
@@ -106,7 +90,7 @@ class AccessDB extends DB
 		  $matchSTR = $match . ' AND ';
 	  }
 
-	  return $this->connectionDB->query("SELECT * FROM {$tableName} {$match}");
+	  return $this->query("SELECT * FROM {$tableName} {$match}");
   }
 
 	/**
@@ -130,6 +114,6 @@ class AccessDB extends DB
 		  $valuesSTR = $values . ', ';
 	  }
 
-	  return $this->connectionDB->execute("INSERT INTO {$tableName} ({$columns}) VALUES ({$values})");
+	  return $this->execute("INSERT INTO {$tableName} ({$columns}) VALUES ({$values})");
   }
 }

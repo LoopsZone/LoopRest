@@ -36,7 +36,7 @@ class Auth
 			$token = $clientServerMD->getHeader(GlobalSystem::ExpHeaderAuth);
 			$availableTK = Token::check($token);
 
-			if($availableTK){
+			if($availableTK === true){
         $userMD = $model->getUserInstance;
 				$userData = Token::getData($token);
 				$email = Encrypt::passwordDecode($userData[GlobalSystem::ExpEmailTK]);
