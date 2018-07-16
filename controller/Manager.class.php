@@ -96,7 +96,6 @@ class Manager extends Auth
 	private function auth()
 	{
 		$model = Model::getInstance();
-		$model->getUserModelInstance;
 		$routeMD = $model->getRouteInstance;
 
 		$name = $routeMD->getRequest(RequestRoute::ExpAuthName);
@@ -104,11 +103,11 @@ class Manager extends Auth
 		$externalId = $routeMD->getRequest(RequestRoute::ExpAuthId);
 		$birthDay = $routeMD->getRequest(RequestRoute::ExpAuthBirthday);
 
-		$connexionDB = new AccessDB();
-		$user = $connexionDB->getTableValue(User_MD::class, [User_MD::EMAIL => $email]);
+		$userMD = $model->getUserInstance;
+		$user = $userMD->getModelValue([User_MD::EMAIL => $email]);
 
 		if(!$user){
-			$connexionDB->insert(User_MD::class, [
+			$userMD->insert([
 				User_MD::NAME => $name,
 				User_MD::EMAIL => $email,
 				User_MD::BIRTHDAY => $birthDay,
@@ -116,7 +115,6 @@ class Manager extends Auth
 			]);
 		}
 
-		$routeMD->setResponseObject(false);
 		$userAccess = self::checkUserAccess($email);
 
     $tokenData = [

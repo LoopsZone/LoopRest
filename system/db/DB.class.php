@@ -9,10 +9,12 @@ class DB
   const DATE = 'date';
 	const VARCHAR = 'varchar';
 
-	function __construct ($engine, $host, $user, $password, $db = false)
+	protected function __construct ($engine, $host, $user, $password, $db = false)
 	{
-		$db = ($db) ? ";dbname={$db}" : '';
-		$this->dbInstance = new PDO("{$engine}: host={$host}{$db}", $user, $password);
+		if($engine && $host && $user && $password){
+			$db = ($db) ? ";dbname={$db}" : '';
+			$this->dbInstance = new PDO("{$engine}: host={$host}{$db}", $user, $password);
+		}
 	}
 
   /**
@@ -36,7 +38,7 @@ class DB
    * @param $select
    * @return array|bool
    */
-	public function query($select)
+	protected function query($select)
 	{
 		try{
 			$this->dbInstance->beginTransaction();
@@ -61,7 +63,7 @@ class DB
 	 *
 	 * @return bool
 	 */
-	public function execute($sql)
+	protected function execute($sql)
 	{
 		try{
 			$this->dbInstance->beginTransaction();

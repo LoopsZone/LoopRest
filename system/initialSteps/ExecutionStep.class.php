@@ -1,10 +1,15 @@
 <?php
 
-class ExecutionStep extends ExecutionStepsErrors
+class ExecutionStep extends AccessDB
 {
 	private $stepName;
 
-  /**
+	function __construct ()
+	{
+		parent::__construct();
+	}
+
+	/**
    * @param $stepName
    * @return mixed
    * @throws Exception
@@ -16,15 +21,15 @@ class ExecutionStep extends ExecutionStepsErrors
 
 		if(!$step){
 			$error[GlobalSystem::ExpErrorDesc] = $stepName;
-			$error[GlobalSystem::ExpErrorCode] = self::$errorCodesSteps[$stepName][GlobalSystem::ExpErrorCode];
+			$error[GlobalSystem::ExpErrorCode] = ExecutionStepsErrors::$errorCodesSteps[$stepName][GlobalSystem::ExpErrorCode];
 
 			ErrorManager::throwException($error);
 		}
 
 		return $step;
 	}
-
-  /**
+	
+	/**
    * The execution step must begin
    *
    * @return bool
@@ -35,7 +40,7 @@ class ExecutionStep extends ExecutionStepsErrors
     $routeMD = $model->getRouteInstance;
     $errorRequest = $routeMD->getRequest();
 
-    $exception = ExecutionStep::$errorCodesSteps;
+    $exception = ExecutionStepsErrors::$errorCodesSteps;
     $errorCode = $errorRequest[GlobalSystem::ExpErrorCode];
     $errorDesc = $errorRequest[GlobalSystem::ExpErrorDesc];
 
@@ -83,9 +88,9 @@ class ExecutionStep extends ExecutionStepsErrors
     }
 
     try{
-      return new AccessDB();
+      return parent::__construct();
     }catch(Exception $error){
-      self::$errorCodesSteps[$this->stepName][GlobalSystem::ExpErrorLast] = $error;
+	    ExecutionStepsErrors::$errorCodesSteps[$this->stepName][GlobalSystem::ExpErrorLast] = $error;
       return false;
     }
   }
@@ -105,7 +110,7 @@ class ExecutionStep extends ExecutionStepsErrors
       $connexionDB = new AccessDB();
 		}catch(Exception $error){
 
-		  if($error->getCode() == self::$sqlErrorCodes[GlobalSystem::StepCheckAccessSystemDB]){
+		  if($error->getCode() == ExecutionStepsErrors::$sqlErrorCodes[GlobalSystem::StepCheckAccessSystemDB]){
         $dataBaseMD->setDataBase(null);
         $connexionDB = new AccessDB();
 
@@ -114,7 +119,7 @@ class ExecutionStep extends ExecutionStepsErrors
         }
       }
 
-      self::$errorCodesSteps[$this->stepName][GlobalSystem::ExpErrorLast] = $error;
+			ExecutionStepsErrors::$errorCodesSteps[$this->stepName][GlobalSystem::ExpErrorLast] = $error;
       return false;
 		}
 

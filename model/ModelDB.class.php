@@ -1,6 +1,6 @@
 <?php
 
-class ModelDB implements ModelDB_Interface
+class ModelDB extends AccessDB
 {
 	public $schema;
 	private static $schemaName;
@@ -17,12 +17,11 @@ class ModelDB implements ModelDB_Interface
 	public static function created($object, $closure)
 	{
     self::$modelManage = $object;
-    $connexionDB = new AccessDB();
     $modelDB = new ModelDB(new ModelDataTypesDB(self::$schemaModel, self::$schemaName, self::$modelManage));
 
 		$closure($modelDB);
-    if(!$connexionDB->tableExist(self::$modelManage)){
-      $connexionDB->newTable(self::$modelManage, self::$schemaModel[self::$modelManage]);
+    if(!$modelDB->connexionDB->tableExist(self::$modelManage)){
+      $modelDB->connexionDB->newTable(self::$modelManage, self::$schemaModel[self::$modelManage]);
     }
 
     return $modelDB;
@@ -30,6 +29,7 @@ class ModelDB implements ModelDB_Interface
 
 	function __construct(ModelDataTypesDB $schema)
   {
+  	parent::__construct();
     $this->schema = $schema;
   }
 
@@ -73,6 +73,18 @@ class ModelDB implements ModelDB_Interface
     return self::$schemaModel[$schemaName];
   }
 
+  public function getModelValue($columns)
+  {
+	  $schemaName = $this->schema->modelManage;
+  	return parent::getTableValue($schemaName, $columns);
+  }
+
+  public function insert($columnsMatch)
+  {
+	  $schemaName = $this->schema->modelManage;
+	  return parent::insert($schemaName, $columnsMatch);
+  }
+	
 	function __set($name, $value)
 	{
 	  $schemaName = $this->schema->modelManage;

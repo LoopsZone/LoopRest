@@ -5,8 +5,8 @@ class Test
   public function testo()
   {
   	$model = Model::getInstance();
-  	$userMD = $model->getUserModelInstance;
-
+  	$userMD = $model->getUserInstance;
+  	
     $val = $userMD->id;
 
     return $userMD;

@@ -5,11 +5,11 @@
  *
  * @author   Mario Henmanuel Vargas Ugalde <hemma.hvu@gmail.com>
  */
-class AccessDB
+class AccessDB extends DB
 {
-	private $connectionDB;
+	protected $connectionDB;
 
-	function __construct()
+	protected function __construct()
 	{
 		$model = Model::getInstance();
 		$db = $model->getDataBaseInstance;
@@ -20,19 +20,19 @@ class AccessDB
 		$dbPassword = $db->getPassword();
 		$dbEngine = $db->getDataBaseEngine();
 
-		$this->connectionDB = new DB(
-		  Encrypt::passwordDecode($dbEngine),
-      Encrypt::passwordDecode($dbHost),
-      Encrypt::passwordDecode($dbUser),
-      Encrypt::passwordDecode($dbPassword),
-      $dbSystem
-    );
+		$this->connectionDB = parent::__construct(
+			Encrypt::passwordDecode($dbEngine),
+			Encrypt::passwordDecode($dbHost),
+			Encrypt::passwordDecode($dbUser),
+			Encrypt::passwordDecode($dbPassword),
+			$dbSystem
+		);
 	}
 
 	/**
 	 * Close current connection
 	 */
-	public function close()
+	protected function close()
 	{
 		$this->connectionDB = null;
 	}
@@ -43,7 +43,7 @@ class AccessDB
    * @param $dbName
    * @return bool
    */
-	public function newDB($dbName)
+	protected function newDB($dbName)
   {
     return $this->connectionDB->execute("CREATE DATABASE {$dbName}");
   }
@@ -54,7 +54,7 @@ class AccessDB
 	 * @param $tableName
 	 * @return bool
 	 */
-  public function newTable($tableName, $colunms = [])
+  protected function newTable($tableName, $colunms = [])
   {
     $columnsSTR = '';
     foreach($colunms as $name => $schema){
@@ -83,7 +83,7 @@ class AccessDB
 	 * @param $tableName
 	 * @return bool
 	 */
-  public function tableExist($tableName)
+  protected function tableExist($tableName)
   {
   	$result = $this->connectionDB->query("SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = '{$tableName}'");
 
@@ -97,7 +97,7 @@ class AccessDB
 	 * @param array $columnsMatch
 	 * @return array|bool
 	 */
-  public function getTableValue($tableName, $columnsMatch = [])
+  protected function getTableValue($tableName, $columnsMatch = [])
   {
 	  $matchSTR = "WHERE ";
   	foreach($columnsMatch as $column => $value){
@@ -116,7 +116,7 @@ class AccessDB
 	 * @param array $columnsMatch
 	 * @return bool
 	 */
-  public function insert($tableName, $columnsMatch = [])
+  protected function insert($tableName, $columnsMatch = [])
   {
 	  $valuesSTR = '';
 	  $columnsSTR = '';

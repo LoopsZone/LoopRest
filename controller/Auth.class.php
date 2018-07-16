@@ -27,7 +27,8 @@ class Auth
 	protected static function checkClient()
 	{
 		$model = Model::getInstance();
-		$loginMD = $model->getLoginInstance;
+		$userMD = $model->getUserInstance;
+		$routeMD = $model->getRouteInstance;
 		$clientServerMD = $model->getClientServerInstance;
 
 		//TODO Add BlackList customers
@@ -39,15 +40,9 @@ class Auth
 			if($availableTK){
 				$userData = Token::getData($token);
 				$email = Encrypt::passwordDecode($userData[GlobalSystem::ExpEmailTK]);
+				$userData = $userMD->getModelValue([User_MD::EMAIL => $email])[0];
 
-				$connectionDB = new AccessDB();
-				$userData = $connectionDB->getTableValue(User_MD::class, [User_MD::EMAIL => $email])[0];
-
-				$loginMD->setId($userData[User_MD::ID]);
-				$loginMD->setName($userData[User_MD::NAME]);
-				$loginMD->setEmail($userData[User_MD::EMAIL]);
-				$loginMD->setBirthday($userData[User_MD::BIRTHDAY]);
-				$loginMD->setExternalId($userData[User_MD::EXTERNAL_ID]);
+				$routeMD->setUserLogin($userData[User_MD::EMAIL]);
 			}
 
 			return $availableTK;

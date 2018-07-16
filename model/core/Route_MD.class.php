@@ -7,6 +7,7 @@ class Route_MD
 	private $action;
 	private $method;
 	private $trigger;
+	private $userLogin;
   private $codeResponse;
 	private $authorization;
   private $callback = false;
@@ -272,4 +273,20 @@ class Route_MD
   {
     $this->descriptionResponse = $descriptionResponse;
   }
+
+	/**
+	 * @return mixed
+	 */
+	public function getUserLogin()
+	{
+		return $this->userLogin;
+	}
+
+	/**
+	 * @param mixed $userLogin
+	 */
+	public function setUserLogin($userLogin)
+	{
+		$this->userLogin = $userLogin;
+	}
 }
