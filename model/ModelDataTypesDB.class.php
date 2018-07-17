@@ -2,14 +2,14 @@
 
 class ModelDataTypesDB
 {
-	public $schema;
   private $column;
+	public $schemaModel;
 	public $modelManage;
 
-	function __construct (&$types, &$column, $modelManage)
+	function __construct (&$schemaModel, &$column, $modelManage)
 	{
-		$this->schema = &$types;
-		$this->column = &$column;
+    $this->column = &$column;
+		$this->schemaModel = &$schemaModel;
 		$this->modelManage = $modelManage;
 	}
 
@@ -18,7 +18,7 @@ class ModelDataTypesDB
 	 */
 	public function notNull()
 	{
-		$this->schema[$this->modelManage][$this->column]['null'] = false;
+		$this->schemaModel[$this->modelManage][$this->column]['null'] = false;
 	}
 
 	/**
@@ -26,15 +26,35 @@ class ModelDataTypesDB
 	 */
 	public function primaryKey()
 	{
-		$this->schema[$this->modelManage][$this->column]['primaryKey'] = true;
+		$this->schemaModel[$this->modelManage][$this->column]['primaryKey'] = true;
 	}
+
+  /**
+   * Set unique value
+   */
+  public function unique()
+  {
+    $this->schemaModel[$this->modelManage][$this->column]['unique'] = true;
+  }
+
+  /**
+   * Set foreignKey column value
+   *
+   * @param $value
+   */
+  public function foreignKey($value)
+  {
+    $table = get_class($value);
+    $column = property_exists();
+    $this->schemaModel[$this->modelManage][$this->column]['foreignKey'] = "{$table}($column)";
+  }
 
 	/**
 	 * Auto increment column property
 	 */
 	public function autoIncrement()
 	{
-		$this->schema[$this->modelManage][$this->column]['autoIncrement'] = true;
+		$this->schemaModel[$this->modelManage][$this->column]['autoIncrement'] = true;
 	}
 
 	/**
@@ -44,7 +64,7 @@ class ModelDataTypesDB
 	 */
 	public function defaultValue($value)
 	{
-		$this->schema[$this->modelManage][$this->column]['default'] = $value;
+		$this->schemaModel[$this->modelManage][$this->column]['default'] = $value;
 	}
 
   /**
@@ -52,7 +72,7 @@ class ModelDataTypesDB
    */
 	public function sensitiveInfo()
   {
-    $this->schema[$this->modelManage][$this->column]['sensitiveInfo'] = true;
+    $this->schemaModel[$this->modelManage][$this->column]['sensitiveInfo'] = true;
   }
 
   /**
@@ -62,6 +82,6 @@ class ModelDataTypesDB
    */
 	public function value($value)
   {
-    $this->schema[$this->modelManage][$this->column]['value'] = $value;
+    $this->schemaModel[$this->modelManage][$this->column]['value'] = $value;
   }
 }

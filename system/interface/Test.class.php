@@ -6,9 +6,9 @@ class Test
   {
   	$model = Model::getInstance();
   	$userMD = $model->getUserInstance;
-  	
-    $val = $userMD->id;
 
+    $modelValue = $userMD->getModelValue([User_MD::EMAIL => 'hemma.hvu@gmail.com'])->registry();
+    $id = $modelValue->id;
     return $userMD;
   }
 

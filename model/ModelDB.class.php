@@ -3,9 +3,15 @@
 class ModelDB extends AccessDB
 {
 	public $schema;
-	private static $schemaName;
+	private static $schemaColumn;
 	private static $schemaModel;
 	private static $modelManage;
+
+  function __construct(ModelDataTypesDB $schema)
+  {
+    parent::__construct();
+    $this->schema = $schema;
+  }
 
   /**
    * Manage model data base
@@ -17,7 +23,8 @@ class ModelDB extends AccessDB
 	public static function created($object, $closure)
 	{
     self::$modelManage = $object;
-    $modelDB = new ModelDB(new ModelDataTypesDB(self::$schemaModel, self::$schemaName, self::$modelManage));
+    $modifiers = new ModelDataTypesDB(self::$schemaModel, self::$schemaColumn, self::$modelManage);
+    $modelDB = new ModelDB($modifiers);
 
 		$closure($modelDB);
     if(!$modelDB->tableExist(self::$modelManage)){
@@ -26,12 +33,6 @@ class ModelDB extends AccessDB
 
     return $modelDB;
 	}
-
-	function __construct(ModelDataTypesDB $schema)
-  {
-  	parent::__construct();
-    $this->schema = $schema;
-  }
 
   /**
    * Call to design any column and its format for the current model
@@ -42,24 +43,24 @@ class ModelDB extends AccessDB
    */
   function __call($type, $arguments = [])
   {
-	  if(key_exists(strtoupper($type), DB::getDataTypes())){
-	    $countArguments = count($arguments);
+    if(key_exists(strtoupper($type), DB::getDataTypes())){
+      $countArguments = count($arguments);
       if($countArguments && $countArguments <= 2){
-        self::$schemaName = $arguments[0];
+        self::$schemaColumn = $arguments[0];
         $updateLength = ($arguments[1]) ? $arguments[1] : 0;
-        $currentLength = self::$schemaModel[self::$modelManage][self::$schemaName]['length'];
+        $currentLength = self::$schemaModel[self::$modelManage][self::$schemaColumn]['length'];
 
         $lengthValue = ($currentLength) ? $currentLength : 0;
         $length = ($updateLength) ? $updateLength : $lengthValue;
 
-        self::$schemaModel[self::$modelManage][self::$schemaName]['type'] = $type;
-        self::$schemaModel[self::$modelManage][self::$schemaName]['length'] = $length;
+        self::$schemaModel[self::$modelManage][self::$schemaColumn]['type'] = $type;
+        self::$schemaModel[self::$modelManage][self::$schemaColumn]['length'] = $length;
 
         return $this->schema;
       }
-	  }
+    }
 
-	  return false;
+    return false;
   }
 
   /**
@@ -69,20 +70,46 @@ class ModelDB extends AccessDB
    */
   public function schema()
   {
-    $schemaName = $this->schema->modelManage;
-    return self::$schemaModel[$schemaName];
+    return self::$schemaModel[$this->schema->modelManage];
+  }
+
+  /**
+   * Obtain primary column name
+   *
+   * @return bool|int|string
+   */
+  public function primaryColumn()
+  {
+    foreach($this->schema() as $column => $properties){
+      if(key_exists('primaryKey', $properties)){
+        return $column;
+      }
+    }
+
+    return false;
   }
 
   /**
    * Consult a model match values
    *
-   * @param $columns
-   * @return array|bool
+   * @param array $columns
+   * @return object
    */
-  public function getModelValue($columns)
+  public function getModelValue($columns = [])
   {
-	  $schemaName = $this->schema->modelManage;
-  	return parent::getTableValue($schemaName, $columns);
+    $result = parent::getTableValue($this->schema->modelManage, $columns);
+    $modelManage = new class{
+      public $row;
+      public $self;
+      function registry($pointer = 0){
+        return new ModelManage($this, $pointer);
+      }
+    };
+
+    $modelManage->self = $this;
+    $modelManage->row = $result;
+
+    return $modelManage;
   }
 
   /**
@@ -93,34 +120,6 @@ class ModelDB extends AccessDB
    */
   public function insert($columnsMatch)
   {
-	  $schemaName = $this->schema->modelManage;
-	  return parent::insert($schemaName, $columnsMatch);
+	  return parent::insert($this->schema->modelManage, $columnsMatch);
   }
-
-	function __set($name, $value)
-	{
-	  $schemaName = $this->schema->modelManage;
-		if(key_exists($name, self::$schemaModel[$schemaName])){
-      self::$schemaModel[$schemaName][$name] = $value;
-
-      return true;
-		}
-
-		return false;
-	}
-
-	function __get($name)
-	{
-    $connexionDB = new AccessDB();
-    $schemaName = $this->schema->modelManage;
-    $data = $connexionDB->getTableValue($schemaName, self::$schemaModel[$schemaName]);
-
-    $schemaName = $this->schema->modelManage;
-    self::$schemaModel[$schemaName] = $data;
-    if(key_exists($name, self::$schemaModel[$schemaName])){
-	    return self::$schemaModel[$schemaName][$name];
-    }
-
-    return false;
-	}
 }

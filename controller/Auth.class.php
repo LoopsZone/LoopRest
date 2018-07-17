@@ -40,7 +40,7 @@ class Auth
         $userMD = $model->getUserInstance;
 				$userData = Token::getData($token);
 				$email = Encrypt::passwordDecode($userData[GlobalSystem::ExpEmailTK]);
-				$userData = $userMD->getModelValue([User_MD::EMAIL => $email])[0];
+				$userData = $userMD->getModelValue([User_MD::EMAIL => $email])->row[0];
 
 				$routeMD->setUserLogin($userData[User_MD::EMAIL]);
 			}

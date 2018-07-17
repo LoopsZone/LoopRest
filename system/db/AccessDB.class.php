@@ -43,14 +43,16 @@ class AccessDB extends DB
     $columnsSTR = '';
     foreach($colunms as $name => $schema){
       if(is_array($schema)){
+        $unique = ($schema['unique']) ? ' UNIQUE' : '';
         $nullAble = ($schema['null']) ? '' : ' NOT NULL';
         $primaryKey = ($schema['primaryKey']) ? ' PRIMARY KEY' : '';
         $length = ($schema['length']) ? "({$schema['length']})" : '';
         $autoIncrement = ($schema['autoIncrement']) ? ' AUTO_INCREMENT' : '';
         $default = ($schema['default']) ? " DEFAULT {$schema['default']}" : '';
+        $foreignKey = ($schema['foreignKey']) ? " FOREIGN KEY REFERENCES {$schema['foreignKey']}" : '';
 
         $default = ($autoIncrement) ? $autoIncrement : $default;
-        $schemaColumn = $schema['type'] . $length . $nullAble . $primaryKey . $default;
+        $schemaColumn = $schema['type'] . $length . $nullAble . $primaryKey . $default . $unique . $foreignKey;
       }
 
       $columnsSTR .= "{$name} {$schemaColumn}";
