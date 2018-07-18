@@ -95,9 +95,8 @@ class ModelDB extends AccessDB
    * @param array $columns
    * @return object
    */
-  public function getModelValue($columns = [])
+  public function query($columns = [])
   {
-    $result = parent::getTableValue($this->schema->modelManage, $columns);
     $modelManage = new class{
       public $row;
       public $self;
@@ -107,7 +106,7 @@ class ModelDB extends AccessDB
     };
 
     $modelManage->self = $this;
-    $modelManage->row = $result;
+    $modelManage->row = parent::getTableValue($this->schema->modelManage, $columns);
 
     return $modelManage;
   }
@@ -120,6 +119,21 @@ class ModelDB extends AccessDB
    */
   public function insert($columnsMatch)
   {
-	  return parent::insert($this->schema->modelManage, $columnsMatch);
+	  return parent::newRegistry($this->schema->modelManage, $columnsMatch);
+  }
+
+  /**
+   * @param $primaryKey
+   * @param $columnsUpdate
+   * @return bool
+   */
+  public function update($primaryKey, $columnsUpdate)
+  {
+    $primaryKey = [
+      'key' => $this->primaryColumn(),
+      'value' => $primaryKey
+    ];
+
+    return parent::updateRegistry($this->schema->modelManage, $columnsUpdate, $primaryKey);
   }
 }

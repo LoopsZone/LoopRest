@@ -29,7 +29,7 @@ class AccessDB extends DB
    */
 	public function newDB($dbName)
   {
-    return $this->execute("CREATE DATABASE {$dbName}");
+    return parent::execute("CREATE DATABASE {$dbName}");
   }
 
 	/**
@@ -60,7 +60,7 @@ class AccessDB extends DB
       $columnsSTR = $columnsGenerate . ', ';
     }
 
-  	return $this->execute("CREATE TABLE {$tableName} ({$columnsGenerate})");
+  	return parent::execute("CREATE TABLE {$tableName} ({$columnsGenerate})");
   }
 
 	/**
@@ -71,7 +71,7 @@ class AccessDB extends DB
 	 */
   public function tableExist($tableName)
   {
-  	$result = $this->query("SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = '{$tableName}'");
+  	$result = parent::query("SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = '{$tableName}'");
 
   	return (count($result));
   }
@@ -92,7 +92,7 @@ class AccessDB extends DB
 		  $matchSTR = $match . ' AND ';
 	  }
 
-	  return $this->query("SELECT * FROM {$tableName} {$match}");
+	  return parent::query("SELECT * FROM {$tableName} {$match}");
   }
 
 	/**
@@ -102,7 +102,7 @@ class AccessDB extends DB
 	 * @param array $columnsMatch
 	 * @return bool
 	 */
-  protected function insert($tableName, $columnsMatch = [])
+  protected function newRegistry($tableName, $columnsMatch = [])
   {
 	  $valuesSTR = '';
 	  $columnsSTR = '';
@@ -116,6 +116,23 @@ class AccessDB extends DB
 		  $valuesSTR = $values . ', ';
 	  }
 
-	  return $this->execute("INSERT INTO {$tableName} ({$columns}) VALUES ({$values})");
+	  return parent::execute("INSERT INTO {$tableName} ({$columns}) VALUES ({$values})");
+  }
+
+  /**
+   * @param $tableName
+   * @param array $columnsMatch
+   * @return bool
+   */
+  protected function updateRegistry($tableName, $columnsMatch = [], $primaryKey)
+  {
+    $columnsSTR = '';
+    foreach($columnsMatch as $column => $value){
+      $columnsSTR .= "{$column} = '{$value}'";
+      $columns = $columnsSTR;
+      $columnsSTR = $columns . ', ';
+    }
+
+    return parent::execute("UPDATE {$tableName} SET {$columns} WHERE {$primaryKey['key']} = {$primaryKey['value']}");
   }
 }

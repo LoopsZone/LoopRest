@@ -13,20 +13,17 @@ class ModelManage
 
   function __set($name, $value)
   {
-    $schemaName = $this->schema->modelManage;
-    if(key_exists($name, self::$schemaModel[$schemaName])){
-      self::$schemaModel[$schemaName][$name] = $value;
-
-      return true;
-    }
-
-    return false;
+    return $this->schemaModel->self->update('1', [$name => $value]);
   }
 
   function __get($name)
   {
-    if(key_exists($name, $this->schemaModel)){
-      return $this->schemaModel[$name];
+    $data = $this->schemaModel->self->query([
+
+    ])->row;
+
+    if(key_exists($name, $data[$this->pointer])){
+      return $data[$this->pointer][$name];
     }
 
     return false;

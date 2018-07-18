@@ -7,8 +7,12 @@ class Test
   	$model = Model::getInstance();
   	$userMD = $model->getUserInstance;
 
-    $modelValue = $userMD->getModelValue([User_MD::EMAIL => 'hemma.hvu@gmail.com'])->registry();
-    $id = $modelValue->id;
+    $user = $userMD->query([
+      User_MD::EMAIL => 'hemma.hvu@gmail.com'
+    ])->registry();
+
+    $id = $user->id;
+    $user->name = 'Mario VU';
     return $userMD;
   }
 

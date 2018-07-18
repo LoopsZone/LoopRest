@@ -102,16 +102,19 @@ class Cache
 	  if($document){
 		  $dateCreatedDocument = filectime($fileName);
 		  $expiredDocument = $document[self::$expiredDocument];
-		  $createdDocumentDay = gmdate(self::$dateFormat, $dateCreatedDocument);
-		  $documentCreated = new DateTime($createdDocumentDay);
-		  $currentDate = new DateTime(date(self::$dateFormat));
-		  $daysToRenew = $documentCreated->diff($currentDate);
 
-		  if($daysToRenew->format(self::$format) > $expiredDocument){
-			  unlink($fileName);
+		  if($expiredDocument){
+        $createdDocumentDay = gmdate(self::$dateFormat, $dateCreatedDocument);
+        $documentCreated = new DateTime($createdDocumentDay);
+        $currentDate = new DateTime(date(self::$dateFormat));
+        $daysToRenew = $documentCreated->diff($currentDate);
 
-			  return true;
-		  }
+        if($daysToRenew->format(self::$format) > $expiredDocument){
+          unlink($fileName);
+
+          return true;
+        }
+      }
 	  }
 
 	  return false;
