@@ -3,9 +3,7 @@
 class ModelDB extends AccessDB
 {
 	public $schema;
-	private static $schemaColumn;
 	private static $schemaModel;
-	private static $modelManage;
 
   function __construct(ModelDataTypesDB $schema)
   {
@@ -22,13 +20,12 @@ class ModelDB extends AccessDB
    */
 	public static function created($object, $closure)
 	{
-    self::$modelManage = $object;
-    $modifiers = new ModelDataTypesDB(self::$schemaModel, self::$schemaColumn, self::$modelManage);
+    $modifiers = new ModelDataTypesDB(self::$schemaModel, $object);
     $modelDB = new ModelDB($modifiers);
 
 		$closure($modelDB);
-    if(!$modelDB->tableExist(self::$modelManage)){
-      $modelDB->newTable(self::$modelManage, self::$schemaModel[self::$modelManage]);
+    if(!$modelDB->tableExist($object)){
+      $modelDB->newTable($object, self::$schemaModel[$object]);
     }
 
     return $modelDB;
@@ -46,15 +43,15 @@ class ModelDB extends AccessDB
     if(key_exists(strtoupper($type), DB::getDataTypes())){
       $countArguments = count($arguments);
       if($countArguments && $countArguments <= 2){
-        self::$schemaColumn = $arguments[0];
-        $updateLength = ($arguments[1]) ? $arguments[1] : 0;
-        $currentLength = self::$schemaModel[self::$modelManage][self::$schemaColumn]['length'];
+        $this->schema->column = $arguments[0];
+        $updateLength = (key_exists(1, $arguments)) ? $arguments[1] : 0;
+        $currentLength = self::$schemaModel[$this->schema->modelManage][$this->schema->column]['length'];
 
         $lengthValue = ($currentLength) ? $currentLength : 0;
         $length = ($updateLength) ? $updateLength : $lengthValue;
 
-        self::$schemaModel[self::$modelManage][self::$schemaColumn]['type'] = $type;
-        self::$schemaModel[self::$modelManage][self::$schemaColumn]['length'] = $length;
+        self::$schemaModel[$this->schema->modelManage][$this->schema->column]['type'] = $type;
+        self::$schemaModel[$this->schema->modelManage][$this->schema->column]['length'] = $length;
 
         return $this->schema;
       }
@@ -112,8 +109,9 @@ class ModelDB extends AccessDB
   }
 
   /**
-   * Insert new registry in current model
+   * Insert new registry in current model with column call
    *
+   * @see ModelManage::__get()
    * @param $columnsMatch
    * @return bool
    */
@@ -123,6 +121,9 @@ class ModelDB extends AccessDB
   }
 
   /**
+   * Update registry in current model with column call
+   *
+   * @see ModelManage::__set()
    * @param $primaryKey
    * @param $columnsUpdate
    * @return bool

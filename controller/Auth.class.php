@@ -20,7 +20,7 @@ class Auth
 	}
 
 	/**
-	 *Check if token is valid for the system
+	 * Check if token is valid for the system
 	 *
 	 * @return string
 	 */
@@ -41,11 +41,11 @@ class Auth
 				$userData = Token::getData($token);
 				$email = Encrypt::passwordDecode($userData[GlobalSystem::ExpEmailTK]);
 
-				$userData = $userMD->query([
+				$user = $userMD->query([
 				  User_MD::EMAIL => $email
-        ])->row[0];
+        ])->registry();
 
-				$routeMD->setUserLogin($userData[User_MD::EMAIL]);
+				$routeMD->setUserLogin($user->email);
 			}
 
 			return $availableTK;
@@ -107,7 +107,7 @@ class Auth
 	}
 
 	/**
-	 * Give access system level
+	 * Give user access system level
 	 */
 	protected function giveAccess()
 	{

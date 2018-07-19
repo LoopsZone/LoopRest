@@ -3,7 +3,7 @@
 class ErrorManager extends ExecutionStepsErrors
 {
 	/**
-	 * If an exception is activated, an error path is activated in the system
+	 * If an exception is activated, the error route in the system is activated
 	 *
 	 * @param $error
 	 */

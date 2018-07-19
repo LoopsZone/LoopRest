@@ -8,7 +8,7 @@
 class Input extends Manager
 {
   /**
-   * Route action to execute set to params
+   * Read the new request, verify the minimum configuration and input validity
    *
    * @return array|bool|mixed
    */
@@ -30,9 +30,7 @@ class Input extends Manager
 	}
 
   /**
-   * Check current route, validate and verify data to set check input request type system
-   * This method routing check input to new action checkInput principal system if exist valid request and type
-   * Or return principal view to home system configured if not exist data input
+   * Validate the incoming route, verify the corresponding access and integrate the route with the necessary parameters
    *
    * @return bool
    * @throws Exception

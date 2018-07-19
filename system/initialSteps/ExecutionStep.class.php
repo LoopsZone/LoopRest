@@ -5,6 +5,8 @@ class ExecutionStep
 	private $stepName;
 
 	/**
+   * Switching current step
+   *
    * @param $stepName
    * @return mixed
    * @throws Exception

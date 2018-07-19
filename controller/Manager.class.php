@@ -8,7 +8,7 @@
 class Manager extends Auth
 {
 	/**
-	 * Format response to response
+	 * Routing and format response to request
 	 */
 	public function response()
 	{
@@ -17,6 +17,8 @@ class Manager extends Auth
 	}
 
 	/**
+   * Switching the type of the corresponding core route
+   *
 	 * @return array|mixed|string
 	 */
 	private function route()
@@ -43,6 +45,8 @@ class Manager extends Auth
 	}
 
 	/**
+   * Route core request integration
+   *
 	 * @return array|bool|mixed
 	 * @throws Exception
 	 */
@@ -91,6 +95,8 @@ class Manager extends Auth
   }
 
 	/**
+   * Route core auth integration
+   *
 	 * @return array
 	 */
 	private function auth()
@@ -117,11 +123,9 @@ class Manager extends Auth
 			]);
 		}
 
-		$userAccess = self::checkUserAccess($email);
-
     $tokenData = [
       GlobalSystem::ExpNameTK => $name,
-	    GlobalSystem::ExpAccessTK  => $userAccess,
+	    GlobalSystem::ExpAccessTK => self::checkUserAccess($email),
 	    GlobalSystem::ExpEmailTK  => Encrypt::passwordEncode($email)
     ];
 
@@ -129,7 +133,7 @@ class Manager extends Auth
 	}
 
 	/**
-	 * Error routing response to print custom message during execution
+	 * Error core routing response to print custom message during execution
 	 *
 	 * @return mixed
 	 */
@@ -149,7 +153,7 @@ class Manager extends Auth
 	}
 
 	/**
-	 * Return any html view rendering component
+	 * Route core view integration
 	 *
 	 * @return string
 	 */

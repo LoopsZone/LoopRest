@@ -13,7 +13,7 @@ class RequestRoute extends Expected
 	 * @var array
 	 */
 	public static $routes = [
-		//Request Action
+		//REQUEST Action
 		self::ExpRouteRequest => [
 			self::ExpRouteMethod => [
 				self::ExpRouteMethod => self::ExpFormatVarchar
@@ -46,7 +46,7 @@ class RequestRoute extends Expected
 			self::ExpRoutesWithParams => false
 		],
 
-		//Error Action
+		//ERROR Action
 		self::ExpRouteError => [
 			self::ExpRouteKeyParams => [
 				self::ExpErrorCode => self::ExpFormatNumeric,

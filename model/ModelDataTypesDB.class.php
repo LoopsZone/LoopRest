@@ -2,18 +2,26 @@
 
 class ModelDataTypesDB
 {
-  private $column;
-	public $schemaModel;
-	public $modelManage;
+  public $column;
+  private $modelManage;
+	private $schemaModel;
 
-	function __construct (&$schemaModel, &$column, $modelManage)
+	function __construct (&$schemaModel, $modelManage)
 	{
-    $this->column = &$column;
+    $this->modelManage = $modelManage;
 		$this->schemaModel = &$schemaModel;
-		$this->modelManage = $modelManage;
 	}
 
-	/**
+	function __get($name)
+  {
+    if(property_exists($this, $name)){
+      return $this->$name;
+    }
+
+    return false;
+  }
+
+  /**
 	 * Null available value in column
 	 */
 	public function notNull()
@@ -44,9 +52,9 @@ class ModelDataTypesDB
    */
   public function foreignKey($value)
   {
-    $table = get_class($value);
-    $column = property_exists();
-    $this->schemaModel[$this->modelManage][$this->column]['foreignKey'] = "{$table}($column)";
+    $instance = $value::getInstance();
+    $column = $instance->primaryColumn();
+    $this->schemaModel[$this->modelManage][$this->column]['foreignKey'] = "FOREIGN KEY ({$column}) REFERENCES {$value}({$column})";
   }
 
 	/**

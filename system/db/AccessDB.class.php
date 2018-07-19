@@ -49,13 +49,13 @@ class AccessDB extends DB
         $length = ($schema['length']) ? "({$schema['length']})" : '';
         $autoIncrement = ($schema['autoIncrement']) ? ' AUTO_INCREMENT' : '';
         $default = ($schema['default']) ? " DEFAULT {$schema['default']}" : '';
-        $foreignKey = ($schema['foreignKey']) ? " FOREIGN KEY REFERENCES {$schema['foreignKey']}" : '';
+        $foreignKey = ($schema['foreignKey']) ? "CONSTRAINT `{$name}` {$schema['foreignKey']}" : false;
 
         $default = ($autoIncrement) ? $autoIncrement : $default;
-        $schemaColumn = $schema['type'] . $length . $nullAble . $primaryKey . $default . $unique . $foreignKey;
+        $schemaColumn = $schema['type'] . $length . $nullAble . $primaryKey . $default . $unique;
       }
 
-      $columnsSTR .= "{$name} {$schemaColumn}";
+      $columnsSTR .= (!$foreignKey) ? "`{$name}` {$schemaColumn}" : $foreignKey;
       $columnsGenerate = $columnsSTR;
       $columnsSTR = $columnsGenerate . ', ';
     }
@@ -120,6 +120,8 @@ class AccessDB extends DB
   }
 
   /**
+   * Update columns for current model
+   *
    * @param $tableName
    * @param array $columnsMatch
    * @return bool

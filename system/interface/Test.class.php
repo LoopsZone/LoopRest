@@ -6,6 +6,7 @@ class Test
   {
   	$model = Model::getInstance();
   	$userMD = $model->getUserInstance;
+  	$projectsMD = $model->getProjectsInstance;
 
     $user = $userMD->query([
       User_MD::EMAIL => 'hemma.hvu@gmail.com'
@@ -13,7 +14,7 @@ class Test
 
     $id = $user->id;
     $user->name = 'Mario VU';
-    return $userMD;
+    return $user;
   }
 
   public function putTesto()

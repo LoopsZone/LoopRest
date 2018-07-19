@@ -101,4 +101,15 @@ class Model extends ModelsTracking
 	{
 		return User_MD::getInstance();
 	}
+
+  /**
+   * Model
+   * get a singleton instance of ProjectsModel_DB
+   *
+   * @return ModelDB
+   */
+  private function getProjectsInstance()
+  {
+    return Projects_MD::getInstance();
+  }
 }
