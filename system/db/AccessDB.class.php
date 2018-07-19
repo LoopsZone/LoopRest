@@ -40,6 +40,7 @@ class AccessDB extends DB
 	 */
   public function newTable($tableName, $colunms = [])
   {
+    $foreignKey = '';
     $columnsSTR = '';
     foreach($colunms as $name => $schema){
       if(is_array($schema)){
@@ -49,18 +50,18 @@ class AccessDB extends DB
         $length = ($schema['length']) ? "({$schema['length']})" : '';
         $autoIncrement = ($schema['autoIncrement']) ? ' AUTO_INCREMENT' : '';
         $default = ($schema['default']) ? " DEFAULT {$schema['default']}" : '';
-        $foreignKey = ($schema['foreignKey']) ? "CONSTRAINT `{$name}` {$schema['foreignKey']}" : false;
+        $foreignKey .= ($schema['foreignKey']) ? ", CONSTRAINT `{$name}` FOREIGN KEY (`{$name}`) REFERENCES {$schema['foreignKey'][0]}(`{$schema['foreignKey'][1]}`)" : '';
 
         $default = ($autoIncrement) ? $autoIncrement : $default;
         $schemaColumn = $schema['type'] . $length . $nullAble . $primaryKey . $default . $unique;
       }
 
-      $columnsSTR .= (!$foreignKey) ? "`{$name}` {$schemaColumn}" : $foreignKey;
+      $columnsSTR .= "`{$name}` {$schemaColumn}";
       $columnsGenerate = $columnsSTR;
       $columnsSTR = $columnsGenerate . ', ';
     }
 
-  	return parent::execute("CREATE TABLE {$tableName} ({$columnsGenerate})");
+  	return parent::execute("CREATE TABLE {$tableName} ({$columnsGenerate}{$foreignKey})");
   }
 
 	/**

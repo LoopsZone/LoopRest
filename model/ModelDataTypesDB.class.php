@@ -50,11 +50,11 @@ class ModelDataTypesDB
    *
    * @param $value
    */
-  public function foreignKey($value)
+  public function foreignKey($table)
   {
-    $instance = $value::getInstance();
+    $instance = $table::getInstance();
     $column = $instance->primaryColumn();
-    $this->schemaModel[$this->modelManage][$this->column]['foreignKey'] = "FOREIGN KEY ({$column}) REFERENCES {$value}({$column})";
+    $this->schemaModel[$this->modelManage][$this->column]['foreignKey'] = [$table, $column];
   }
 
 	/**

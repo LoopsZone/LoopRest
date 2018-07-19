@@ -102,6 +102,10 @@ class ModelDB extends AccessDB
       }
     };
 
+    if(!count($columns)){
+
+    }
+
     $modelManage->self = $this;
     $modelManage->row = parent::queryRegistry($this->schema->modelManage, $columns);
 
