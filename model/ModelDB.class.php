@@ -103,7 +103,7 @@ class ModelDB extends AccessDB
     };
 
     $modelManage->self = $this;
-    $modelManage->row = parent::getTableValue($this->schema->modelManage, $columns);
+    $modelManage->row = parent::queryRegistry($this->schema->modelManage, $columns);
 
     return $modelManage;
   }

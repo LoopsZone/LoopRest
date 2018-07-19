@@ -29,7 +29,7 @@ class AccessDB extends DB
    */
 	public function newDB($dbName)
   {
-    return parent::execute("CREATE DATABASE {$dbName}");
+    return parent::execute("CREATE DATABASE {$dbName} CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
   }
 
 	/**
@@ -83,11 +83,11 @@ class AccessDB extends DB
 	 * @param array $columnsMatch
 	 * @return array|bool
 	 */
-  protected function getTableValue($tableName, $columnsMatch = [])
+  protected function queryRegistry($tableName, $columnsMatch = [])
   {
 	  $matchSTR = "WHERE ";
   	foreach($columnsMatch as $column => $value){
-		  $matchSTR .= "{$column} = '{$value}'";
+		  $matchSTR .= "`{$column}` = '{$value}'";
 		  $match = $matchSTR;
 		  $matchSTR = $match . ' AND ';
 	  }
@@ -107,7 +107,7 @@ class AccessDB extends DB
 	  $valuesSTR = '';
 	  $columnsSTR = '';
 	  foreach($columnsMatch as $column => $value){
-		  $columnsSTR .= "{$column}";
+		  $columnsSTR .= "`{$column}`";
 		  $columns = $columnsSTR;
 		  $columnsSTR = $columns . ', ';
 
@@ -130,7 +130,7 @@ class AccessDB extends DB
   {
     $columnsSTR = '';
     foreach($columnsMatch as $column => $value){
-      $columnsSTR .= "{$column} = '{$value}'";
+      $columnsSTR .= "`{$column}` = '{$value}'";
       $columns = $columnsSTR;
       $columnsSTR = $columns . ', ';
     }
