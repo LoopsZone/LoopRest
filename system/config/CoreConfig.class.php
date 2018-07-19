@@ -87,5 +87,10 @@ class CoreConfig
   /**
    * Use this table for routing the models from any user request route
    */
-  const DB_USER_TB = 'User_MD';
+  const DB_USER_TB = User_MD::class;
+
+  /**
+   * Use this column for routing the models from any user request route
+   */
+  const DB_USER_COLUMN = User_MD::EMAIL;
 }

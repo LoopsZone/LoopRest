@@ -87,6 +87,22 @@ class ModelDB extends AccessDB
   }
 
   /**
+   * Obtain foreign key column name
+   *
+   * @return bool|int|string
+   */
+  public function fkColumn()
+  {
+    foreach($this->schema() as $column => $properties){
+      if(key_exists('foreignKey', $properties)){
+        return $column;
+      }
+    }
+
+    return false;
+  }
+
+  /**
    * Consult a model match values
    *
    * @param array $columns
@@ -103,7 +119,10 @@ class ModelDB extends AccessDB
     };
 
     if(!count($columns)){
+      $fk = $this->fkColumn();
+      if($fk){
 
+      }
     }
 
     $modelManage->self = $this;
