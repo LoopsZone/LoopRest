@@ -110,22 +110,32 @@ class ModelDB extends AccessDB
    */
   public function query($columns = [])
   {
-    $modelManage = new class{
+    $modelManage = new class($this){
       public $row;
-      public $self;
-      function registry($pointer = 0){
+	    public $self;
+
+	    function __construct($parent)
+	    {
+	    	$this->self = $parent;
+	    }
+
+	    function registry($pointer = 0){
         return new ModelManage($this, $pointer);
       }
     };
 
     if(!count($columns)){
-      $fk = $this->fkColumn();
-      if($fk){
-
-      }
+    	if($this->schema->modelManage == CoreConfig::DB_USER_TB){
+    		$model = Model::getInstance();
+    		$routeMD = $model->getRouteInstance;
+    		$columns = [CoreConfig::DB_USER_COLUMN => $routeMD->getUserLogin()];
+	    }else{
+		    $fk = $this->fkColumn();
+		    if($fk){
+		    }
+	    }
     }
 
-    $modelManage->self = $this;
     $modelManage->row = parent::queryRegistry($this->schema->modelManage, $columns);
 
     return $modelManage;

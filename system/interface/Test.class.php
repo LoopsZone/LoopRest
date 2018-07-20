@@ -5,10 +5,11 @@ class Test
   public function testo()
   {
   	$model = Model::getInstance();
-  	$projectsMD = $model->getProjectsInstance;
+  	$userMD = $model->getUserInstance;
 
-  	$projects = $projectsMD->query();
-
+  	$projects = $userMD->query()->registry();
+  	$email = $projects->email;
+	  $projects->name = 'Mario VU';
     return $projects;
   }
 
