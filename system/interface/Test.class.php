@@ -5,11 +5,15 @@ class Test
   public function testo()
   {
   	$model = Model::getInstance();
-  	$userMD = $model->getUserInstance;
+  	$projectsMD = $model->getProjectsInstance;
+    $issuesMD = $model->getIssuesInstance;
 
-  	$projects = $userMD->query()->registry();
-  	$email = $projects->email;
-	  $projects->name = 'Mario VU';
+    $projects = $projectsMD->query();
+    foreach($projects->row as $pointer => $properties){
+      $currentProject = $projects->registry($pointer);
+      $issues = $issuesMD->query([Issues_MD::OWNER => $currentProject->id]);
+    }
+
     return $projects;
   }
 

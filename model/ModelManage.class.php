@@ -11,21 +11,22 @@ class ModelManage
     $this->schemaModel = $schemaModel;
   }
 
-  function __set($name, $value)
+  function __set($property, $value)
   {
-	  $data = $this->schemaModel->row;
-	  $columnName = $this->schemaModel->self->primaryColumn();
-	  $primaryKey = $data[$this->pointer][$columnName];
+    $columnName = $this->schemaModel->self->primaryColumn();
 
-    return $this->schemaModel->self->update($primaryKey, [$name => $value]);
+	  $data = $this->schemaModel->row;
+	  $primaryKey = $data[$this->pointer][$columnName];
+    $this->schemaModel->row[$this->pointer][$property] = $value;
+
+    return $this->schemaModel->self->update($primaryKey, [$property => $value]);
   }
 
-  function __get($name)
+  function __get($property)
   {
     $data = $this->schemaModel->row;
-
-    if(key_exists($name, $data[$this->pointer])){
-      return $data[$this->pointer][$name];
+    if(key_exists($property, $data[$this->pointer])){
+      return $data[$this->pointer][$property];
     }
 
     return false;

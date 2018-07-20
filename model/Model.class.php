@@ -112,4 +112,9 @@ class Model extends ModelsTracking
   {
     return Projects_MD::getInstance();
   }
+
+  private function getIssuesInstance()
+  {
+    return Issues_MD::getInstance();
+  }
 }

@@ -50,7 +50,7 @@ class AccessDB extends DB
         $length = ($schema['length']) ? "({$schema['length']})" : '';
         $autoIncrement = ($schema['autoIncrement']) ? ' AUTO_INCREMENT' : '';
         $default = ($schema['default']) ? " DEFAULT {$schema['default']}" : '';
-        $foreignKey .= ($schema['foreignKey']) ? ", CONSTRAINT `{$name}` FOREIGN KEY (`{$name}`) REFERENCES {$schema['foreignKey'][0]}(`{$schema['foreignKey'][1]}`)" : '';
+        $foreignKey .= ($schema['foreignKey']) ? ", CONSTRAINT `{$schema['foreignKey'][0]}-{$name}` FOREIGN KEY (`{$name}`) REFERENCES {$schema['foreignKey'][0]}(`{$schema['foreignKey'][1]}`)" : '';
 
         $default = ($autoIncrement) ? $autoIncrement : $default;
         $schemaColumn = $schema['type'] . $length . $nullAble . $primaryKey . $default . $unique;
@@ -136,6 +136,19 @@ class AccessDB extends DB
       $columnsSTR = $columns . ', ';
     }
 
-    return parent::execute("UPDATE {$tableName} SET {$columns} WHERE {$primaryKey['key']} = {$primaryKey['value']}");
+    return parent::execute("UPDATE {$tableName} SET {$columns} WHERE {$primaryKey[0]} = {$primaryKey[1]}");
+  }
+
+  /**
+   *
+   */
+  protected function mapQueryModel($tarject, $matchValue)
+  {
+    $table = $tarject['table'];
+    $column = $tarject['column'];
+    $from = $tarject['foreignKey'][0];
+    $match = $tarject['foreignKey'][1];
+
+    return parent::query("SELECT {$table}.* FROM {$table} INNER JOIN {$from} ON {$table}.{$column}  = {$from}.{$match} WHERE {$from}.{$match} = {$matchValue}");
   }
 }

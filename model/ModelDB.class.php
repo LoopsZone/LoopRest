@@ -89,13 +89,16 @@ class ModelDB extends AccessDB
   /**
    * Obtain foreign key column name
    *
-   * @return bool|int|string
+   * @return array|bool
    */
   public function fkColumn()
   {
     foreach($this->schema() as $column => $properties){
       if(key_exists('foreignKey', $properties)){
-        return $column;
+        return array_merge([
+          'column' => $column,
+          'table' => $this->schema->modelManage
+        ], $properties);
       }
     }
 
@@ -114,8 +117,7 @@ class ModelDB extends AccessDB
       public $row;
 	    public $self;
 
-	    function __construct($parent)
-	    {
+	    function __construct($parent){
 	    	$this->self = $parent;
 	    }
 
@@ -125,13 +127,20 @@ class ModelDB extends AccessDB
     };
 
     if(!count($columns)){
+      $model = Model::getInstance();
+      $routeMD = $model->getRouteInstance;
     	if($this->schema->modelManage == CoreConfig::DB_USER_TB){
-    		$model = Model::getInstance();
-    		$routeMD = $model->getRouteInstance;
     		$columns = [CoreConfig::DB_USER_COLUMN => $routeMD->getUserLogin()];
 	    }else{
 		    $fk = $this->fkColumn();
 		    if($fk){
+          $from = $fk['foreignKey'][0];
+          $match = $fk['foreignKey'][1];
+          $parentInstance = $from::getInstance();
+          $matchValue = $parentInstance->query()->registry()->$match;
+          $modelManage->row = parent::mapQueryModel($fk, $matchValue);
+
+          return $modelManage;
 		    }
 	    }
     }
@@ -142,9 +151,8 @@ class ModelDB extends AccessDB
   }
 
   /**
-   * Insert new registry in current model with column call
+   * Insert new registry in current model
    *
-   * @see ModelManage::__get()
    * @param $columnsMatch
    * @return bool
    */
@@ -163,11 +171,7 @@ class ModelDB extends AccessDB
    */
   public function update($primaryKey, $columnsUpdate)
   {
-    $primaryKey = [
-      'key' => $this->primaryColumn(),
-      'value' => $primaryKey
-    ];
-
+    $primaryKey = [$this->primaryColumn(), $primaryKey];
     return parent::updateRegistry($this->schema->modelManage, $columnsUpdate, $primaryKey);
   }
 }
