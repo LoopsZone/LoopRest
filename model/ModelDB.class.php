@@ -115,13 +115,13 @@ class ModelDB extends AccessDB
   {
     $modelManage = new class($this){
       public $row;
-	    public $self;
+      public $self;
 
-	    function __construct($parent){
-	    	$this->self = $parent;
-	    }
+      function __construct($parent){
+        $this->self = $parent;
+      }
 
-	    function registry($pointer = 0){
+      function registry($pointer = 0){
         return new ModelManage($this, $pointer);
       }
     };
@@ -129,23 +129,16 @@ class ModelDB extends AccessDB
     if(!count($columns)){
       $model = Model::getInstance();
       $routeMD = $model->getRouteInstance;
-    	if($this->schema->modelManage == CoreConfig::DB_USER_TB){
-    		$columns = [CoreConfig::DB_USER_COLUMN => $routeMD->getUserLogin()];
-	    }else{
-		    $fk = $this->fkColumn();
-		    if($fk){
-          $from = $fk['foreignKey'][0];
-          $match = $fk['foreignKey'][1];
-          $parentInstance = $from::getInstance();
-          $matchValue = $parentInstance->query()->registry()->$match;
-          $modelManage->row = parent::mapQueryModel($fk, $matchValue);
+      if($this->schema->modelManage == CoreConfig::DB_USER_TB){
+        $columns = [CoreConfig::DB_USER_COLUMN => $routeMD->getUserLogin()];
+        $modelManage->row = parent::queryRegistry($this->schema->modelManage, $columns);
+      }else{
+        $map = $this->mapQueryModel($this->schema->modelManage);
 
-          return $modelManage;
-		    }
-	    }
+        $select = $this->genSelectsJoins($map);
+        $modelManage->row = parent::query($select);
+      }
     }
-
-    $modelManage->row = parent::queryRegistry($this->schema->modelManage, $columns);
 
     return $modelManage;
   }

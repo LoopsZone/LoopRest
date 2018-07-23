@@ -15,9 +15,7 @@ class Input extends Manager
 	public function request()
 	{
 		try{
-			$allowInput = $this->checkInput();
-
-			if($allowInput){
+			if($this->checkInput()){
 				$model = Model::getInstance();
 				$system = $model->getSystemInstance;
 				return $system->runInitialSystemSettings();

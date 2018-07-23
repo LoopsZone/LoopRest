@@ -37,15 +37,10 @@ class Auth
 			$availableTK = Token::check($token);
 
 			if($availableTK === true){
-        $userMD = $model->getUserInstance;
 				$userData = Token::getData($token);
 				$email = Encrypt::passwordDecode($userData[GlobalSystem::ExpEmailTK]);
 
-				$user = $userMD->query([
-				  User_MD::EMAIL => $email
-        ])->registry();
-
-				$routeMD->setUserLogin($user->email);
+				$routeMD->setUserLogin($email);
 			}
 
 			return $availableTK;

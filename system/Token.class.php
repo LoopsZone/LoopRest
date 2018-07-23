@@ -72,7 +72,6 @@ class Token
       $model = Model::getInstance();
       $systemMD = $model->getSystemInstance;
       $secretKey = $systemMD->getSecretUniqueKey();
-
 			$decode = JWT::decode($token, $secretKey[GlobalSystem::ExpSecretKeyTK],CoreConfig::ENCRYPT);
 
 			if(!password_verify(self::authString(), $decode->aud)){

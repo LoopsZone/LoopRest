@@ -12,8 +12,7 @@ class Manager extends Auth
 	 */
 	public function response()
 	{
-		$result = $this->route();
-		new Response($result);
+		new Response($this->route());
 	}
 
 	/**
@@ -53,7 +52,6 @@ class Manager extends Auth
 	private function request()
 	{
 		$availableAccess = self::checkClient();
-
 		if($availableAccess === true){
 			return $this->integratedRoute();
 		}

@@ -142,13 +142,53 @@ class AccessDB extends DB
   /**
    *
    */
-  protected function mapQueryModel($tarject, $matchValue)
+  protected function mapQueryModel($target)
   {
-    $table = $tarject['table'];
-    $column = $tarject['column'];
-    $from = $tarject['foreignKey'][0];
-    $match = $tarject['foreignKey'][1];
+    $model = $target::getInstance();
 
-    return parent::query("SELECT {$table}.* FROM {$table} INNER JOIN {$from} ON {$table}.{$column}  = {$from}.{$match} WHERE {$from}.{$match} = {$matchValue}");
+    $fk = $model->fkColumn();
+    if(key_exists('foreignKey', $fk)){
+      $map = $this->mapQueryModel($fk['foreignKey'][0]);
+      array_push($map['join'] , $fk);
+    }else{
+      $match = $model->primaryColumn();
+      $matchValue = $model->query()->registry()->$match;
+
+      $map = [
+        'join' => [],
+        'from' => [
+          'model' => $target,
+          'matcher' => $match,
+          'matchValue' => $matchValue
+        ]
+      ];
+    }
+
+    return $map;
+  }
+
+  /**
+   * Generate sql joints to target from current schema map
+   *
+   * @param $map
+   * @return mixed
+   */
+  protected function genSelectsJoins($map)
+  {
+    $from = $map['from']['model'];
+    $matcher = $map['from']['matcher'];
+    $matchValue = $map['from']['matchValue'];
+
+    $joins = array_reverse($map['join']);
+
+    $target = $joins[0]['table'];
+    $sqlBase ="SELECT {$target}.* FROM {$target} {join} WHERE {$from}.{$matcher} = {$matchValue}";
+
+    $joinBase = '';
+    foreach($joins as $join){
+      $joinBase .= "INNER JOIN {$join['foreignKey'][0]} ON {$join['foreignKey'][0]}.{$join['foreignKey'][1]} = {$join['table']}.`{$join['column']}` ";
+    }
+
+    return str_replace('{join}', $joinBase, $sqlBase);
   }
 }
