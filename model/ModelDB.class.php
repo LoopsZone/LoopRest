@@ -138,6 +138,8 @@ class ModelDB extends AccessDB
         $select = $this->genSelectsJoins($map);
         $modelManage->row = parent::query($select);
       }
+    }else{
+      $modelManage->row = parent::queryRegistry($this->schema->modelManage, $columns);
     }
 
     return $modelManage;
