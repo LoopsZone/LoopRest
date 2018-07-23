@@ -9,7 +9,8 @@ class Test
     $issuesMD = $model->getIssuesInstance;
 
     $projects = $projectsMD->query();
-    $issues = $issuesMD->query();
+    $issues = $issuesMD->query()->registry();
+    $issues->name = 'change';
 
     return $projects;
   }
