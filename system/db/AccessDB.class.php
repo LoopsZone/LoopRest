@@ -33,27 +33,27 @@ class AccessDB extends DB
   }
 
 	/**
-	 * Created new table in current data base
+	 * Created new model in current data base
 	 *
-	 * @param $tableName
+	 * @param $ModelName
 	 * @return bool
 	 */
-  public function newTable($tableName, $colunms = [])
+  public function newModel($ModelName, $properties = [])
   {
     $foreignKey = '';
     $columnsSTR = '';
-    foreach($colunms as $name => $schema){
+    foreach($properties as $name => $schema){
       if(is_array($schema)){
-        $unique = ($schema['unique']) ? ' UNIQUE' : '';
-        $nullAble = ($schema['null']) ? '' : ' NOT NULL';
-        $primaryKey = ($schema['primaryKey']) ? ' PRIMARY KEY' : '';
-        $length = ($schema['length']) ? "({$schema['length']})" : '';
-        $autoIncrement = ($schema['autoIncrement']) ? ' AUTO_INCREMENT' : '';
-        $default = ($schema['default']) ? " DEFAULT {$schema['default']}" : '';
-        $foreignKey .= ($schema['foreignKey']) ? ", CONSTRAINT `{$schema['foreignKey'][0]}-{$name}` FOREIGN KEY (`{$name}`) REFERENCES {$schema['foreignKey'][0]}(`{$schema['foreignKey'][1]}`)" : '';
+        $unique = ($schema[GlobalSystem::ExpUnique]) ? ' UNIQUE' : '';
+        $nullAble = ($schema[GlobalSystem::ExpNull]) ? '' : ' NOT NULL';
+        $primaryKey = ($schema[GlobalSystem::ExpPrimaryKey]) ? ' PRIMARY KEY' : '';
+        $length = ($schema[GlobalSystem::ExpLength]) ? "({$schema[GlobalSystem::ExpLength]})" : '';
+        $autoIncrement = ($schema[GlobalSystem::ExpAutoIncrement]) ? ' AUTO_INCREMENT' : '';
+        $default = ($schema[GlobalSystem::ExpDefault]) ? " DEFAULT {$schema[GlobalSystem::ExpDefault]}" : '';
+        $foreignKey .= ($schema[GlobalSystem::ExpForeignKey]) ? ", CONSTRAINT `{$schema[GlobalSystem::ExpForeignKey][0]}-{$name}` FOREIGN KEY (`{$name}`) REFERENCES {$schema[GlobalSystem::ExpForeignKey][0]}(`{$schema[GlobalSystem::ExpForeignKey][1]}`)" : '';
 
         $default = ($autoIncrement) ? $autoIncrement : $default;
-        $schemaColumn = $schema['type'] . $length . $nullAble . $primaryKey . $default . $unique;
+        $schemaColumn = $schema[GlobalSystem::ExpType] . $length . $nullAble . $primaryKey . $default . $unique;
       }
 
       $columnsSTR .= "`{$name}` {$schemaColumn}";
@@ -61,105 +61,108 @@ class AccessDB extends DB
       $columnsSTR = $columnsGenerate . ', ';
     }
 
-  	return parent::execute("CREATE TABLE {$tableName} ({$columnsGenerate}{$foreignKey})");
+  	return parent::execute("CREATE TABLE {$ModelName} ({$columnsGenerate}{$foreignKey})");
   }
 
 	/**
-	 * Check if table exist
+	 * Check if model exist
 	 *
-	 * @param $tableName
+	 * @param $modelName
 	 * @return bool
 	 */
-  public function tableExist($tableName)
+  public function modelExist($modelName)
   {
-  	$result = parent::query("SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = '{$tableName}'");
+  	$result = parent::query("SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = '{$modelName}'");
 
   	return (count($result));
   }
 
 	/**
-	 * Get Values from table
+	 * Get Values from model
 	 *
-	 * @param $tableName
-	 * @param array $columnsMatch
+	 * @param $modelName
+	 * @param array $propertiesMatch
 	 * @return array|bool
 	 */
-  protected function queryRegistry($tableName, $columnsMatch = [])
+  protected function queryRegistry($modelName, $propertiesMatch = [])
   {
 	  $matchSTR = "WHERE ";
-  	foreach($columnsMatch as $column => $value){
-		  $matchSTR .= "`{$column}` = '{$value}'";
+  	foreach($propertiesMatch as $property => $value){
+		  $matchSTR .= "`{$property}` = '{$value}'";
 		  $match = $matchSTR;
 		  $matchSTR = $match . ' AND ';
 	  }
 
-	  return parent::query("SELECT * FROM {$tableName} {$match}");
+	  return parent::query("SELECT * FROM {$modelName} {$match}");
   }
 
 	/**
-	 * Insert registry in table
+	 * Insert registry in model
 	 *
-	 * @param $tableName
-	 * @param array $columnsMatch
+	 * @param $modelName
+	 * @param array $propertiesMatch
 	 * @return bool
 	 */
-  protected function newRegistry($tableName, $columnsMatch = [])
+  protected function newRegistry($modelName, $propertiesMatch = [])
   {
 	  $valuesSTR = '';
-	  $columnsSTR = '';
-	  foreach($columnsMatch as $column => $value){
-		  $columnsSTR .= "`{$column}`";
-		  $columns = $columnsSTR;
-		  $columnsSTR = $columns . ', ';
+	  $propertiesSTR = '';
+	  foreach($propertiesMatch as $property => $value){
+		  $propertiesSTR .= "`{$property}`";
+		  $properties = $propertiesSTR;
+		  $propertiesSTR = $properties . ', ';
 
 		  $valuesSTR .= "'{$value}'";
 		  $values = $valuesSTR;
 		  $valuesSTR = $values . ', ';
 	  }
 
-	  return parent::execute("INSERT INTO {$tableName} ({$columns}) VALUES ({$values})");
+	  return parent::execute("INSERT INTO {$modelName} ({$properties}) VALUES ({$values})");
   }
 
   /**
-   * Update columns for current model
+   * Update property for current model
    *
-   * @param $tableName
-   * @param array $columnsMatch
+   * @param $modelName
+   * @param array $propertiesMatch
    * @return bool
    */
-  protected function updateRegistry($tableName, $columnsMatch = [], $primaryKey)
+  protected function updateRegistry($modelName, $propertiesMatch = [], $primaryKey)
   {
-    $columnsSTR = '';
-    foreach($columnsMatch as $column => $value){
-      $columnsSTR .= "`{$column}` = '{$value}'";
-      $columns = $columnsSTR;
-      $columnsSTR = $columns . ', ';
+    $propertiesSTR = '';
+    foreach($propertiesMatch as $property => $value){
+      $propertiesSTR .= "`{$property}` = '{$value}'";
+      $columns = $propertiesSTR;
+      $propertiesSTR = $columns . ', ';
     }
 
-    return parent::execute("UPDATE {$tableName} SET {$columns} WHERE {$primaryKey[0]} = {$primaryKey[1]}");
+    return parent::execute("UPDATE {$modelName} SET {$columns} WHERE {$primaryKey[0]} = {$primaryKey[1]}");
   }
 
   /**
+   * Map current fk relations in model target
    *
+   * @param $target
+   * @return array
    */
   protected function mapQueryModel($target)
   {
     $model = $target::getInstance();
 
     $fk = $model->fkColumn();
-    if(key_exists('foreignKey', $fk)){
-      $map = $this->mapQueryModel($fk['foreignKey'][0]);
-      array_push($map['join'] , $fk);
+    if(key_exists(GlobalSystem::ExpForeignKey, $fk)){
+      $map = $this->mapQueryModel($fk[GlobalSystem::ExpForeignKey][0]);
+      array_push($map[GlobalSystem::ExpJoin] , $fk);
     }else{
       $match = $model->primaryColumn();
       $matchValue = $model->query()->registry()->$match;
 
       $map = [
-        'join' => [],
-        'from' => [
-          'model' => $target,
-          'matcher' => $match,
-          'matchValue' => $matchValue
+        GlobalSystem::ExpJoin => [],
+        GlobalSystem::ExpFrom => [
+          GlobalSystem::ExpModel => $target,
+          GlobalSystem::ExpMatcher => $match,
+          GlobalSystem::ExpMatchValue => $matchValue
         ]
       ];
     }
@@ -175,18 +178,17 @@ class AccessDB extends DB
    */
   protected function genSelectsJoins($map)
   {
-    $from = $map['from']['model'];
-    $matcher = $map['from']['matcher'];
-    $matchValue = $map['from']['matchValue'];
+    $joins = array_reverse($map[GlobalSystem::ExpJoin]);
+    $from = $map[GlobalSystem::ExpFrom][GlobalSystem::ExpModel];
+    $matcher = $map[GlobalSystem::ExpFrom][GlobalSystem::ExpMatcher];
+    $matchValue = $map[GlobalSystem::ExpFrom][GlobalSystem::ExpMatchValue];
 
-    $joins = array_reverse($map['join']);
-
-    $target = $joins[0]['table'];
+    $target = $joins[0][GlobalSystem::ExpModel];
     $sqlBase ="SELECT {$target}.* FROM {$target} {join} WHERE {$from}.{$matcher} = {$matchValue}";
 
     $joinBase = '';
     foreach($joins as $join){
-      $joinBase .= "INNER JOIN {$join['foreignKey'][0]} ON {$join['foreignKey'][0]}.{$join['foreignKey'][1]} = {$join['table']}.`{$join['column']}` ";
+      $joinBase .= "INNER JOIN {$join[GlobalSystem::ExpForeignKey][0]} ON {$join[GlobalSystem::ExpForeignKey][0]}.{$join[GlobalSystem::ExpForeignKey][1]} = {$join[GlobalSystem::ExpModel]}.`{$join[GlobalSystem::ExpProperty]}` ";
     }
 
     return str_replace('{join}', $joinBase, $sqlBase);

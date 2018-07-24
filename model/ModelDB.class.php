@@ -12,7 +12,7 @@ class ModelDB extends AccessDB
   }
 
   /**
-   * Manage model data base
+   * Manage model in data base
    *
    * @param $object
    * @param $closure
@@ -24,15 +24,15 @@ class ModelDB extends AccessDB
     $modelDB = new ModelDB($modifiers);
 
 		$closure($modelDB);
-    if(!$modelDB->tableExist($object)){
-      $modelDB->newTable($object, self::$schemaModel[$object]);
+    if(!$modelDB->modelExist($object)){
+      $modelDB->newModel($object, self::$schemaModel[$object]);
     }
 
     return $modelDB;
 	}
 
   /**
-   * Call to design any column and its format for the current model
+   * Call to design any property and its format in current model
    *
    * @param $type
    * @param $arguments
@@ -45,13 +45,13 @@ class ModelDB extends AccessDB
       if($countArguments && $countArguments <= 2){
         $this->schema->column = $arguments[0];
         $updateLength = (key_exists(1, $arguments)) ? $arguments[1] : 0;
-        $currentLength = self::$schemaModel[$this->schema->modelManage][$this->schema->column]['length'];
+        $currentLength = self::$schemaModel[$this->schema->modelManage][$this->schema->column][GlobalSystem::ExpLength];
 
         $lengthValue = ($currentLength) ? $currentLength : 0;
         $length = ($updateLength) ? $updateLength : $lengthValue;
 
-        self::$schemaModel[$this->schema->modelManage][$this->schema->column]['type'] = $type;
-        self::$schemaModel[$this->schema->modelManage][$this->schema->column]['length'] = $length;
+        self::$schemaModel[$this->schema->modelManage][$this->schema->column][GlobalSystem::ExpType] = $type;
+        self::$schemaModel[$this->schema->modelManage][$this->schema->column][GlobalSystem::ExpLength] = $length;
 
         return $this->schema;
       }
@@ -78,7 +78,7 @@ class ModelDB extends AccessDB
   public function primaryColumn()
   {
     foreach($this->schema() as $column => $properties){
-      if(key_exists('primaryKey', $properties)){
+      if(key_exists(GlobalSystem::ExpPrimaryKey, $properties)){
         return $column;
       }
     }
@@ -87,17 +87,17 @@ class ModelDB extends AccessDB
   }
 
   /**
-   * Obtain foreign key column name
+   * Obtain foreign key property name
    *
    * @return array|bool
    */
   public function fkColumn()
   {
-    foreach($this->schema() as $column => $properties){
-      if(key_exists('foreignKey', $properties)){
+    foreach($this->schema() as $property => $properties){
+      if(key_exists(GlobalSystem::ExpForeignKey, $properties)){
         return array_merge([
-          'column' => $column,
-          'table' => $this->schema->modelManage
+          GlobalSystem::ExpProperty => $property,
+          GlobalSystem::ExpModel => $this->schema->modelManage
         ], $properties);
       }
     }
@@ -106,12 +106,12 @@ class ModelDB extends AccessDB
   }
 
   /**
-   * Consult a model match values
+   * Consult model with match properties
    *
-   * @param array $columns
+   * @param array $properties
    * @return object
    */
-  public function query($columns = [])
+  public function query($properties = [])
   {
     $modelManage = new class($this){
       public $row;
@@ -126,14 +126,14 @@ class ModelDB extends AccessDB
       }
     };
 
-    if(count($columns)){
-	    $modelManage->row = parent::queryRegistry($this->schema->modelManage, $columns);
+    if(count($properties)){
+	    $modelManage->row = parent::queryRegistry($this->schema->modelManage, $properties);
     }else{
 	    $model = Model::getInstance();
 	    $routeMD = $model->getRouteInstance;
 	    if($this->schema->modelManage == CoreConfig::DB_USER_TB){
-		    $columns = [CoreConfig::DB_USER_COLUMN => $routeMD->getUserLogin()];
-		    $modelManage->row = parent::queryRegistry($this->schema->modelManage, $columns);
+		    $properties = [CoreConfig::DB_USER_COLUMN => $routeMD->getUserLogin()];
+		    $modelManage->row = parent::queryRegistry($this->schema->modelManage, $properties);
 	    }else{
 		    $map = $this->mapQueryModel($this->schema->modelManage);
 
@@ -157,16 +157,16 @@ class ModelDB extends AccessDB
   }
 
   /**
-   * Update registry in current model with column call
+   * Update registry in current model with property call
    *
    * @see ModelManage::__set()
    * @param $primaryKey
-   * @param $columnsUpdate
+   * @param $propertiesUpdate
    * @return bool
    */
-  public function update($primaryKey, $columnsUpdate)
+  public function update($primaryKey, $propertiesUpdate)
   {
     $primaryKey = [$this->primaryColumn(), $primaryKey];
-    return parent::updateRegistry($this->schema->modelManage, $columnsUpdate, $primaryKey);
+    return parent::updateRegistry($this->schema->modelManage, $propertiesUpdate, $primaryKey);
   }
 }

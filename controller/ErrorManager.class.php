@@ -28,8 +28,9 @@ class ErrorManager extends ExecutionStepsErrors
 			}
 
 			$route = $routeMD->getRoute();
+			$encodeMessage = json_decode($error->getMessage());
 			$request[$route][GlobalSystem::ExpErrorCode] = $error->getCode();
-			$request[$route][GlobalSystem::ExpErrorDesc] = $error->getMessage();
+			$request[$route][GlobalSystem::ExpErrorDesc] = ($encodeMessage) ? $encodeMessage : $error->getMessage();
 
       $codeErrorResponse = $error->getCode();
       $descriptionErrorResponse = $error->getMessage();

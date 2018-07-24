@@ -20,7 +20,7 @@ class Route_MD
 	/**
 	 * @return Route_MD
 	 */
-	public static function getInstance ()
+	public static function getInstance()
 	{
 		if(is_null(self::$singleton)) {
 			self::$singleton = new Route_MD();
@@ -32,7 +32,7 @@ class Route_MD
 	/**
 	 * @return mixed
 	 */
-	public function getRoute ()
+	public function getRoute()
 	{
 		return $this->route;
 	}
@@ -40,7 +40,7 @@ class Route_MD
 	/**
 	 * @param mixed $route
 	 */
-	public function setRoute ($route)
+	public function setRoute($route)
 	{
 		$this->route = $route;
 	}
@@ -94,12 +94,12 @@ class Route_MD
 			if(is_array($value) || is_object($value)){
 				foreach($value as $subKey => $subValue){
 					if($subValue === false){
-						$error[$subKey] = "Invalid value in {$subValue} key to this request";
+						$error[$subKey] = "Invalid value in {$subKey} param in this request";
 					}
 				}
 			}else{
 				if($value == false){
-					$error= "Invalid empty value in {$key} key to this request";
+					$error = "Invalid empty value in {$key} param in this request";
 				}
 			}
 		}
@@ -151,7 +151,7 @@ class Route_MD
 	 */
 	public function getAuthorization()
 	{
-			return $this->authorization;
+	  return $this->authorization;
 	}
 
 	/**

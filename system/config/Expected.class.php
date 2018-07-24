@@ -85,6 +85,24 @@ class Expected
 	const ExpErrorKeyException = 'exception';
 	const ExpRoutesWithParams = 'routesWithParams';
 
+	//Model keys name to expected modelDB
+  const ExpType = 'type';
+  const ExpJoin = 'join';
+  const ExpNull = 'null';
+  const ExpFrom = 'from';
+  const ExpValue = 'value';
+  const ExpModel = 'model';
+  const ExpUnique = 'unique';
+  const ExpLength = 'length';
+  const ExpMatcher = 'matcher';
+  const ExpDefault = 'default';
+  const ExpProperty = 'property';
+  const ExpMatchValue = 'matchValue';
+  const ExpForeignKey = 'foreignKey';
+  const ExpPrimaryKey = 'primaryKey';
+  const ExpSensitiveInfo = 'sensitiveInfo';
+  const ExpAutoIncrement = 'autoIncrement';
+
 	//Set format options keys
 	const ExpFormat = 'format';
 	const ExpFormatIp = 'ip';

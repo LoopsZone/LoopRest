@@ -26,7 +26,7 @@ class ModelDataTypesDB
 	 */
 	public function notNull()
 	{
-		$this->schemaModel[$this->modelManage][$this->column]['null'] = false;
+		$this->schemaModel[$this->modelManage][$this->column][GlobalSystem::ExpNull] = false;
 	}
 
 	/**
@@ -34,7 +34,7 @@ class ModelDataTypesDB
 	 */
 	public function primaryKey()
 	{
-		$this->schemaModel[$this->modelManage][$this->column]['primaryKey'] = true;
+		$this->schemaModel[$this->modelManage][$this->column][GlobalSystem::ExpPrimaryKey] = true;
 	}
 
   /**
@@ -42,7 +42,7 @@ class ModelDataTypesDB
    */
   public function unique()
   {
-    $this->schemaModel[$this->modelManage][$this->column]['unique'] = true;
+    $this->schemaModel[$this->modelManage][$this->column][GlobalSystem::ExpUnique] = true;
   }
 
   /**
@@ -54,7 +54,7 @@ class ModelDataTypesDB
   {
     $instance = $model::getInstance();
     $column = $instance->primaryColumn();
-    $this->schemaModel[$this->modelManage][$this->column]['foreignKey'] = [$model, $column];
+    $this->schemaModel[$this->modelManage][$this->column][GlobalSystem::ExpForeignKey] = [$model, $column];
   }
 
 	/**
@@ -62,7 +62,7 @@ class ModelDataTypesDB
 	 */
 	public function autoIncrement()
 	{
-		$this->schemaModel[$this->modelManage][$this->column]['autoIncrement'] = true;
+		$this->schemaModel[$this->modelManage][$this->column][GlobalSystem::ExpAutoIncrement] = true;
 	}
 
 	/**
@@ -72,7 +72,7 @@ class ModelDataTypesDB
 	 */
 	public function defaultValue($value)
 	{
-		$this->schemaModel[$this->modelManage][$this->column]['default'] = $value;
+		$this->schemaModel[$this->modelManage][$this->column][GlobalSystem::ExpDefault] = $value;
 	}
 
   /**
@@ -80,7 +80,7 @@ class ModelDataTypesDB
    */
 	public function sensitiveInfo()
   {
-    $this->schemaModel[$this->modelManage][$this->column]['sensitiveInfo'] = true;
+    $this->schemaModel[$this->modelManage][$this->column][GlobalSystem::ExpSensitiveInfo] = true;
   }
 
   /**
@@ -90,6 +90,6 @@ class ModelDataTypesDB
    */
 	public function value($value)
   {
-    $this->schemaModel[$this->modelManage][$this->column]['value'] = $value;
+    $this->schemaModel[$this->modelManage][$this->column][GlobalSystem::ExpValue] = $value;
   }
 }
