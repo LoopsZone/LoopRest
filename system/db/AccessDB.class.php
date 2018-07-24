@@ -140,6 +140,18 @@ class AccessDB extends DB
   }
 
   /**
+   * Delete registry in current model
+   *
+   * @param $modelName
+   * @param $primaryKey
+   * @return bool
+   */
+  protected function deleteRegistry($modelName, $primaryKey)
+  {
+    return parent::execute("DELETE FROM {$modelName} WHERE {$primaryKey[0]} = {$primaryKey[1]}");
+  }
+
+  /**
    * Map current fk relations in model target
    *
    * @param $target

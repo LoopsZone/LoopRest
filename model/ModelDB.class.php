@@ -169,4 +169,16 @@ class ModelDB extends AccessDB
     $primaryKey = [$this->primaryColumn(), $primaryKey];
     return parent::updateRegistry($this->schema->modelManage, $propertiesUpdate, $primaryKey);
   }
+
+  /**
+   * Delete registry in current model
+   *
+   * @param $primaryKey
+   * @return bool
+   */
+  public function delete($primaryKey)
+  {
+    $primaryKey = [$this->primaryColumn(), $primaryKey];
+    return parent::deleteRegistry($this->schema->modelManage, $primaryKey);
+  }
 }

@@ -31,4 +31,25 @@ class ModelManage
 
     return false;
   }
+
+  /**
+   * Delete current pointer registry
+   *
+   * @return mixed
+   */
+  public function delete()
+  {
+    $columnName = $this->schemaModel->self->primaryColumn();
+
+    $data = $this->schemaModel->row;
+    $primaryKey = $data[$this->pointer][$columnName];
+    $result = $this->schemaModel->self->delete($primaryKey);
+
+    if($result){
+      unset($this->schemaModel->row[$this->pointer]);
+      $this->schemaModel->row = array_values($this->schemaModel->row);
+    }
+
+    return $result;
+  }
 }

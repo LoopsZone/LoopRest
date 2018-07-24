@@ -11,8 +11,6 @@ class Test
     $projects = $projectsMD->query();
     $issue = $issuesMD->query()->registry();
 
-	  $issue->name = 'change';
-
     return $projects;
   }
 }
