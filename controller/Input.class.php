@@ -80,9 +80,9 @@ class Input extends Manager
       if(key_exists($translatedRoute, $systemRoute)){
         $countMethod = count($route);
         $systemRoute = $systemRoute[$translatedRoute];
-        $treatAsRoute = $systemRoute[GlobalSystem::ExpRoutesWithParams];
+        $treatAsRoutes = $systemRoute[GlobalSystem::ExpRoutesWithParams];
 
-        if($treatAsRoute){
+        if($treatAsRoutes){
           $routeMethod = $systemRoute[GlobalSystem::ExpRouteMethod];
 
           $countSystemRoute = count($routeMethod);
