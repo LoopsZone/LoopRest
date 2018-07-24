@@ -1,7 +1,7 @@
 <?php
 /*
 |---------------------------------------------------------------------------
-|Web services REST Loop in server PHP
+| Web services REST Loop in server PHP
 |---------------------------------------------------------------------------
 |	use a request with the methods http GET,POST,PUT,DELETE
 |	METHOD | ACTION
