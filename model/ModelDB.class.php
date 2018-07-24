@@ -126,20 +126,20 @@ class ModelDB extends AccessDB
       }
     };
 
-    if(!count($columns)){
-      $model = Model::getInstance();
-      $routeMD = $model->getRouteInstance;
-      if($this->schema->modelManage == CoreConfig::DB_USER_TB){
-        $columns = [CoreConfig::DB_USER_COLUMN => $routeMD->getUserLogin()];
-        $modelManage->row = parent::queryRegistry($this->schema->modelManage, $columns);
-      }else{
-        $map = $this->mapQueryModel($this->schema->modelManage);
-
-        $select = $this->genSelectsJoins($map);
-        $modelManage->row = parent::query($select);
-      }
+    if(count($columns)){
+	    $modelManage->row = parent::queryRegistry($this->schema->modelManage, $columns);
     }else{
-      $modelManage->row = parent::queryRegistry($this->schema->modelManage, $columns);
+	    $model = Model::getInstance();
+	    $routeMD = $model->getRouteInstance;
+	    if($this->schema->modelManage == CoreConfig::DB_USER_TB){
+		    $columns = [CoreConfig::DB_USER_COLUMN => $routeMD->getUserLogin()];
+		    $modelManage->row = parent::queryRegistry($this->schema->modelManage, $columns);
+	    }else{
+		    $map = $this->mapQueryModel($this->schema->modelManage);
+
+		    $select = $this->genSelectsJoins($map);
+		    $modelManage->row = parent::query($select);
+	    }
     }
 
     return $modelManage;
