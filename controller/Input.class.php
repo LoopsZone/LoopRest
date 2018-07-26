@@ -205,6 +205,8 @@ class Input extends Manager
 
 			ErrorManager::throwException(ErrorCodes::ActionExc);
 		}
+
+		return true;
 	}
 
   /**

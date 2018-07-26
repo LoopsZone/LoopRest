@@ -17,7 +17,7 @@ class Routes
 		return $route;
 	}
 
-	public function postRoute($name)
+	public function postRoute($name = null)
 	{
     $route = Cache::getDocument(CoreConfig::CACHE_TRANSLATE_ROUTES);
 
