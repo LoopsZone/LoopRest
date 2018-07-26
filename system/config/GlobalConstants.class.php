@@ -23,10 +23,6 @@ class GlobalConstants extends Expected
 		self::ExpMethodDelete
 	];
 
-	const PublicRoutes = [
-	  self::ExpTranslatedRequestStartupRoute
-  ];
-
 	const ContentTypesAllows = [
 	  self::ExpContentTypeAll,
 	  self::ExpContentTypeTextHTML,
@@ -35,7 +31,7 @@ class GlobalConstants extends Expected
 
   const TranslatedRequestRoutes = [
     'test' => [
-	    self::ExpTranslatePublicRoute => false,
+	    self::ExpTranslatePublicRoute => true,
 	    self::ExpTranslateParamsMethodWithRoutes => false,
 	    self::ExpTranslateRouteType => self::ExpRouteRequest,
     ],
@@ -50,7 +46,7 @@ class GlobalConstants extends Expected
 		  self::ExpTranslatePublicRoute => false,
 		  self::ExpTranslateParamsMethodWithRoutes => true,
 		  self::ExpTranslateRouteType => self::ExpRouteRequest,
-		
+
 		  self::ExpTranslateBodyRequest => [
 		
 		  ]

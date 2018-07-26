@@ -71,13 +71,11 @@ class Auth
 	{
 	  $model = Model::getInstance();
 	  $routeMD = $model->getRouteInstance;
+
 	  $route = $routeMD->getRoute();
-
-	  if(!in_array($route, GlobalSystem::PublicRoutes)){
+	  if(!GlobalSystem::TranslatedRequestRoutes[$route][GlobalSystem::ExpTranslatePublicRoute]){
       $route = GlobalSystem::translateSystemRoute();
-
-      if(key_exists($route, RequestRoute::$routes))
-      {
+      if(key_exists($route, RequestRoute::$routes)){
         $routeExecuting = RequestRoute::$routes[$route];
         return $routeExecuting[GlobalSystem::ExpRouteNeedTK];
       }
