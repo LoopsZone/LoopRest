@@ -172,7 +172,7 @@ class Input extends Manager
 								$key = $systemParams[$param]->name;
 
 								if($treatParamsAsRoutes){
-									if(!$routeParams && $routes){
+									if(!$routeParams[$key] && $routes){
 										$currentParamAsRoute = array_shift($routes);
 										$routeParams[$key] = $currentParamAsRoute;
 									}
@@ -187,14 +187,12 @@ class Input extends Manager
 								if(!key_exists($key, $routeParams)){
 									unset($routeParams);
 								}
-
-								$routeParams = array_merge($routeParams, $routes);
 							}
 						}
 					}
 
-					$request[$translateRoute] = $routeParams;
-					if(count(array_merge($request[$translateRoute], $routes)) == count($systemParams)){
+					$request[$translateRoute] = array_merge($routeParams, $routes);
+					if(count($request[$translateRoute]) == count($systemParams)){
 						$routeMD->setRequest($request);
 						return true;
 					}
