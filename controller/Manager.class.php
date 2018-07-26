@@ -66,6 +66,7 @@ class Manager extends Auth
    * Integrated route for current translate request
    *
    * @return mixed
+   * @throws ReflectionException
    */
   private function integratedRoute()
   {

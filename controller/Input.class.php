@@ -78,24 +78,19 @@ class Input extends Manager
       $systemParams = $systemRoute[$translatedRoute][GlobalSystem::ExpRouteKeyParams];
 
       if(key_exists($translatedRoute, $systemRoute)){
-        $countMethod = count($route);
         $systemRoute = $systemRoute[$translatedRoute];
         $treatAsRoutes = $systemRoute[GlobalSystem::ExpRoutesWithParams];
 
         if($treatAsRoutes){
           $routeMethod = $systemRoute[GlobalSystem::ExpRouteMethod];
-
-          $countSystemRoute = count($routeMethod);
-          if($countMethod == $countSystemRoute){
-            $format  = current($routeMethod);
-            $nextMethod = array_shift($route);
-            $method = GlobalSystem::validateData($nextMethod, $format);
-            if($method){
-              $routeMD->setMethod($method);
-            }else{
-              ErrorManager::throwException(ErrorCodes::ActionExc);
-            }
-          }
+	        $format  = current($routeMethod);
+	        $nextMethod = array_shift($route);
+	        $method = GlobalSystem::validateData($nextMethod, $format);
+	        if($method){
+		        $routeMD->setMethod($method);
+	        }else{
+		        ErrorManager::throwException(ErrorCodes::ActionExc);
+	        }
         }else{
 
           $routeParams = $clientServerMD->getRequest();
@@ -145,13 +140,15 @@ class Input extends Manager
 		$model = Model::getInstance();
 		$routeMD = $model->getRouteInstance;
 		$systemRoute = RequestRoute::$routes;
+		$clientServerMD = $model->getClientServerInstance;
     $translateRoute = GlobalSystem::translateSystemRoute();
 
     $systemRoute = $systemRoute[$translateRoute];
 		$treatAsRoute = $systemRoute[GlobalSystem::ExpRoutesWithParams];
 
 		if($treatAsRoute){
-			$integrated = ucfirst($routeMD->getRoute());
+			$currentRoute = $routeMD->getRoute();
+			$integrated = ucfirst($currentRoute);
 
 			if(class_exists($integrated)){
 				$currentIntegration = new $integrated();
@@ -161,31 +158,48 @@ class Input extends Manager
 				if($methodIntegrated){
 					$reflector = new ReflectionMethod($integrated, $method);
 
-          $routeParams = $routeMD->getParams();
+					$routeParams = $routeMD->getParams();
+					$routes = $clientServerMD->getRoute();
 					$systemParams = $reflector->getParameters();
+					$routeConfig = GlobalSystem::TranslatedRequestRoutes[$currentRoute];
+					$treatParamsAsRoutes = $routeConfig[GlobalSystem::ExpTranslateParamsMethodWithRoutes];
 
+					unset($routes[0]);
+					unset($routes[1]);
 					if($systemParams){
-            $countRoute = count($routeParams);
-            $countSystemRoute = count($systemParams);
-
-						if($countRoute == $countSystemRoute){
-							foreach($systemParams as $param => $format){
+						foreach($systemParams as $param => $format){
+							if($systemParams[$param] instanceof ReflectionParameter){
 								$key = $systemParams[$param]->name;
-								if(key_exists($key, $routeParams)){
-								  unset($systemParams[$param]);
-									$request[$translateRoute][$key] = $routeParams[$key];
+
+								if($treatParamsAsRoutes){
+									if(!$routeParams && $routes){
+										$currentParamAsRoute = array_shift($routes);
+										$routeParams[$key] = $currentParamAsRoute;
+									}
 								}
+
+								if($systemParams[$param]->isOptional()){
+									if(!key_exists($key, $routeParams)){
+										$routeParams[$key] = $systemParams[$param]->getDefaultValue();
+									}
+								}
+
+								if(!key_exists($key, $routeParams)){
+									unset($routeParams);
+								}
+
+								$routeParams = array_merge($routeParams, $routes);
 							}
-
-              $routeMD->setRequest($request);
-
-              return true;
 						}
-
-						ErrorManager::throwException(ErrorCodes::HttpParamsExc);
 					}
 
-					return true;
+					$request[$translateRoute] = $routeParams;
+					if(count(array_merge($request[$translateRoute], $routes)) == count($systemParams)){
+						$routeMD->setRequest($request);
+						return true;
+					}
+
+					ErrorManager::throwException(ErrorCodes::HttpParamsExc);
 				}
 
 				ErrorManager::throwException(ErrorCodes::MetHodExc);

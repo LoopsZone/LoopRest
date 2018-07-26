@@ -34,9 +34,27 @@ class GlobalConstants extends Expected
   ];
 
   const TranslatedRequestRoutes = [
-    'test' => self::ExpRouteRequest,
-    self::ExpTranslatedLoopViewRoute => self::ExpRouteView,
-    self::ExpTranslatedRequestStartupRoute => self::ExpRouteRequest
+    'test' => [
+	    self::ExpTranslatePublicRoute => false,
+	    self::ExpTranslateParamsMethodWithRoutes => false,
+	    self::ExpTranslateRouteType => self::ExpRouteRequest,
+    ],
+
+    self::ExpTranslatedRequestStartupRoute => [
+	    self::ExpTranslatePublicRoute => true,
+	    self::ExpTranslateParamsMethodWithRoutes => false,
+	    self::ExpTranslateRouteType => self::ExpRouteRequest,
+    ],
+
+	  self::ExpTranslateRequestRoutesRoute => [
+		  self::ExpTranslatePublicRoute => false,
+		  self::ExpTranslateParamsMethodWithRoutes => true,
+		  self::ExpTranslateRouteType => self::ExpRouteRequest,
+		
+		  self::ExpTranslateBodyRequest => [
+		
+		  ]
+	  ]
   ];
 
 	const CacheSecretKey = 'SECRET_KEY';

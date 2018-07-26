@@ -26,8 +26,16 @@ class Expected
   const ExpContentTypeTextHTML = 'text/html';
 	const ExpContentTypeApplicationJSON = 'application/json';
 
+	const ExpTranslateBodyRequest = 'body';
+	const ExpTranslateRouteType = 'routeType';
+	const ExpTranslatePublicRoute = 'publicRoute';
+	const ExpTranslateParamsMethodWithRoutes = 'paramsWithRoutes';
+
 	const ExpTranslatedLoopViewRoute = 'loop';
 	const ExpTranslatedRequestStartupRoute = 'startup';
+
+	const ExpTranslateRequestRoutesRoute = 'routes';
+	
 
 	//Token payload key
 	const ExpAudTK = 'aud';
