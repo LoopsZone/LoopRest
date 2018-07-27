@@ -151,9 +151,8 @@ class Input extends Manager
 			$integrated = ucfirst($currentRoute);
 
 			if(class_exists($integrated)){
-				$currentIntegration = new $integrated();
 				$method = GlobalSystem::translatedRouteMethod();
-				$methodIntegrated = method_exists($currentIntegration, $method);
+				$methodIntegrated = method_exists($integrated, $method);
 
 				if($methodIntegrated){
 					$reflector = new ReflectionMethod($integrated, $method);
@@ -186,6 +185,7 @@ class Input extends Manager
 
 								if(!key_exists($key, $routeParams)){
 									unset($routeParams);
+									break;
 								}
 							}
 						}

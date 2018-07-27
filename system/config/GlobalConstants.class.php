@@ -48,7 +48,7 @@ class GlobalConstants extends Expected
 		  self::ExpTranslateRouteType => self::ExpRouteRequest,
 
 		  self::ExpTranslateBodyRequest => [
-		
+
 		  ]
 	  ]
   ];

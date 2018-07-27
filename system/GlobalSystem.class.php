@@ -148,7 +148,7 @@ class GlobalSystem extends GlobalConstants
     $model = Model::getInstance();
     $routeMD = $model->getRouteInstance;
     $clientServerMD = $model->getClientServerInstance;
-    $method = ($routeMD->getMethod()) ? $routeMD->getMethod() : '__construct';
+    $method = ($routeMD->getMethod()) ? $routeMD->getMethod() : false;
 
     $action = $clientServerMD->getMethod();
     if($action != GlobalSystem::ExpMethodGet){
