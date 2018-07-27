@@ -16,9 +16,7 @@ class Token
    */
 	public static function signIn(array $data = [], int $expiredTime = 0)
 	{
-    $model = Model::getInstance();
-    $systemMD = $model->getSystemInstance;
-    $secretKey = $systemMD->getSecretUniqueKey();
+    $secretKey = Cache::getDocument(GlobalSystem::CacheSecretKey);
 
 		$token = [
       GlobalSystem::ExpDataTK => $data,
@@ -69,9 +67,7 @@ class Token
 	public static function check($token)
 	{
 		try {
-      $model = Model::getInstance();
-      $systemMD = $model->getSystemInstance;
-      $secretKey = $systemMD->getSecretUniqueKey();
+      $secretKey = Cache::getDocument(GlobalSystem::CacheSecretKey);
 			$decode = JWT::decode($token, $secretKey[GlobalSystem::ExpSecretKeyTK],CoreConfig::ENCRYPT);
 
 			if(!password_verify(self::authString(), $decode->aud)){
@@ -97,9 +93,7 @@ class Token
 	 */
 	public static function getData($token)
 	{
-    $model = Model::getInstance();
-    $systemMD = $model->getSystemInstance;
-    $secretKey = $systemMD->getSecretUniqueKey();
+    $secretKey = Cache::getDocument(GlobalSystem::CacheSecretKey);
 		$decode = JWT::decode($token, $secretKey[GlobalSystem::ExpSecretKeyTK],CoreConfig::ENCRYPT);
 
 		$data = [];

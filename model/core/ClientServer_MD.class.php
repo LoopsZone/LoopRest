@@ -31,6 +31,10 @@ class ClientServer_MD
 		$this->userAgent = $_SERVER['HTTP_USER_AGENT'];
 
 		$this->route = $this->setRoute();
+
+		unset($_SERVER);
+    unset($GLOBALS);
+		unset($_REQUEST);
 	}
 
 	/**

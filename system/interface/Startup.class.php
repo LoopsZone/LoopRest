@@ -10,8 +10,6 @@ class Startup
    */
   public function postSecretKey($key)
   {
-    $model = Model::getInstance();
-    $systemMD = $model->getSystemInstance;
     $keyExist = Cache::getDocument(GlobalSystem::CacheSecretKey);
 
     if(!$keyExist){
@@ -20,7 +18,6 @@ class Startup
         GlobalSystem::ExpSecretKeyTK => Encrypt::oneWayHash($key, Encrypt::ATTENTIVE_OWNER_COST)
       ];
 
-      $systemMD->setSecretUniqueKey($secretUniqueKey[GlobalSystem::ExpSecretKeyTK]);
       return Cache::loadDocument(GlobalSystem::CacheSecretKey, $secretUniqueKey, false);
     }
 

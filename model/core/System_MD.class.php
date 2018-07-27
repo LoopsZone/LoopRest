@@ -4,7 +4,6 @@ class System_MD
 {
   private $accessDB;
   private $connexionDB;
-  private $secretUniqueKey;
   private static $singleton;
 
   /**
@@ -35,7 +34,7 @@ class System_MD
     if($route != GlobalSystem::ExpTranslatedRequestStartupRoute){
       try{
         $step = new ExecutionStep();
-        $this->secretUniqueKey = $step->checkSecretKey;
+        $step->checkSecretKey;
         $this->connexionDB = $step->checkConnexionHostDB;
         $this->accessDB = $step->checkAccessSystemDB;
       }catch(Exception $error){
@@ -44,21 +43,5 @@ class System_MD
     }
 
     return true;
-  }
-
-  /**
-   * @return mixed
-   */
-  public function getSecretUniqueKey()
-  {
-    return $this->secretUniqueKey;
-  }
-
-  /**
-   * @param mixed $secretUniqueKey
-   */
-  public function setSecretUniqueKey($secretUniqueKey)
-  {
-    $this->secretUniqueKey = $secretUniqueKey;
   }
 }

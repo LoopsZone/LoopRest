@@ -52,22 +52,6 @@ class ErrorManager extends ExecutionStepsErrors
 	}
 
 	/**
-	 * Check if exist last error in model and throw error route
-	 *
-	 * @throws Exception
-	 */
-	public static function checkErrorRoute()
-	{
-		$model = Model::getInstance();
-		$routeMD = $model->getRouteInstance;
-		$route = $routeMD->getRoute();
-
-		if($route == GlobalSystem::ExpRouteError){
-			self::throwException($routeMD->getRequest());
-		}
-	}
-
-	/**
 	 * Throw new exception in system
 	 *
 	 * @param $currentException

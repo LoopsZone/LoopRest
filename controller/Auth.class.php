@@ -84,21 +84,6 @@ class Auth
 		return false;
 	}
 
-	private function checkAllowIp()
-	{
-	
-	}
-
-	private function checkAllowCountry()
-	{
-	
-	}
-
-	private function checkAllowClient()
-	{
-	
-	}
-
 	/**
 	 * Give user access system level
 	 */
@@ -111,25 +96,5 @@ class Auth
 		$auth = (!$authHeader) ? 0 : 1;/*Zero value get user access to principal system and one value get structure merchant access*/
 
 		$routeMD->setAuthorization($auth);
-	}
-	
-	private function getCountryByIp()
-	{
-	
-	}
-
-	private function watchClient()
-	{
-	
-	}
-	
-	private function banClient()
-	{
-	
-	}
-
-	private function washClient()
-	{
-	
 	}
 }

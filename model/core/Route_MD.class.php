@@ -88,8 +88,7 @@ class Route_MD
    */
 	protected function validateRequest($request)
 	{
-		$error = array();
-		//Validate if value to key in data is false or not valid and return
+		$error = [];
 		foreach($request as $key => $value){
 			if(is_array($value) || is_object($value)){
 				foreach($value as $subKey => $subValue){
@@ -104,7 +103,6 @@ class Route_MD
 			}
 		}
 
-		// If request array is set return error list in this request
 		if(count($error) > 0){
 			$this->route = RequestRoute::ExpRouteError;
 			$this->request[GlobalSystem::ExpRouteError] = $error;
