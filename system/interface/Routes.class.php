@@ -2,8 +2,14 @@
 
 class Routes
 {
+  /**
+   * @param null $routeId
+   * @return bool|mixed
+   * @throws Exception
+   */
 	public function route($routeId = null)
 	{
+	  Input::validate($routeId, GlobalSystem::ExpFormatChar);
 		$route = Cache::getDocument(CoreConfig::CACHE_TRANSLATE_ROUTES);
 
 		if($routeId){

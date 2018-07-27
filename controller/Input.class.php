@@ -230,4 +230,29 @@ class Input extends Manager
 
     $routeMD->setParams($params);
   }
+
+  /**
+   * Validate format in current input route param
+   *
+   * @param $input
+   * @param $format
+   * @throws Exception
+   */
+  public static function validate(&$input, $format)
+  {
+    $result = GlobalSystem::validateData($input, $format);
+
+    if($result){
+      $input = $result;
+    }else{
+      $model = Model::getInstance();
+      $routeMD = $model->getRouteInstance;
+      $error = "Invalid value {$input}, expected {$format} type in this param";
+      $routeMD->setRequest([GlobalSystem::ExpRouteError => $error]);
+      $errorCode = ErrorCodes::HttpParamsExc;
+      $errorCode[GlobalSystem::ExpErrorDesc] = json_encode($error);
+
+      ErrorManager::throwException($errorCode);
+    }
+  }
 }
