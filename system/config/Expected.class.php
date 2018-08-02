@@ -131,4 +131,5 @@ class Expected
 	const ExpFormatHeaders = 'headers';
 	const ExpFormatTriggers = 'triggers';
 	const ExpFormatVariable = 'variable';
+  const ExpFormatRouteTypes = 'routeType';
 }

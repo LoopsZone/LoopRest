@@ -69,6 +69,8 @@ class GlobalSystem extends GlobalConstants
 				return self::availableMethod($data);
 			case  self::ExpFormatRoutes :
 				return self::getCurrentRoute($data);
+      case self::ExpFormatRouteTypes :
+        return self::routeTypes($data);
 		}
 
 		return false;
@@ -90,6 +92,21 @@ class GlobalSystem extends GlobalConstants
 
 		return false;
 	}
+
+  /**
+   * Route type accept
+   *
+   * @param $data
+   * @return bool
+   */
+  private static function routeTypes($data)
+  {
+    if(in_array($data, self::RouteTypes)){
+      return $data;
+    }
+
+    return false;
+  }
 
 	/**
 	 * Get current route

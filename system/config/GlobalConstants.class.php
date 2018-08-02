@@ -45,11 +45,7 @@ class GlobalConstants extends Expected
 	  self::ExpTranslateRequestRoutesRoute => [
 		  self::ExpTranslatePublicRoute => false,
 		  self::ExpTranslateParamsMethodWithRoutes => true,
-		  self::ExpTranslateRouteType => self::ExpRouteRequest,
-
-		  self::ExpTranslateBodyRequest => [
-
-		  ]
+		  self::ExpTranslateRouteType => self::ExpRouteRequest
 	  ]
   ];
 
@@ -74,6 +70,17 @@ class GlobalConstants extends Expected
 		self::ExpRouteError,
 		self::ExpRouteRequest
 	];
+
+	const RouteTypes = [
+	  self::ExpRouteView,
+    self::ExpRouteRequest
+  ];
+
+	const RouteMethodMinimalBody = [
+    self::ExpTranslatePublicRoute => self::ExpFormatBool,
+    self::ExpTranslateRouteType => self::ExpFormatRouteTypes,
+    self::ExpTranslateParamsMethodWithRoutes => self::ExpFormatBool
+  ];
 
 	const DBEngineMysql = 'mysql';
 }
