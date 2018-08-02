@@ -196,7 +196,7 @@ class Input extends Manager
                     if(!$result && $format != GlobalSystem::ExpFormatBool){
                       $model = Model::getInstance();
                       $routeMD = $model->getRouteInstance;
-                      $error = "Invalid value {$routeParams[$key]}, expected {$format} type in this param";
+                      $error = "Invalid value '{$routeParams[$key]}', expected data type:{$format}, required for this parameter";
                       $routeMD->setRequest([GlobalSystem::ExpRouteError => $error]);
                       $errorCode = ErrorCodes::HttpParamsExc;
                       $errorCode[GlobalSystem::ExpErrorDesc] = json_encode($error);
@@ -270,7 +270,7 @@ class Input extends Manager
     }else{
       $model = Model::getInstance();
       $routeMD = $model->getRouteInstance;
-      $error = "Invalid value {$input}, expected {$format} type in this param";
+      $error = "Invalid value '{$input}', expected data type: {$format}, required for this parameter";
       $routeMD->setRequest([GlobalSystem::ExpRouteError => $error]);
       $errorCode = ErrorCodes::HttpParamsExc;
       $errorCode[GlobalSystem::ExpErrorDesc] = json_encode($error);

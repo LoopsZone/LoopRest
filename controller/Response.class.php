@@ -70,6 +70,7 @@ class Response
     $description = ($routeMD->getDescriptionResponse()) ? $routeMD->getDescriptionResponse() : '';
     $contentType = ($routeMD->getResponseObject()) ? GlobalSystem::ExpContentTypeApplicationJSON : GlobalSystem::ExpContentTypeTextHTML;
 
+    header_remove("X-Powered-By");
     header("{$protocol} {$code} {$description}");
     header(GlobalSystem::ExpHeaderContentType . ": {$contentType}");
     if($clientServerMD->getMethod() == GlobalSystem::ExpMethodPost && $route != GlobalSystem::ExpRouteError){
