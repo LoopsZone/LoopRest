@@ -166,10 +166,10 @@ class Input extends Manager
 					unset($routes[0]);
 					unset($routes[1]);
 					if($systemParams){
-						foreach($systemParams as $param => $format){
-							if($systemParams[$param] instanceof ReflectionParameter){
-								$key = $systemParams[$param]->name;
-
+						foreach($systemParams as $param){
+							if($param instanceof ReflectionParameter){
+                $check = true;
+								$key = $param->name;
 								if($treatParamsAsRoutes){
 									if(!$routeParams[$key] && $routes){
 										$currentParamAsRoute = array_shift($routes);
@@ -177,11 +177,34 @@ class Input extends Manager
 									}
 								}
 
-								if($systemParams[$param]->isOptional()){
+								if($param->isOptional()){
 									if(!key_exists($key, $routeParams)){
-										$routeParams[$key] = $systemParams[$param]->getDefaultValue();
+									  $check = false;
+										$routeParams[$key] = $param->getDefaultValue();
 									}
 								}
+
+                if($check){
+								  $paramType = $param->getType();
+								  if($paramType){
+                    $format = $paramType->getName();
+
+                    $input = $routeParams[$key];
+                    settype($input, $format);
+                    $result = GlobalSystem::validateData($input, $format);
+
+                    if(!$result && $format != GlobalSystem::ExpFormatBool){
+                      $model = Model::getInstance();
+                      $routeMD = $model->getRouteInstance;
+                      $error = "Invalid value {$routeParams[$key]}, expected {$format} type in this param";
+                      $routeMD->setRequest([GlobalSystem::ExpRouteError => $error]);
+                      $errorCode = ErrorCodes::HttpParamsExc;
+                      $errorCode[GlobalSystem::ExpErrorDesc] = json_encode($error);
+
+                      ErrorManager::throwException($errorCode);
+                    }
+                  }
+                }
 
 								if(!key_exists($key, $routeParams)){
 									unset($routeParams);

@@ -21,6 +21,7 @@ class GlobalSystem extends GlobalConstants
 	public static function validateData($data, $format)
 	{
 		switch($format){
+      case self::ExpFormatString :
 			case self::ExpFormatVarchar :
 				return filter_var($data, FILTER_SANITIZE_STRIPPED);
 			case self::ExpFormatRequest :

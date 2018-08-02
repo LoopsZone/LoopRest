@@ -123,6 +123,7 @@ class Expected
 	const ExpFormatFloat = 'float';
 	const ExpFormatDomain = 'domain';
 	const ExpFormatRoutes = 'routes';
+	const ExpFormatString = 'string';
 	const ExpFormatVarchar = 'varchar';
 	const ExpFormatRequest = 'request';
 	const ExpFormatNumeric = 'numeric';

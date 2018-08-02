@@ -3,13 +3,11 @@
 class Routes
 {
   /**
-   * @param null $routeId
+   * @param bool|null $routeId
    * @return bool|mixed
-   * @throws Exception
    */
-	public function route($routeId = null)
+	public function route(bool $routeId = null)
 	{
-	  Input::validate($routeId, GlobalSystem::ExpFormatChar);
 		$route = Cache::getDocument(CoreConfig::CACHE_TRANSLATE_ROUTES);
 
 		if($routeId){
@@ -23,8 +21,14 @@ class Routes
 		return $route;
 	}
 
+  /**
+   * @param null $name
+   * @return bool
+   * @throws Exception
+   */
 	public function postRoute($name = null)
 	{
+    Input::validate($routeId, GlobalSystem::ExpFormatChar);
     $route = Cache::getDocument(CoreConfig::CACHE_TRANSLATE_ROUTES);
 
     if(!key_exists($name, $route)){
