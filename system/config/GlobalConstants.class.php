@@ -82,5 +82,18 @@ class GlobalConstants extends Expected
     self::ExpTranslateParamsMethodWithRoutes => self::ExpFormatBool
   ];
 
+	const BodyFieldsFormatAccepts = [
+	  self::ExpFormatInt,
+    self::ExpFormatChar,
+    self::ExpFormatDate,
+    self::ExpFormatBool,
+    self::ExpFormatEmail,
+    self::ExpFormatFloat,
+    self::ExpFormatDomain,
+    self::ExpFormatVarchar,
+    self::ExpFormatNumeric,
+    self::ExpFormatRouteTypes
+  ];
+
 	const DBEngineMysql = 'mysql';
 }

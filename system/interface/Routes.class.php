@@ -27,44 +27,50 @@ class Routes
    * Generate new route
    *
    * @param string $name
-   * @param string $type
+   * @param string|null $method
    * @return bool
    * @throws Exception
    */
 	public function postRoute(string $name, string $method = null)
 	{
     Input::validate($name, GlobalSystem::ExpFormatChar);
-    if(!in_array($type, GlobalSystem::RouteTypes)){
-      $typesSTR = '';
-      foreach(GlobalSystem::RouteTypes as $typeAccept){
-        $typesSTR .= $typeAccept;
-        $types = $typesSTR;
-        $typesSTR = $typesSTR . ', ';
+
+    $routes = Cache::getDocument(CoreConfig::CACHE_TRANSLATE_ROUTES);
+    if(!key_exists($name, $routes)){
+      $route = [
+        $name => [
+          GlobalSystem::ExpTranslateMethodsRoute => [],
+          GlobalSystem::ExpTranslatePublicRoute => false,
+          GlobalSystem::ExpTranslateParamsMethodWithRoutes => true,
+          GlobalSystem::ExpTranslateRouteType => GlobalSystem::ExpRouteRequest
+        ]
+      ];
+
+      if($routes){
+        $routes = array_merge($routes, $route);
       }
-
-      $model = Model::getInstance();
-      $routeMD = $model->getRouteInstance;
-      $error = "Invalid route type '{$type}', types of routes accepted: {$types}";
-      $routeMD->setRequest([GlobalSystem::ExpRouteError => $error]);
-      $errorCode = ErrorCodes::HttpParamsExc;
-      $errorCode[GlobalSystem::ExpErrorDesc] = json_encode($error);
-
-      ErrorManager::throwException($errorCode);
     }
 
-    $route = Cache::getDocument(CoreConfig::CACHE_TRANSLATE_ROUTES);
-    if(!key_exists($name, $route)){
-      if(!$route){
-        $route = [
-          $name => [
-            GlobalSystem::ExpTranslateRouteType => $type,
-            GlobalSystem::ExpTranslatePublicRoute => false,
-            GlobalSystem::ExpTranslateParamsMethodWithRoutes => true
+    if($method){
+      Input::validate($method, GlobalSystem::ExpFormatChar);
+      if(!key_exists($method, $routes[$name][GlobalSystem::ExpTranslateMethodsRoute])){
+        $model = Model::getInstance();
+        $routeMD = $model->getRouteInstance;
+        $body = $routeMD->getBody();
+
+        $method = [
+          GlobalSystem::ExpTranslateMethodsRoute => [
+            $method => [
+              GlobalSystem::ExpTranslateBodyRequest => json_decode($body, true)
+            ]
           ]
         ];
+
+        $route = ($routes) ? $routes : $route;
+        $route = array_merge($route, [$name => $method]);
       }
     }
 
-    return Cache::loadDocument(CoreConfig::CACHE_TRANSLATE_ROUTES, $route, false);
+    return ($routes) ? false : Cache::loadDocument(CoreConfig::CACHE_TRANSLATE_ROUTES, $route, false);
 	}
 }

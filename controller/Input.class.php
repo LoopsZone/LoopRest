@@ -216,15 +216,11 @@ class Input extends Manager
 
 					$request[$translateRoute] = array_merge($routeParams, $routes);
 					if(count($request[$translateRoute]) == count($systemParams)){
-					  $routeTranslate = Cache::getDocument(CoreConfig::CACHE_TRANSLATE_ROUTES);
             $body = file_get_contents('php://input');
-					  if(key_exists($integrated, $routeTranslate)){
-
-            }else if($integrated == GlobalSystem::ExpTranslateRequestRoutesRoute){
-
-            }
-
+            GlobalSystem::validateMethosBodyFormatFields($body);
+            $routeMD->setBody($body);
 						$routeMD->setRequest($request);
+
 						return true;
 					}
 

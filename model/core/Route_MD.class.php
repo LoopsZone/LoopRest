@@ -2,6 +2,7 @@
 
 class Route_MD
 {
+  private $body;
 	private $route;
   private $params;
 	private $action;
@@ -287,4 +288,20 @@ class Route_MD
 	{
 		$this->userLogin = $userLogin;
 	}
+
+  /**
+   * @return mixed
+   */
+  public function getBody()
+  {
+    return $this->body;
+  }
+
+  /**
+   * @param mixed $body
+   */
+  public function setBody($body)
+  {
+    $this->body = $body;
+  }
 }

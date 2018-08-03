@@ -175,4 +175,34 @@ class GlobalSystem extends GlobalConstants
 
     return $method;
   }
+
+  public static function validateMethosBodyFormatFields(string $body)
+  {
+    $model = Model::getInstance();
+    $routeMD = $model->getRouteInstance;
+    $currentRoute = $routeMD->getRoute();
+    $body = json_decode($body, true);
+
+    foreach($body as $field => $value){
+      if(is_array($field)){
+        $field = json_encode($field);
+        GlobalSystem::validateMethosBodyFormatFields($field);
+      }else{
+        if($currentRoute == GlobalSystem::ExpTranslateRequestRoutesRoute){
+          if (!in_array($value, self::BodyFieldsFormatAccepts)){
+            ErrorManager::throwException(ErrorCodes::HttpParamsExc);
+          }
+        }else{
+          $route = Cache::getDocument(CoreConfig::CACHE_TRANSLATE_ROUTES);
+          if($route[$currentRoute]){
+            $method = GlobalSystem::translatedRouteMethod();
+            $matchBody = array_diff_assoc($route[$currentRoute][GlobalSystem::ExpTranslateMethodsRoute][$method][GlobalSystem::ExpTranslateBodyRequest], $body);
+            if($matchBody){
+
+            }
+          }
+        }
+      }
+    }
+  }
 }
