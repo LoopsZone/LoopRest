@@ -64,7 +64,6 @@ class Response
     $routeMD = $model->getRouteInstance;
     $clientServerMD = $model->getClientServerInstance;
 
-    $route = $routeMD->getRoute();
     $code = $routeMD->getCodeResponse();
     $protocol = $clientServerMD->getProtocol();
     $description = ($routeMD->getDescriptionResponse()) ? $routeMD->getDescriptionResponse() : '';
@@ -73,7 +72,8 @@ class Response
     header_remove("X-Powered-By");
     header("{$protocol} {$code} {$description}");
     header(GlobalSystem::ExpHeaderContentType . ": {$contentType}");
-    if($clientServerMD->getMethod() == GlobalSystem::ExpMethodPost && $route != GlobalSystem::ExpRouteError){
+
+    if($clientServerMD->getMethod() == GlobalSystem::ExpMethodPost && ErrorCodes::MetHodsCodesResponse[$clientServerMD->getMethod()] == $code){
       $url = $clientServerMD->getRedirectURL();
       header("Location: {$url}");
     }
