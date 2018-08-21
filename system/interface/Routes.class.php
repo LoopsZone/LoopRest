@@ -69,7 +69,7 @@ class Routes
         ];
 
         $route = ($routes) ? $routes : $route;
-        $route = array_merge($route, [$name => $method]);
+        $route = array_merge($route[$name], $method);
       }
     }
 

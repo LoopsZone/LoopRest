@@ -30,12 +30,6 @@ class GlobalConstants extends Expected
   ];
 
   const TranslatedRequestRoutes = [
-    'test' => [
-	    self::ExpTranslatePublicRoute => false,
-	    self::ExpTranslateParamsMethodWithRoutes => false,
-	    self::ExpTranslateRouteType => self::ExpRouteRequest,
-    ],
-
     self::ExpTranslatedRequestStartupRoute => [
 	    self::ExpTranslatePublicRoute => true,
 	    self::ExpTranslateParamsMethodWithRoutes => false,
@@ -74,12 +68,6 @@ class GlobalConstants extends Expected
 	const RouteTypes = [
 	  self::ExpRouteView,
     self::ExpRouteRequest
-  ];
-
-	const RouteMethodMinimalBody = [
-    self::ExpTranslatePublicRoute => self::ExpFormatBool,
-    self::ExpTranslateRouteType => self::ExpFormatRouteTypes,
-    self::ExpTranslateParamsMethodWithRoutes => self::ExpFormatBool
   ];
 
 	const BodyFieldsFormatAccepts = [

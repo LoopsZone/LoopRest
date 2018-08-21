@@ -298,8 +298,9 @@ class Input extends Manager
 
     $currentRoute = $routeMD->getRoute();
     $body = json_decode($body, true);
-
     $route = Cache::getDocument(CoreConfig::CACHE_TRANSLATE_ROUTES);
+    $newRoute = ($currentRoute == GlobalSystem::ExpTranslateRequestRoutesRoute);
+
     $routeToCheck = $route[$currentRoute];
     if($route[$currentRoute] && !count($bodyFormat)){
       $bodyFormat = $routeToCheck[GlobalSystem::ExpFormatMethods][$routeMD->getMethod()][strtolower($clientServerMD->getMethod())];
@@ -307,9 +308,10 @@ class Input extends Manager
 
     foreach($body as $field => $value){
       if(is_array($value)){
-        $this->validateFormatFieldsBodyActionMethod(json_encode($body[$field]), $bodyFormat[$field]);
+        $bodyFormat = (!$newRoute) ? $bodyFormat[$field] : [];
+        $this->validateFormatFieldsBodyActionMethod(json_encode($body[$field]), $bodyFormat);
       }else{
-        if($currentRoute == GlobalSystem::ExpTranslateRequestRoutesRoute){
+        if($newRoute){
           if (!in_array($value, GlobalSystem::BodyFieldsFormatAccepts)){
             ErrorManager::throwException(ErrorCodes::HttpParamsExc);
           }
