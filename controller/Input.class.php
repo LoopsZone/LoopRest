@@ -217,7 +217,7 @@ class Input extends Manager
 					$request[$translateRoute] = array_merge($routeParams, $routes);
 					if(count($request[$translateRoute]) == count($systemParams)){
             $body = file_get_contents('php://input');
-            GlobalSystem::validateFormatFieldsBodyActionMethod($body);
+            $this->validateFormatFieldsBodyActionMethod($body);
             $routeMD->setBody($body);
 						$routeMD->setRequest($request);
 
@@ -280,6 +280,43 @@ class Input extends Manager
       $errorCode[GlobalSystem::ExpErrorDesc] = json_encode($error);
 
       ErrorManager::throwException($errorCode);
+    }
+  }
+
+  /**
+   * Validate the format of the body fields of the action method
+   *
+   * @param string $body
+   * @param array $bodyFormat
+   * @throws Exception
+   */
+  public function validateFormatFieldsBodyActionMethod(string $body, array $bodyFormat = [])
+  {
+    $model = Model::getInstance();
+    $routeMD = $model->getRouteInstance;
+    $clientServerMD = $model->getClientServerInstance;
+
+    $currentRoute = $routeMD->getRoute();
+    $body = json_decode($body, true);
+
+    $route = Cache::getDocument(CoreConfig::CACHE_TRANSLATE_ROUTES);
+    $routeToCheck = $route[$currentRoute];
+    if($route[$currentRoute] && !count($bodyFormat)){
+      $bodyFormat = $routeToCheck[GlobalSystem::ExpFormatMethods][$routeMD->getMethod()][strtolower($clientServerMD->getMethod())];
+    }
+
+    foreach($body as $field => $value){
+      if(is_array($value)){
+        $this->validateFormatFieldsBodyActionMethod(json_encode($body[$field]), $bodyFormat[$field]);
+      }else{
+        if($currentRoute == GlobalSystem::ExpTranslateRequestRoutesRoute){
+          if (!in_array($value, GlobalSystem::BodyFieldsFormatAccepts)){
+            ErrorManager::throwException(ErrorCodes::HttpParamsExc);
+          }
+        }else{
+          Input::validate($value, $bodyFormat[$field]);
+        }
+      }
     }
   }
 }

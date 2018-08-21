@@ -28,10 +28,11 @@ class Routes
    *
    * @param string $name
    * @param string|null $method
+   * @param string|null $action
    * @return bool
    * @throws Exception
    */
-	public function postRoute(string $name, string $method = null)
+	public function postRoute(string $name, string $method = null, string $action = null)
 	{
     Input::validate($name, GlobalSystem::ExpFormatChar);
 
@@ -53,6 +54,7 @@ class Routes
 
     if($method){
       Input::validate($method, GlobalSystem::ExpFormatChar);
+      Input::validate($action, GlobalSystem::ExpFormatChar);
       if(!key_exists($method, $routes[$name][GlobalSystem::ExpTranslateMethodsRoute])){
         $model = Model::getInstance();
         $routeMD = $model->getRouteInstance;
@@ -61,7 +63,7 @@ class Routes
         $method = [
           GlobalSystem::ExpTranslateMethodsRoute => [
             $method => [
-              GlobalSystem::ExpTranslateBodyRequest => json_decode($body, true)
+              $action => json_decode($body, true)
             ]
           ]
         ];

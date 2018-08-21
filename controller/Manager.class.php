@@ -87,7 +87,7 @@ class Manager extends Auth
       $result = $object->$method();
     }
 
-    $code = ($result) // If the result of the method is false, the created, updated or deleted actions are not considered and the code results are not established for these
+    $code = ($result)//If the result of the method is false, the created, updated or deleted actions are not considered and the code results are not established for these
       ? ErrorCodes::MetHodsCodesResponse[$clientServerMD->getMethod()]
       : ErrorCodes::MetHodsCodesResponse[GlobalSystem::ExpMethodGet];
     $routeMD->setCodeResponse($code);
@@ -142,7 +142,6 @@ class Manager extends Auth
 	{
 		$model = Model::getInstance();
 		$routeMD = $model->getRouteInstance;
-
 		$errorRequest = $routeMD->getRequest();
     $executionStepNeedStart = ExecutionStep::stepErrorView();
 
