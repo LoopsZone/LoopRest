@@ -31,7 +31,7 @@ class GlobalConstants extends Expected
 
   const TranslatedRequestRoutes = [
     'test' => [
-	    self::ExpTranslatePublicRoute => true,
+	    self::ExpTranslatePublicRoute => false,
 	    self::ExpTranslateParamsMethodWithRoutes => false,
 	    self::ExpTranslateRouteType => self::ExpRouteRequest,
     ],

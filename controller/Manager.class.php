@@ -130,7 +130,7 @@ class Manager extends Auth
 	    GlobalSystem::ExpEmailTK  => Encrypt::passwordEncode($email)
     ];
 
-    return [$routeMD->getRoute() => self::signIn($tokenData)];
+    return [$routeMD->getRoute() => Token::signIn($tokenData)];
 	}
 
 	/**

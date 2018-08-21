@@ -93,4 +93,13 @@ class CoreConfig
    * Use this column for routing the models from any user request route
    */
   const DB_USER_COLUMN = User_MD::EMAIL;
+
+  /**
+   * Time expired token session
+   */
+  const TOKEN_EXPIRED_TIME = [
+    'h' => 0,
+    'm' => 60,
+    's' => 60
+  ];
 }

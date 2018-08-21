@@ -11,10 +11,9 @@ class Token
    * Generate token using JWT for using request any data in the system
    *
    * @param array $data
-   * @param int $expiredTime
    * @return string
    */
-	public static function signIn(array $data = [], int $expiredTime = 0)
+	public static function signIn(array $data = [])
 	{
     $secretKey = Cache::getDocument(GlobalSystem::CacheSecretKey);
 
@@ -23,6 +22,15 @@ class Token
       GlobalSystem::ExpAudTK => self::aud(),
       GlobalSystem::ExpSecretKeyTK => $secretKey[GlobalSystem::ExpSecretKeyTK]
     ];
+
+		$unixTime = 1;
+    $expiredTime = 0;
+		foreach(CoreConfig::TOKEN_EXPIRED_TIME as $timer){
+		  if($timer){
+		    $unixTime *= $timer;
+		    $expiredTime = $unixTime;
+      }
+    }
 
 		if($expiredTime){
 		  $token[GlobalSystem::ExpExpTK] = time() + $expiredTime;

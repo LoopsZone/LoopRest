@@ -8,18 +8,6 @@
 class Auth
 {
 	/**
-	 * Return token to request any data in system
-	 *
-	 * @param $data
-	 * @return string
-	 */
-	protected static function signIn($data)
-	{
-	  $expired = 60 * 60;
-		return Token::signIn($data, $expired);
-	}
-
-	/**
 	 * Check if token is valid for the system
 	 *
 	 * @return string

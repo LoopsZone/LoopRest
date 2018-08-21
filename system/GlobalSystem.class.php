@@ -176,7 +176,7 @@ class GlobalSystem extends GlobalConstants
     return $method;
   }
 
-  public static function validateMethosBodyFormatFields(string $body)
+  public static function validateFormatFieldsBodyActionMethod(string $body)
   {
     $model = Model::getInstance();
     $routeMD = $model->getRouteInstance;
@@ -186,7 +186,7 @@ class GlobalSystem extends GlobalConstants
     foreach($body as $field => $value){
       if(is_array($field)){
         $field = json_encode($field);
-        GlobalSystem::validateMethosBodyFormatFields($field);
+        GlobalSystem::validateFormatFieldsBodyActionMethod($field);
       }else{
         if($currentRoute == GlobalSystem::ExpTranslateRequestRoutesRoute){
           if (!in_array($value, self::BodyFieldsFormatAccepts)){

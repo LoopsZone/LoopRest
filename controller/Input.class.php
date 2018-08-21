@@ -217,7 +217,7 @@ class Input extends Manager
 					$request[$translateRoute] = array_merge($routeParams, $routes);
 					if(count($request[$translateRoute]) == count($systemParams)){
             $body = file_get_contents('php://input');
-            GlobalSystem::validateMethosBodyFormatFields($body);
+            GlobalSystem::validateFormatFieldsBodyActionMethod($body);
             $routeMD->setBody($body);
 						$routeMD->setRequest($request);
 
