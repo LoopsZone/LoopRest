@@ -65,4 +65,23 @@ class ErrorManager extends ExecutionStepsErrors
 
 		throw new Exception($currentException[GlobalSystem::ExpErrorDesc], $currentException[GlobalSystem::ExpErrorCode]);
 	}
+
+  /**
+   * Generate custom message
+   *
+   * @param $message
+   * @param array $code
+   * @throws Exception
+   */
+	public static function errorMessage($message, array $code)
+  {
+    $model = Model::getInstance();
+    $routeMD = $model->getRouteInstance;
+
+    $errorCode = $code[GlobalSystem::ExpErrorCode];
+    $errorCode[GlobalSystem::ExpErrorDesc] = json_encode($message);
+    $routeMD->setRequest([GlobalSystem::ExpRouteError => $message]);
+
+    ErrorManager::throwException($errorCode);
+  }
 }

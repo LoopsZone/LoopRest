@@ -61,12 +61,8 @@ class Routes
 
         $body = $routeMD->getBody();
         if(strtoupper($action) == GlobalSystem::ExpMethodGet && $body){
-          $error = "Method GET not need body input structure, please remove this";
-          $routeMD->setRequest([GlobalSystem::ExpRouteError => $error]);
-          $errorCode = ErrorCodes::HttpParamsExc;
-          $errorCode[GlobalSystem::ExpErrorDesc] = json_encode($error);
-
-          ErrorManager::throwException($errorCode);
+          $errorMessage = "Method GET not need body input structure, please remove this";
+          ErrorManager::errorMessage($errorMessage, ErrorCodes::HttpParamsExc);
         }
 
         $route = ($routes) ? $routes : $route;

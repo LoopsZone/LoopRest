@@ -194,14 +194,8 @@ class Input extends Manager
                     $result = GlobalSystem::validateData($input, $format);
 
                     if(!$result && $format != GlobalSystem::ExpFormatBool){
-                      $model = Model::getInstance();
-                      $routeMD = $model->getRouteInstance;
-                      $error = "Invalid value '{$routeParams[$key]}', expected data type:{$format}, required for this parameter";
-                      $routeMD->setRequest([GlobalSystem::ExpRouteError => $error]);
-                      $errorCode = ErrorCodes::HttpParamsExc;
-                      $errorCode[GlobalSystem::ExpErrorDesc] = json_encode($error);
-
-                      ErrorManager::throwException($errorCode);
+                      $errorMessage['message'] = "Invalid value '{$routeParams[$key]}', expected data type:{$format}, required for this parameter";
+                      ErrorManager::errorMessage($errorMessage, ErrorCodes::HttpParamsExc);
                     }
                   }
                 }
@@ -272,14 +266,8 @@ class Input extends Manager
     if($result){
       $input = $result;
     }else{
-      $model = Model::getInstance();
-      $routeMD = $model->getRouteInstance;
-      $error = "Invalid value '{$input}', expected data type: {$format}, required for this parameter";
-      $routeMD->setRequest([GlobalSystem::ExpRouteError => $error]);
-      $errorCode = ErrorCodes::HttpParamsExc;
-      $errorCode[GlobalSystem::ExpErrorDesc] = json_encode($error);
-
-      ErrorManager::throwException($errorCode);
+      $errorMessage = "Invalid value '{$input}', expected data type: {$format}, required for this parameter";
+      ErrorManager::errorMessage($errorMessage, ErrorCodes::HttpParamsExc);
     }
   }
 
@@ -307,14 +295,10 @@ class Input extends Manager
 
     if($bodyFormat){
       if(!$body){
-        $error['message'] = 'Empty body structure, the action needs the following body format';
-        $error['structure'] = $bodyFormat;
+        $errorMessage['message'] = 'Empty body structure, the action needs the following body format';
+        $errorMessage['structure'] = $bodyFormat;
 
-        $routeMD->setRequest([GlobalSystem::ExpRouteError => $error]);
-        $errorCode = ErrorCodes::HttpParamsExc;
-        $errorCode[GlobalSystem::ExpErrorDesc] = json_encode($error);
-
-        ErrorManager::throwException($errorCode);
+        ErrorManager::errorMessage($errorMessage, ErrorCodes::HttpParamsExc);
       }
 
       foreach($body as $field => $value){
@@ -324,23 +308,15 @@ class Input extends Manager
         }else{
           if($newRoute){
             if(!in_array($value, GlobalSystem::BodyFieldsFormatAccepts)){
-              $error = "Invalid format selected: '{$value}', expected a input format from system";
-              $routeMD->setRequest([GlobalSystem::ExpRouteError => $error]);
-              $errorCode = ErrorCodes::HttpParamsExc;
-              $errorCode[GlobalSystem::ExpErrorDesc] = json_encode($error);
-
-              ErrorManager::throwException($errorCode);
+              $errorMessage = "Invalid format selected: '{$value}', expected a input format from system";
+              ErrorManager::errorMessage($errorMessage, ErrorCodes::HttpParamsExc);
             }
           }else{
             $result = GlobalSystem::validateData($value, $bodyFormat[$field]);
 
             if(!$result){
-              $error = "Invalid value '{$value}', expected data type: {$bodyFormat[$field]}, required for this parameter";
-              $routeMD->setRequest([GlobalSystem::ExpRouteError => $error]);
-              $errorCode = ErrorCodes::HttpParamsExc;
-              $errorCode[GlobalSystem::ExpErrorDesc] = json_encode($error);
-
-              ErrorManager::throwException($errorCode);
+              $errorMessage = "Invalid value '{$value}', expected data type: {$bodyFormat[$field]}, required for this parameter";
+              ErrorManager::errorMessage($errorMessage, ErrorCodes::HttpParamsExc);
             }
           }
         }
