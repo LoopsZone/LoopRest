@@ -77,10 +77,10 @@ class ErrorManager extends ExecutionStepsErrors
   {
     $model = Model::getInstance();
     $routeMD = $model->getRouteInstance;
-
-    $errorCode = $code[GlobalSystem::ExpErrorCode];
-    $errorCode[GlobalSystem::ExpErrorDesc] = json_encode($message);
     $routeMD->setRequest([GlobalSystem::ExpRouteError => $message]);
+
+    $errorCode[GlobalSystem::ExpErrorDesc] = json_encode($message);
+    $errorCode[GlobalSystem::ExpErrorCode] = $code[GlobalSystem::ExpErrorCode];
 
     ErrorManager::throwException($errorCode);
   }
