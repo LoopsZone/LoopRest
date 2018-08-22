@@ -72,4 +72,41 @@ class Routes
 
     return Cache::loadDocument(CoreConfig::CACHE_TRANSLATE_ROUTES, $route, false);
 	}
+
+  /**
+   * Update current registry
+   *
+   * @param string $name
+   * @param string|null $method
+   * @return bool
+   * @throws Exception
+   */
+	public function putRoute(string $name, string $method = null)
+  {
+    Input::validate($name, GlobalSystem::ExpFormatChar);
+
+    $model = Model::getInstance();
+    $routeMD = $model->getRouteInstance;
+    $routes = Cache::getDocument(CoreConfig::CACHE_TRANSLATE_ROUTES);
+
+    if(key_exists($name, $routes)){
+      $body = $routeMD->getBody();
+      $routeConfig = GlobalSystem::routeConfig($name);
+
+      if($method){
+        Input::validate($method, GlobalSystem::ExpFormatChar);
+        if(key_exists($method, $routes[$name][GlobalSystem::ExpTranslateMethodsRoute])){
+          $bodyFormat = $routeConfig[GlobalSystem::ExpTranslateMethodsRoute][$method][strtolower(GlobalSystem::ExpMethodPost)];
+
+          GlobalSystem::validateFormatFieldsBodyActionMethod($body, $bodyFormat);
+          $newBody = array_merge($routes[$name][GlobalSystem::ExpTranslateMethodsRoute], json_decode($body, true));
+          $routes[$name][GlobalSystem::ExpTranslateMethodsRoute][$method][strtolower(GlobalSystem::ExpMethodPost)] = $newBody;
+        }
+      }
+
+      return Cache::loadDocument(CoreConfig::CACHE_TRANSLATE_ROUTES, $routes, false);
+    }
+
+    return false;
+  }
 }
