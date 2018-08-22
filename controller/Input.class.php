@@ -159,8 +159,8 @@ class Input extends Manager
 
 					$routeParams = $routeMD->getParams();
 					$routes = $clientServerMD->getRoute();
+          $routeConfig = GlobalSystem::routeConfig();
 					$systemParams = $reflector->getParameters();
-					$routeConfig = GlobalSystem::TranslatedRequestRoutes[$currentRoute];
 					$treatParamsAsRoutes = $routeConfig[GlobalSystem::ExpTranslateParamsMethodWithRoutes];
 
 					unset($routes[0]);
@@ -296,27 +296,53 @@ class Input extends Manager
     $routeMD = $model->getRouteInstance;
     $clientServerMD = $model->getClientServerInstance;
 
+    $route = GlobalSystem::routeConfig();
     $currentRoute = $routeMD->getRoute();
     $body = json_decode($body, true);
-    $route = Cache::getDocument(CoreConfig::CACHE_TRANSLATE_ROUTES);
     $newRoute = ($currentRoute == GlobalSystem::ExpTranslateRequestRoutesRoute);
 
-    $routeToCheck = $route[$currentRoute];
-    if($route[$currentRoute] && !count($bodyFormat)){
-      $bodyFormat = $routeToCheck[GlobalSystem::ExpFormatMethods][$routeMD->getMethod()][strtolower($clientServerMD->getMethod())];
+    if($route && !count($bodyFormat)){
+      $bodyFormat = $route[GlobalSystem::ExpFormatMethods][$routeMD->getMethod()][strtolower($clientServerMD->getMethod())];
     }
 
-    foreach($body as $field => $value){
-      if(is_array($value)){
-        $bodyFormat = (!$newRoute) ? $bodyFormat[$field] : [];
-        $this->validateFormatFieldsBodyActionMethod(json_encode($body[$field]), $bodyFormat);
-      }else{
-        if($newRoute){
-          if (!in_array($value, GlobalSystem::BodyFieldsFormatAccepts)){
-            ErrorManager::throwException(ErrorCodes::HttpParamsExc);
-          }
+    if($bodyFormat){
+      if(!$body){
+        $error['message'] = 'Empty body structure, the action needs the following body format';
+        $error['structure'] = $bodyFormat;
+
+        $routeMD->setRequest([GlobalSystem::ExpRouteError => $error]);
+        $errorCode = ErrorCodes::HttpParamsExc;
+        $errorCode[GlobalSystem::ExpErrorDesc] = json_encode($error);
+
+        ErrorManager::throwException($errorCode);
+      }
+
+      foreach($body as $field => $value){
+        if(is_array($value)){
+          $bodyFormat = (!$newRoute) ? $bodyFormat[$field] : [];
+          $this->validateFormatFieldsBodyActionMethod(json_encode($body[$field]), $bodyFormat);
         }else{
-          Input::validate($value, $bodyFormat[$field]);
+          if($newRoute){
+            if(!in_array($value, GlobalSystem::BodyFieldsFormatAccepts)){
+              $error = "Invalid format selected: '{$value}', expected a input format from system";
+              $routeMD->setRequest([GlobalSystem::ExpRouteError => $error]);
+              $errorCode = ErrorCodes::HttpParamsExc;
+              $errorCode[GlobalSystem::ExpErrorDesc] = json_encode($error);
+
+              ErrorManager::throwException($errorCode);
+            }
+          }else{
+            $result = GlobalSystem::validateData($value, $bodyFormat[$field]);
+
+            if(!$result){
+              $error = "Invalid value '{$value}', expected data type: {$bodyFormat[$field]}, required for this parameter";
+              $routeMD->setRequest([GlobalSystem::ExpRouteError => $error]);
+              $errorCode = ErrorCodes::HttpParamsExc;
+              $errorCode[GlobalSystem::ExpErrorDesc] = json_encode($error);
+
+              ErrorManager::throwException($errorCode);
+            }
+          }
         }
       }
     }

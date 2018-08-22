@@ -40,7 +40,6 @@ class Routes
     if(!key_exists($name, $routes)){
       $route = [
         $name => [
-          GlobalSystem::ExpTranslateMethodsRoute => [],
           GlobalSystem::ExpTranslatePublicRoute => false,
           GlobalSystem::ExpTranslateParamsMethodWithRoutes => true,
           GlobalSystem::ExpTranslateRouteType => GlobalSystem::ExpRouteRequest
@@ -55,24 +54,26 @@ class Routes
     if($method){
       Input::validate($method, GlobalSystem::ExpFormatChar);
       Input::validate($action, GlobalSystem::ExpFormatChar);
-      if(!key_exists($method, $routes[$name][GlobalSystem::ExpTranslateMethodsRoute])){
+
+      if(!key_exists($action, $routes[$name][GlobalSystem::ExpTranslateMethodsRoute][$method])){
         $model = Model::getInstance();
         $routeMD = $model->getRouteInstance;
-        $body = $routeMD->getBody();
 
-        $method = [
-          GlobalSystem::ExpTranslateMethodsRoute => [
-            $method => [
-              $action => json_decode($body, true)
-            ]
-          ]
-        ];
+        $body = $routeMD->getBody();
+        if(strtoupper($action) == GlobalSystem::ExpMethodGet && $body){
+          $error = "Method GET not need body input structure, please remove this";
+          $routeMD->setRequest([GlobalSystem::ExpRouteError => $error]);
+          $errorCode = ErrorCodes::HttpParamsExc;
+          $errorCode[GlobalSystem::ExpErrorDesc] = json_encode($error);
+
+          ErrorManager::throwException($errorCode);
+        }
 
         $route = ($routes) ? $routes : $route;
-        $route = array_merge($route[$name], $method);
+        $route[$name][GlobalSystem::ExpTranslateMethodsRoute][$method][$action] = json_decode($body, true);
       }
     }
 
-    return ($routes) ? false : Cache::loadDocument(CoreConfig::CACHE_TRANSLATE_ROUTES, $route, false);
+    return Cache::loadDocument(CoreConfig::CACHE_TRANSLATE_ROUTES, $route, false);
 	}
 }

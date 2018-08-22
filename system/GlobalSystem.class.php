@@ -131,6 +131,29 @@ class GlobalSystem extends GlobalConstants
 	}
 
   /**
+   * Get current route configuration
+   *
+   * @return bool
+   */
+	public static function routeConfig()
+  {
+    $model = Model::getInstance();
+    $routeMD = $model->getRouteInstance;
+
+    $route = $routeMD->getRoute();
+    if(!key_exists($route, RequestRoute::$routes)){
+      $translateRoutes = Cache::getDocument(CoreConfig::CACHE_TRANSLATE_ROUTES);
+      $routes = ($translateRoutes) ? array_merge($translateRoutes, GlobalSystem::TranslatedRequestRoutes) : GlobalSystem::TranslatedRequestRoutes;
+
+      if(key_exists($route, $routes)){
+        return $routes[$route];
+      }
+    }
+
+    return false;
+  }
+
+  /**
    * Translate route request to system route
    *
    * @param $route
@@ -143,11 +166,10 @@ class GlobalSystem extends GlobalConstants
 
     $route = $routeMD->getRoute();
     if(!key_exists($route, RequestRoute::$routes)){
-      $translateRoutes = Cache::getDocument(CoreConfig::CACHE_TRANSLATE_ROUTES);
-      $routes = ($translateRoutes) ? array_merge($translateRoutes, GlobalSystem::TranslatedRequestRoutes) : GlobalSystem::TranslatedRequestRoutes;
+      $routes = self::routeConfig();
 
-      if(key_exists($route, $routes)){
-        return $routes[$route][GlobalSystem::ExpTranslateRouteType];
+      if($routes){
+        return $routes[GlobalSystem::ExpTranslateRouteType];
       }
 
       return 'fake';
