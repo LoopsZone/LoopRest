@@ -73,14 +73,12 @@ class ErrorManager extends ExecutionStepsErrors
    * @param array $code
    * @throws Exception
    */
-	public static function errorMessage($message, array $code)
+	public static function errorMessage($message, array $errorCode)
   {
     $model = Model::getInstance();
     $routeMD = $model->getRouteInstance;
-    $routeMD->setRequest([GlobalSystem::ExpRouteError => $message]);
-
     $errorCode[GlobalSystem::ExpErrorDesc] = json_encode($message);
-    $errorCode[GlobalSystem::ExpErrorCode] = $code[GlobalSystem::ExpErrorCode];
+    $routeMD->setRequest([GlobalSystem::ExpRouteError => $message]);
 
     ErrorManager::throwException($errorCode);
   }
