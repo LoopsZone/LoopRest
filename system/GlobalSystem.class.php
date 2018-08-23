@@ -56,7 +56,7 @@ class GlobalSystem extends GlobalConstants
 				}
 				return false;
 			case self::ExpFormatBool :
-				return filter_var($data, FILTER_VALIDATE_BOOLEAN);
+				return is_bool($data);
 			case self::ExpFormatFloat :
 				return filter_var($data, FILTER_VALIDATE_FLOAT);
 			case self::ExpFormatUrl :
@@ -200,6 +200,36 @@ class GlobalSystem extends GlobalConstants
   }
 
   /**
+   * Check the differences in two arrays recursively
+   *
+   * @param $aArray1
+   * @param $aArray2
+   * @return array
+   */
+  public static function arrayDiff($aArray1, $aArray2){
+    $aReturn = [];
+
+    foreach($aArray1 as $mKey => $mValue){
+      if(array_key_exists($mKey, $aArray2)){
+        if(is_array($mValue)){
+          $aRecursiveDiff = GlobalSystem::arrayDiff($mValue, $aArray2[$mKey]);
+          if(count($aRecursiveDiff)){
+            $aReturn[$mKey] = $aRecursiveDiff;
+          }
+        }else{
+          if($mValue != $aArray2[$mKey]){
+            $aReturn[$mKey] = $mValue;
+          }
+        }
+      }else{
+        $aReturn[$mKey] = $mValue;
+      }
+    }
+
+    return $aReturn;
+  }
+
+  /**
    * Validate the format of the body fields of the action method
    *
    * @param string $body
@@ -221,31 +251,31 @@ class GlobalSystem extends GlobalConstants
       $bodyFormat = $route[GlobalSystem::ExpFormatMethods][$routeMD->getMethod()][strtolower($clientServerMD->getMethod())];
     }
 
-    if($bodyFormat){
-      if(!$body){
-        $errorMessage['message'] = 'Empty body structure, the action needs the following body format';
-        $errorMessage['structure'] = $bodyFormat;
+    if(!$body && $bodyFormat){
+      $errorMessage['message'] = 'Empty body structure, the action needs the following body format';
+      $errorMessage['structure'] = $bodyFormat;
 
-        ErrorManager::errorMessage($errorMessage, ErrorCodes::HttpParamsExc);
-      }
+      ErrorManager::errorMessage($errorMessage, ErrorCodes::HttpParamsExc);
+    }
 
-      foreach($body as $field => $value){
-        if(is_array($value)){
-          $bodyFormat = ($bodyFormat) ? $bodyFormat[$field] : [];
-          GlobalSystem::validateFormatFieldsBodyActionMethod(json_encode($body[$field]), $bodyFormat);
-        }else{
-          if($newRoute && !$bodyFormat){
+    foreach($body as $field => $value){
+      if(is_array($value)){
+        $bodyFormat = ($bodyFormat) ? $bodyFormat[$field] : [];
+        GlobalSystem::validateFormatFieldsBodyActionMethod(json_encode($body[$field]), $bodyFormat);
+      }else{
+        if($newRoute && !$bodyFormat){
+          if($clientServerMD->getMethod() != GlobalSystem::ExpMethodPut){
             if(!in_array($value, GlobalSystem::BodyFieldsFormatAccepts)){
               $errorMessage = "Invalid format selected: '{$value}', expected a input format from system";
               ErrorManager::errorMessage($errorMessage, ErrorCodes::HttpParamsExc);
             }
-          }else{
-            $result = GlobalSystem::validateData($value, $bodyFormat[$field]);
+          }
+        }else{
+          $result = GlobalSystem::validateData($value, $bodyFormat[$field]);
 
-            if(!$result){
-              $errorMessage = "Invalid value '{$value}', expected data type: {$bodyFormat[$field]}, required for this parameter";
-              ErrorManager::errorMessage($errorMessage, ErrorCodes::HttpParamsExc);
-            }
+          if(!$result){
+            $errorMessage = "Invalid value '{$value}', expected data type: {$bodyFormat[$field]}, required for this parameter";
+            ErrorManager::errorMessage($errorMessage, ErrorCodes::HttpParamsExc);
           }
         }
       }

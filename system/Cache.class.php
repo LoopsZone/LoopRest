@@ -42,7 +42,6 @@ class Cache
 
         if($daysToRenew->format(self::$format) > $expiredDocument){
           unlink($fileName);
-
           return true;
         }
       }
@@ -50,7 +49,7 @@ class Cache
 
 	  return false;
   }
-  
+
   /**
    * Load new document in the cache path
    *

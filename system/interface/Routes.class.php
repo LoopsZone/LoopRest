@@ -91,20 +91,50 @@ class Routes
 
     if(key_exists($name, $routes)){
       $body = $routeMD->getBody();
-      $routeConfig = GlobalSystem::routeConfig($name);
 
       if($method){
         Input::validate($method, GlobalSystem::ExpFormatChar);
         if(key_exists($method, $routes[$name][GlobalSystem::ExpTranslateMethodsRoute])){
-          $bodyFormat = $routeConfig[GlobalSystem::ExpTranslateMethodsRoute][$method][strtolower(GlobalSystem::ExpMethodPost)];
-
-          GlobalSystem::validateFormatFieldsBodyActionMethod($body, $bodyFormat);
+          GlobalSystem::validateFormatFieldsBodyActionMethod($body);
           $newBody = array_merge($routes[$name][GlobalSystem::ExpTranslateMethodsRoute], json_decode($body, true));
           $routes[$name][GlobalSystem::ExpTranslateMethodsRoute][$method][strtolower(GlobalSystem::ExpMethodPost)] = $newBody;
         }
+      }else{
+        $bodyFormat = [
+          GlobalSystem::ExpTranslatePublicRoute => GlobalSystem::ExpFormatBool,
+          GlobalSystem::ExpTranslateRouteType => GlobalSystem::ExpFormatChar,
+          GlobalSystem::ExpTranslateParamsMethodWithRoutes => GlobalSystem::ExpFormatBool
+        ];
+
+        GlobalSystem::validateFormatFieldsBodyActionMethod($body, $bodyFormat);
+
+        $body = json_decode($body, true);
+        $publicRoute = $body[GlobalSystem::ExpTranslatePublicRoute];
+        $translateRouteType = $body[GlobalSystem::ExpTranslateRouteType];
+        $methodsWithRoutes = $body[GlobalSystem::ExpTranslateParamsMethodWithRoutes];
+
+        $routes[$name][GlobalSystem::ExpTranslatePublicRoute] = ($publicRoute)
+          ? $publicRoute : $routes[$name][GlobalSystem::ExpTranslatePublicRoute];
+        unset($body[GlobalSystem::ExpTranslatePublicRoute]);
+
+        $routes[$name][GlobalSystem::ExpTranslateRouteType] = ($translateRouteType)
+          ? $translateRouteType : $routes[$name][GlobalSystem::ExpTranslateRouteType];
+        unset($body[GlobalSystem::ExpTranslateRouteType]);
+
+        $routes[$name][GlobalSystem::ExpTranslateParamsMethodWithRoutes] = ($methodsWithRoutes)
+          ? $methodsWithRoutes : $routes[$name][GlobalSystem::ExpTranslateParamsMethodWithRoutes];
+        unset($body[GlobalSystem::ExpTranslateParamsMethodWithRoutes]);
       }
 
-      return Cache::loadDocument(CoreConfig::CACHE_TRANSLATE_ROUTES, $routes, false);
+      if($body){
+        $errorMessage['structure'] = $bodyFormat;
+        $errorMessage['message'] = "Body format input unavailable";
+        ErrorManager::errorMessage($errorMessage, ErrorCodes::HttpParamsExc);
+      }
+
+      if(GlobalSystem::arrayDiff(Cache::getDocument(CoreConfig::CACHE_TRANSLATE_ROUTES), $routes)){
+        return Cache::loadDocument(CoreConfig::CACHE_TRANSLATE_ROUTES, $routes, false);
+      }
     }
 
     return false;
