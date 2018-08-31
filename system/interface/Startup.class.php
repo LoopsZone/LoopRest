@@ -38,7 +38,7 @@ class Startup
     if($secretKey){
       if(key_exists(GlobalSystem::ExpAudTK, $secretKey)){
         if(key_exists(GlobalSystem::ExpSecretKeyTK, $secretKey)){
-          $clientOwner = password_verify(Token::authString(), $secretKey[GlobalSystem::ExpAudTK]);
+          $clientOwner = password_verify(Token::audString(), $secretKey[GlobalSystem::ExpAudTK]);
 
           if($clientOwner && password_verify($key, $secretKey[GlobalSystem::ExpSecretKeyTK])){
             if(Cache::clearCache(GlobalSystem::CacheSecretKey)){
