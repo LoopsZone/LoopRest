@@ -19,8 +19,7 @@ class Token
 
 		$token = [
       GlobalSystem::ExpDataTK => $data,
-      GlobalSystem::ExpAudTK => self::aud(),
-      GlobalSystem::ExpSecretKeyTK => $secretKey[GlobalSystem::ExpSecretKeyTK]
+      GlobalSystem::ExpAudTK => self::aud()
     ];
 
 		$unixTime = 1;
