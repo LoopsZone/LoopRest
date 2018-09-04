@@ -32,7 +32,7 @@ function plus() {
     var pressTimer;
     $('#plusCont').remove('#plusLogIn');
     if ($("#plus").length == 0) {
-        $('#plusCont').append('<img id="plus" class="plus" src="http://rest.loopszone:8080/views/staticFiles/www/Home/assets/style/img/plus.png">');
+        $('#plusCont').append('<img id="plus" class="plus" src="/view/www/Home/assets/img/plus.png">');
         $('#plus').mousedown(function () {
             pressTimer = window.setTimeout(function () {
 
@@ -150,7 +150,7 @@ function faceLogin(req) {
             } else if (response.status === 'not_authorized') {
                 modal('authModal', 'views/authorized.html');
             } else {
-                $('#plusCont').append('<img id="plusLogIn" class="plus" src="http://rest.loopszone:8080/views/staticFiles/www/Home/assets/style/img/fb.png">');
+                $('#plusCont').append('<img id="plusLogIn" class="plus" src="/view/www/Home/assets/img/fb.png">');
                 $('#plusLogIn').click(function () {
                     login(req);
                 });

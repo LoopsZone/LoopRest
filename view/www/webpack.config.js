@@ -1,4 +1,4 @@
-const component = 'Startup';
+const component = 'Home';
 
 const path = require('path');
 const webpack = require('webpack');
