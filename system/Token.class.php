@@ -19,8 +19,7 @@ class Token
 
 		$token = [
       GlobalSystem::ExpDataTK => $data,
-      GlobalSystem::ExpAudTK => self::aud(),
-      GlobalSystem::ExpSecretKeyTK => $secretKey[GlobalSystem::ExpSecretKeyTK]
+      GlobalSystem::ExpAudTK => self::aud()
     ];
 
 		$unixTime = 1;
@@ -44,7 +43,7 @@ class Token
    *
    * @return string
    */
-	public static function authString()
+	public static function audString()
   {
     $model = Model::getInstance();
     $server = $model->getClientServerInstance;
@@ -63,7 +62,7 @@ class Token
 	 */
 	public static function aud()
 	{
-		return Encrypt::oneWayHash(self::authString());
+		return Encrypt::oneWayHash(self::audString());
 	}
 
 	/**
@@ -78,14 +77,14 @@ class Token
       $secretKey = Cache::getDocument(GlobalSystem::CacheSecretKey);
 			$decode = JWT::decode($token, $secretKey[GlobalSystem::ExpSecretKeyTK],CoreConfig::ENCRYPT);
 
-			if(!password_verify(self::authString(), $decode->aud)){
-				throw new Exception('Invalid user logged in.');
+			if(!password_verify(self::audString(), $decode->aud)){
+				throw new Exception('Invalid user logged in');
 			}
 
 			return true;
 
 		}catch(\Firebase\JWT\ExpiredException $e){
-			return 'expired token';
+			return 'Expired token';
 		}catch(\Firebase\JWT\SignatureInvalidException $e){
 			return 'Corrupted sign';
 		}catch(\Exception $e){
