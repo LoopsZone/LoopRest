@@ -79,7 +79,7 @@ class FileSystem
 	{
 		return file_put_contents($path, $contents, $lock ? LOCK_EX : 0);
 	}
-	
+
 	/**
 	 * Prepend to a file.
 	 *

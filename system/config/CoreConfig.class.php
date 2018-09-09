@@ -35,7 +35,7 @@ class CoreConfig
   /**
    * Cache save documents path
    */
-  const CACHE_PATH = DIRECTORY . 'system' . DS . 'cache';
+  const CACHE_PATH = DIRECTORY . '/system' . DS . 'cache';
 
 	/**
 	 * Cache document translate routes
