@@ -59,9 +59,9 @@ class Cache
    */
   public static function loadDocument($name, $document, $expiredDays = null)
   {
-    if(!is_dir(CoreConfig::CACHE_PATH)){
-      DirectoryManager::makeDir(CoreConfig::CACHE_PATH);
-    }
+	  if(!is_dir('./' . CoreConfig::CACHE_PATH)){
+		  mkdir('./' . CoreConfig::CACHE_PATH);
+	  }
 
     if($expiredDays !== false){
 		    $expiredDays = ($expiredDays) ?  $expiredDays : CoreConfig::CACHE_EXPIRED_DAYS;
@@ -71,13 +71,13 @@ class Cache
     	self::$expiredDocument => $expiredDays,
 	    self::$documentContent => $document
     ];
+	
+	  $filename = CoreConfig::CACHE_PATH . DIRECTORY_SEPARATOR . $name . CoreConfig::CACHE_SUFFIX_FILE;
+	  $handle = fopen($filename, 'w');
+	  $success = fwrite($handle, json_encode($document, JSON_PRETTY_PRINT));
+	  fclose($handle);
 
-    return(
-      @file_put_contents(
-        CoreConfig::CACHE_PATH . DS . $name . CoreConfig::CACHE_SUFFIX_FILE,
-        json_encode($document, JSON_PRETTY_PRINT)
-      ) ? true : false
-    );
+	  return ($success) ? true : false;
   }
 
   /**
