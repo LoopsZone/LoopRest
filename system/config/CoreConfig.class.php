@@ -52,7 +52,7 @@ class CoreConfig
    *
    * @var string
    */
-  const LOG_PATH = DIRECTORY . 'system' . DS . 'logs';
+  const LOG_PATH = DIRECTORY . '/system' . DS . 'logs';
 
   /**
    * Name to principal component view to this system
