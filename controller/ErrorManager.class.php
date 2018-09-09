@@ -50,16 +50,17 @@ class ErrorManager extends ExecutionStepsErrors
 			}
 		}
 	}
-
+	
 	/**
 	 * Throw new exception in system
 	 *
-	 * @param $currentException
+	 * @param bool $currentException
 	 * @throws Exception
 	 */
-	public static function throwException($currentException)
+	public static function throwException($currentException = false)
 	{
 		if(!$currentException[GlobalSystem::ExpErrorDesc]){
+			$currentException = [];
 			$currentException[GlobalSystem::ExpErrorDesc] = error_get_last();
 		}
 
