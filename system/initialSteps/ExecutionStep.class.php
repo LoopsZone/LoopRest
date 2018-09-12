@@ -52,8 +52,8 @@ class ExecutionStep
           ]
         ];
 
+	      $routeMD->setRoute(GlobalSystem::ExpRouteView);
         $routeMD->setRequest($request);
-        $routeMD->setRoute(GlobalSystem::ExpRouteView);
 
         return true;
       }

@@ -14,7 +14,7 @@ class DB
 	{
 		if($engine && $host && $user && $password){
 			$db = ($db) ? ";dbname={$db}" : '';
-			$this->dbInstance = new PDO("{$engine}: host={$host}{$db}", $user, $password);
+			$this->dbInstance = new PDO("{$engine}:host={$host}{$db}", $user, $password);
 			$this->connect = true;
 		}
 	}
