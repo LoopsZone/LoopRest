@@ -82,7 +82,7 @@ class CoreConfig
   /**
    * Use the database to establish the initial system configuration
    */
-  const DB_SYSTEM = 'system_lp';
+  const DB_SYSTEM = 'database';
 
   /**
    * Use this table for routing the models from any user request route

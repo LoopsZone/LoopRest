@@ -75,7 +75,7 @@ class Input extends Manager
       $routeMD->setRoute($currentRoute);
       $systemRoute = RequestRoute::$routes;
       $translatedRoute = GlobalSystem::translateSystemRoute();
-      $systemParams = $systemRoute[$translatedRoute][GlobalSystem::ExpRouteKeyParams];
+      $systemParams = @$systemRoute[$translatedRoute][GlobalSystem::ExpRouteKeyParams];
 
       if(key_exists($translatedRoute, $systemRoute)){
         $systemRoute = $systemRoute[$translatedRoute];
@@ -171,7 +171,7 @@ class Input extends Manager
                 $check = true;
 								$key = $param->name;
 								if($treatParamsAsRoutes){
-									if(!$routeParams[$key] && $routes){
+									if(!key_exists($key, $routeParams) && $routes){
 										$currentParamAsRoute = array_shift($routes);
 										$routeParams[$key] = $currentParamAsRoute;
 									}
@@ -187,11 +187,14 @@ class Input extends Manager
                 if($check){
 								  $paramType = $param->getType();
 								  if($paramType){
-                    $format = $paramType->getName();
+									  $result = true;
+									  $input = $routeParams[$key];
 
-                    $input = $routeParams[$key];
-                    settype($input, $format);
-                    $result = GlobalSystem::validateData($input, $format);
+									  if(method_exists($paramType,'getName')){
+										  $format = $paramType->getName();
+										  settype($input, $format);
+										  $result = GlobalSystem::validateData($input, $format);
+									  }
 
                     if(!$result && $format != GlobalSystem::ExpFormatBool){
                       $errorMessage['message'] = "Invalid value '{$routeParams[$key]}', expected data type:{$format}, required for this parameter";

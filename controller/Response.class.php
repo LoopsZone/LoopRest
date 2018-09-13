@@ -42,8 +42,8 @@ class Response
 
         $request = [GlobalSystem::ExpRouteView => [GlobalSystem::ExpView => $view]];
 
+			  $routeMD->setRoute(GlobalSystem::ExpRouteView);
         $routeMD->setRequest($request);
-        $routeMD->setRoute(GlobalSystem::ExpRouteView);
 
         $views = new View();
         $response = $views->routingView($dataModel);

@@ -76,7 +76,8 @@ class Route_MD
 	public function setRequest($request)
 	{
 		if($this->validateRequest($request)){
-			$this->request[$this->route] = $request[$this->route];
+			$route = GlobalSystem::translateSystemRoute();
+			$this->request[$route] = $request[$route];
 		}
 	}
 

@@ -134,7 +134,7 @@ class GlobalSystem extends GlobalConstants
    * Get current route configuration
    *
    * @param string|null $route
-   * @return bool
+   * @return array|bool
    */
 	public static function routeConfig(string $route = null)
   {
@@ -244,11 +244,13 @@ class GlobalSystem extends GlobalConstants
 
     $route = GlobalSystem::routeConfig();
     $currentRoute = $routeMD->getRoute();
-    $body = json_decode($body, true);
+    $body = (array) json_decode($body, true);
     $newRoute = ($currentRoute == GlobalSystem::ExpTranslateRequestRoutesRoute);
 
     if($route && !count($bodyFormat)){
-      $bodyFormat = $route[GlobalSystem::ExpFormatMethods][$routeMD->getMethod()][strtolower($clientServerMD->getMethod())];
+    	if(key_exists(GlobalSystem::ExpFormatMethods, $route)){
+		    $bodyFormat = @$route[GlobalSystem::ExpFormatMethods][$routeMD->getMethod()][strtolower($clientServerMD->getMethod())];
+	    }
     }
 
     if(!$body && $bodyFormat){
