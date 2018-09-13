@@ -9,7 +9,7 @@ class ErrorManager extends ExecutionStepsErrors
 	 */
 	public static function onErrorRoute($error = false, $routeResponse = false)
 	{
-		if(!Response::getReadyResponse()){
+		if(!Response::ready()){
 			$request = [];
 			$model = Model::getInstance();
 			$routeMD = $model->getRouteInstance;

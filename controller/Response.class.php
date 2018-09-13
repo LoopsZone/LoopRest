@@ -106,7 +106,7 @@ class Response
 	 *
 	 * @return bool
 	 */
-	public static function getReadyResponse()
+	public static function ready()
 	{
 		return self::$readyResponse;
 	}
