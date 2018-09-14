@@ -73,10 +73,11 @@ class Response
     header("{$protocol} {$code} {$description}");
     header(GlobalSystem::ExpHeaderContentType . ": {$contentType}");
 
-    if($clientServerMD->getMethod() == GlobalSystem::ExpMethodPost && ErrorCodes::MetHodsCodesResponse[$clientServerMD->getMethod()] == $code){
-      $url = $clientServerMD->getRedirectURL();
-      header("Location: {$url}");
-    }
+    if(
+	    $clientServerMD->getMethod() == GlobalSystem::ExpMethodPut &&
+    	$clientServerMD->getMethod() == GlobalSystem::ExpMethodPost &&
+	    ErrorCodes::MetHodsCodesResponse[$clientServerMD->getMethod()] == $code
+    ){header("Location: {$clientServerMD->getRedirectURL()}");}
   }
 
   /**
