@@ -44,13 +44,13 @@ class AccessDB extends DB
     $columnsSTR = '';
     foreach($properties as $name => $schema){
       if(is_array($schema)){
-        $unique = ($schema[GlobalSystem::ExpUnique]) ? ' UNIQUE' : '';
-        $nullAble = ($schema[GlobalSystem::ExpNull]) ? '' : ' NOT NULL';
-        $primaryKey = ($schema[GlobalSystem::ExpPrimaryKey]) ? ' PRIMARY KEY' : '';
-        $length = ($schema[GlobalSystem::ExpLength]) ? "({$schema[GlobalSystem::ExpLength]})" : '';
-        $autoIncrement = ($schema[GlobalSystem::ExpAutoIncrement]) ? ' AUTO_INCREMENT' : '';
-        $default = ($schema[GlobalSystem::ExpDefault]) ? " DEFAULT {$schema[GlobalSystem::ExpDefault]}" : '';
-        $foreignKey .= ($schema[GlobalSystem::ExpForeignKey]) ? ", CONSTRAINT `{$schema[GlobalSystem::ExpForeignKey][0]}-{$name}` FOREIGN KEY (`{$name}`) REFERENCES {$schema[GlobalSystem::ExpForeignKey][0]}(`{$schema[GlobalSystem::ExpForeignKey][1]}`)" : '';
+        $unique = (@$schema[GlobalSystem::ExpUnique]) ? ' UNIQUE' : '';
+        $nullAble = (@$schema[GlobalSystem::ExpNull]) ? '' : ' NOT NULL';
+        $primaryKey = (@$schema[GlobalSystem::ExpPrimaryKey]) ? ' PRIMARY KEY' : '';
+        $length = (@$schema[GlobalSystem::ExpLength]) ? "({$schema[GlobalSystem::ExpLength]})" : '';
+        $autoIncrement = (@$schema[GlobalSystem::ExpAutoIncrement]) ? ' AUTO_INCREMENT' : '';
+        $default = (@$schema[GlobalSystem::ExpDefault]) ? " DEFAULT {$schema[GlobalSystem::ExpDefault]}" : '';
+        $foreignKey .= (@$schema[GlobalSystem::ExpForeignKey]) ? ", CONSTRAINT `{$schema[GlobalSystem::ExpForeignKey][0]}-{$name}` FOREIGN KEY (`{$name}`) REFERENCES {$schema[GlobalSystem::ExpForeignKey][0]}(`{$schema[GlobalSystem::ExpForeignKey][1]}`)" : '';
 
         $default = ($autoIncrement) ? $autoIncrement : $default;
         $schemaColumn = $schema[GlobalSystem::ExpType] . $length . $nullAble . $primaryKey . $default . $unique;

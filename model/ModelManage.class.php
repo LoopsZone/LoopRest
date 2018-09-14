@@ -25,8 +25,10 @@ class ModelManage
   function __get($property)
   {
     $data = $this->schemaModel->row;
-    if(key_exists($property, $data[$this->pointer])){
-      return $data[$this->pointer][$property];
+    if(@$data[$this->pointer]){
+	    if(key_exists($property, $data[$this->pointer])){
+		    return $data[$this->pointer][$property];
+	    }
     }
 
     return false;

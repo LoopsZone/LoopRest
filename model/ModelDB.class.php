@@ -45,7 +45,15 @@ class ModelDB extends AccessDB
       if($countArguments && $countArguments <= 2){
         $this->schema->column = $arguments[0];
         $updateLength = (key_exists(1, $arguments)) ? $arguments[1] : 0;
-        $currentLength = self::$schemaModel[$this->schema->modelManage][$this->schema->column][GlobalSystem::ExpLength];
+
+	      $currentLength = false;
+        if(self::$schemaModel){
+        	if(key_exists($this->schema->modelManage, self::$schemaModel)){
+        		if(key_exists($this->schema->column, self::$schemaModel[$this->schema->modelManage])){
+			        $currentLength = self::$schemaModel[$this->schema->modelManage][$this->schema->column][GlobalSystem::ExpLength];
+		        }
+	        }
+        }
 
         $lengthValue = ($currentLength) ? $currentLength : 0;
         $length = ($updateLength) ? $updateLength : $lengthValue;
