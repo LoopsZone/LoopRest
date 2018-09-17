@@ -122,7 +122,7 @@ class FileSystem
 			return chmod($path, $mode);
 		}
 
-		return substr(sprintf('%o', fileperms($path)), -4);
+		return substr(sprintf('%o', fileperms($path)),-4);
 	}
 
 	/**
@@ -293,7 +293,7 @@ class FileSystem
 	{
 		return is_writable($path);
 	}
-	
+
 	/**
 	 * Determine if the given path is a file.
 	 *
@@ -316,7 +316,7 @@ class FileSystem
 	{
 		return glob($pattern, $flags);
 	}
-	
+
 	/**
 	 * Get an array of all files in a directory.
 	 *
@@ -331,7 +331,7 @@ class FileSystem
 				$files[] = $check;
 			}
 		}
-		
+
 		return $files;
 	}
 
@@ -352,7 +352,7 @@ class FileSystem
 
 		return $directories;
 	}
-	
+
 	/**
 	 * Create a directory.
 	 * 
@@ -423,7 +423,7 @@ class FileSystem
 				}
 
 			}else{
-				if(! self::copy($item->getPathname(), $target)){
+				if(!self::copy($item->getPathname(), $target)){
 					return false;
 				}
 			}
@@ -474,7 +474,7 @@ class FileSystem
 		$allDirectories = self::directories($directory);
 
 		if(!empty($allDirectories)){
-			foreach ($allDirectories as $directoryName){
+			foreach($allDirectories as $directoryName){
 				self::deleteDirectory($directoryName);
 			}
 

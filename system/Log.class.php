@@ -21,14 +21,14 @@ class Log
 	 *
 	 * @var array
 	 */
-	private static $postfixes = array(
+	private static $postfixes = [
 		Log::LEVEL_INFO => 'info',
 		Log::LEVEL_WARNING => 'warning',
 		Log::LEVEL_ERROR => 'error',
 		Log::LEVEL_CRITICAL => 'critical',
 		Log::LEVEL_EXCEPTION => 'exception',
 		Log::LEVEL_EVENT => 'event'
-	);
+	];
 
 	/**
 	 * file prefix
@@ -51,9 +51,9 @@ class Log
 	 */
 	private static function logDirectory()
 	{
-		if(defined('CoreConfig.class::LOG_PATH')) {
-			if(!is_dir(CoreConfig::LOG_PATH)){
-				return DirectoryManager::makeDir(CoreConfig::LOG_PATH);
+		if(defined('CoreConfig.class::LOG_PATH')){
+			if(!FileSystem::isDirectory(CoreConfig::LOG_PATH)){
+				return FileSystem::makeDirectory(CoreConfig::LOG_PATH);
 			}
 		}
 
@@ -85,12 +85,7 @@ class Log
 
 		$logFile = "/" . Log::$prefix . $file . Log::$extension;
 
-		return(
-			@file_put_contents(
-				CoreConfig::LOG_PATH . $logFile, $content,
-				FILE_APPEND
-			) ? true : false
-		);
+		return FileSystem::append(CoreConfig::LOG_PATH . $logFile, $content);
 	}
 
 	/**
@@ -105,7 +100,7 @@ class Log
 		$logFile = "/" . Log::$prefix . Log::$postfixes[$level] . Log::$extension;
 		$fullPath = CoreConfig::LOG_PATH . $logFile;
 
-		return file_exists($fullPath);
+		return FileSystem::isFile($fullPath);
 	}
 
 	/**
@@ -127,12 +122,12 @@ class Log
 	 * @param null $args
 	 * @return bool
 	 */
-	private static function handle ($level, $message, $args = null)
+	private static function handle($level, $message, $args = null)
 	{
 		self::logDirectory();
 
-		if($args && is_array($args)) {
-			foreach($args as $key => $value) {
+		if($args && is_array($args)){
+			foreach($args as $key => $value){
 				$message = str_replace("{" . $key . "}", $value, $message);
 			}
 		}
@@ -144,12 +139,7 @@ class Log
 
 		$logFile = "/" . Log::$prefix . Log::$postfixes[$level] . Log::$extension;
 
-		return(
-			@file_put_contents(
-				CoreConfig::LOG_PATH . $logFile, $content,
-				FILE_APPEND
-			) ? true : false
-		);
+		return FileSystem::append(CoreConfig::LOG_PATH . $logFile, $content);
 	}
 
 	/**
@@ -206,7 +196,6 @@ class Log
 	{
 		$data = "\n" . $event . "\n";
 		$data .= "object >>>\n";
-		$data .= Encrypt::pack($event) . "\n";
 		$data .= "<<< object\n";
 
 		Log::handle(Log::LEVEL_EVENT, $data);

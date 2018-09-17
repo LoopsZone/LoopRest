@@ -1,6 +1,6 @@
 <?php
 
-require 'CacheManager.class.php';
+require_once 'CacheManager.class.php';
 
 /**
  * Class Cache
