@@ -106,7 +106,7 @@ class FileSystem
 	 */
 	public static function append($path, $data)
 	{
-		return file_put_contents($path, $data, FILE_APPEND);
+		return @file_put_contents($path, $data, FILE_APPEND);
 	}
 
 	/**
