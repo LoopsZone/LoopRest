@@ -51,10 +51,8 @@ class Log
 	 */
 	private static function logDirectory()
 	{
-		if(defined('CoreConfig.class::LOG_PATH')){
-			if(!FileSystem::isDirectory(CoreConfig::LOG_PATH)){
-				return FileSystem::makeDirectory(CoreConfig::LOG_PATH);
-			}
+		if(!FileSystem::isDirectory(CoreConfig::LOG_PATH)){
+			return FileSystem::makeDirectory(CoreConfig::LOG_PATH);
 		}
 
 		return false;
