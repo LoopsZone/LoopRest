@@ -87,12 +87,15 @@ class Manager extends Auth
       $result = $object->$method();
     }
 
-    $code = ($result)//If the result of the method is false, the created, updated or deleted actions are not considered and the code results are not established for these
-      ? ErrorCodes::MetHodsCodesResponse[$clientServerMD->getMethod()]
-      : ErrorCodes::MetHodsCodesResponse[GlobalSystem::ExpMethodGet];
-    $routeMD->setCodeResponse($code);
+	  $code = ErrorCodes::MetHodsCodesResponse[$clientServerMD->getMethod()];
 
-    return [$route => [$routeMD->getMethod() => $result]];
+    if(!$result || $clientServerMD->getMethod()){
+	    $code = ErrorCodes::MetHodsCodesResponse[GlobalSystem::ExpMethodGet];
+    	$result = ErrorCodes::MessageCodesResponse[$clientServerMD->getMethod()][($result) ? true : false];
+    }
+
+	  $routeMD->setCodeResponse($code);
+	  return [$route => [$routeMD->getMethod() => $result]];
   }
 
 	/**

@@ -12,7 +12,7 @@ class Routes
 	{
 		$route = Cache::getDocument(CoreConfig::CACHE_TRANSLATE_ROUTES);
 
-		if($routeId){
+		if(is_array($route) && $routeId){
 			if(key_exists($routeId, $route)){
 				return $route[$routeId];
 			}
@@ -37,25 +37,25 @@ class Routes
     Input::validate($name, GlobalSystem::ExpFormatChar);
 
     $routes = Cache::getDocument(CoreConfig::CACHE_TRANSLATE_ROUTES);
-    if(!key_exists($name, $routes)){
-      $route = [
-        $name => [
-          GlobalSystem::ExpTranslatePublicRoute => false,
-          GlobalSystem::ExpTranslateParamsMethodWithRoutes => true,
-          GlobalSystem::ExpTranslateRouteType => GlobalSystem::ExpRouteRequest
-        ]
-      ];
+		if(!is_array($routes) || !key_exists($name, $routes)){
+			$route = [
+				$name => [
+					GlobalSystem::ExpTranslatePublicRoute => false,
+					GlobalSystem::ExpTranslateParamsMethodWithRoutes => true,
+					GlobalSystem::ExpTranslateRouteType => GlobalSystem::ExpRouteRequest
+				]
+			];
 
-      if($routes){
-        $routes = array_merge($routes, $route);
-      }
-    }
+			if($routes){
+				$routes = array_merge($routes, $route);
+			}
+		}
 
     if($method){
       Input::validate($method, GlobalSystem::ExpFormatChar);
       Input::validate($action, GlobalSystem::ExpFormatChar);
 
-      if(!key_exists($action, $routes[$name][GlobalSystem::ExpTranslateMethodsRoute][$method])){
+      if(!is_array($routes) || !key_exists($action, $routes[$name][GlobalSystem::ExpTranslateMethodsRoute][$method])){
         $model = Model::getInstance();
         $routeMD = $model->getRouteInstance;
 

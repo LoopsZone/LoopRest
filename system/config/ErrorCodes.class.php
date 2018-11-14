@@ -5,6 +5,25 @@
  */
 class ErrorCodes
 {
+	const MessageCodesResponse = [
+		GlobalSystem::ExpMethodGet => [
+			true=>'pass',
+			false=>'keep'
+		],
+		GlobalSystem::ExpMethodPut => [
+			true=>'',
+			false=>''
+		],
+		GlobalSystem::ExpMethodPost => [
+			true=>'pass',
+			false=>'keep'
+		],
+		GlobalSystem::ExpMethodDelete => [
+			true=>'',
+			false=>''
+		]
+	];
+
   const MetHodsCodesResponse = [
     GlobalSystem::ExpMethodGet => 200,
     GlobalSystem::ExpMethodPut => 204,

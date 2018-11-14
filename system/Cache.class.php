@@ -71,14 +71,14 @@ class Cache
     ];
 
 	  $filename = CoreConfig::CACHE_PATH . DIRECTORY_SEPARATOR . $name . CoreConfig::CACHE_SUFFIX_FILE;
-	  
+
 	  if(FileSystem::isFile($filename)){
 		  $success = FileSystem::put($filename, json_encode($document, JSON_PRETTY_PRINT));
 	  }else{
-	  	FileSystem::append($filename, json_encode($document, JSON_PRETTY_PRINT));
+		  $success = FileSystem::append($filename, json_encode($document, JSON_PRETTY_PRINT));
 	  }
 
-	  return ($success) ? true : false;
+	  return (bool) $success;
   }
 
   /**
