@@ -214,9 +214,10 @@ class Input extends Manager
 					$request[$translateRoute] = array_merge($routeParams, $routes);
 					if(count($request[$translateRoute]) == count($systemParams)){
             $body = file_get_contents('php://input');
-            GlobalSystem::validateFormatFieldsBodyActionMethod($body);
-            $routeMD->setBody($body);
+
+						$routeMD->setBody($body);
 						$routeMD->setRequest($request);
+            $this->validateFormatFieldsBodyActionMethod();
 
 						return true;
 					}
@@ -272,5 +273,66 @@ class Input extends Manager
       $errorMessage = "Invalid value '{$input}', expected data type: {$format}, required for this parameter";
       ErrorManager::errorMessage($errorMessage, ErrorCodes::HttpParamsExc);
     }
+  }
+	
+	/**
+	 * @throws Exception
+	 */
+  private function validateFormatFieldsBodyActionMethod()
+  {
+	  $model = Model::getInstance();
+	  $route = GlobalSystem::routeConfig();
+	  $routeMD = $model->getRouteInstance;
+	  $clientServerMD = $model->getClientServerInstance;
+
+	  $body = $routeMD->getBody();
+	  $method = $routeMD->getMethod();
+	  $currentRoute = $routeMD->getRoute();
+	  $newRoute = ($currentRoute == GlobalSystem::ExpTranslateRequestRoutesRoute);
+	  $bodyFormat = $routes = Cache::getDocument(CoreConfig::CACHE_TRANSLATE_ROUTES);
+
+	  if(key_exists($method, $routes[$currentRoute][GlobalSystem::ExpTranslateMethodsRoute])){
+		  $bodyFormat = @$route[GlobalSystem::ExpFormatMethods][$routeMD->getMethod()][strtolower($clientServerMD->getMethod())];
+		  $newBody = array_merge($routes[$currentRoute][GlobalSystem::ExpTranslateMethodsRoute], json_decode($body, true));
+		  $routes[$currentRoute][GlobalSystem::ExpTranslateMethodsRoute][$method][strtolower(GlobalSystem::ExpMethodPost)] = $newBody;
+	  }
+
+	  if($route && !count($bodyFormat)){
+		  if(key_exists(GlobalSystem::ExpFormatMethods, $route)){
+			 
+		  }
+	  }
+	
+	  if(!$body && $bodyFormat){
+		  $errorMessage['message'] = 'Empty body structure, the action needs the following body format';
+		  $errorMessage['structure'] = $bodyFormat;
+		
+		  ErrorManager::errorMessage($errorMessage, ErrorCodes::HttpParamsExc);
+	  }
+
+	  foreach($body as $field => $value){
+		  if(is_array($value)){
+			  $bodyFormat = ($bodyFormat) ? $bodyFormat[$field] : [];
+			  $routeMD->setBody($body[$field]);
+			  $this->validateFormatFieldsBodyActionMethod();
+			  $routeMD->setBody($body);
+		  }else{
+			  if($newRoute && !$bodyFormat){
+				  if($clientServerMD->getMethod() != GlobalSystem::ExpMethodPut){
+					  if(!in_array($value, GlobalSystem::BodyFieldsFormatAccepts)){
+						  $errorMessage = "Invalid format selected: '{$value}', expected a input format from system";
+						  ErrorManager::errorMessage($errorMessage, ErrorCodes::HttpParamsExc);
+					  }
+				  }
+			  }else{
+				  $result = GlobalSystem::validateData($value, $bodyFormat[$field]);
+
+				  if(!$result){
+					  $errorMessage = "Invalid value '{$value}', expected data type: {$bodyFormat[$field]}, required for this parameter";
+					  ErrorManager::errorMessage($errorMessage, ErrorCodes::HttpParamsExc);
+				  }
+			  }
+		  }
+	  }
   }
 }

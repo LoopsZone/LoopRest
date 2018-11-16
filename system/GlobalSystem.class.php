@@ -236,16 +236,22 @@ class GlobalSystem extends GlobalConstants
    * @param array $bodyFormat
    * @throws Exception
    */
-  public static function validateFormatFieldsBodyActionMethod(string $body, array $bodyFormat = [])
+  public static function validateFormatFieldsBodyActionMethod()
   {
     $model = Model::getInstance();
     $routeMD = $model->getRouteInstance;
     $clientServerMD = $model->getClientServerInstance;
 
+	  $body = $routeMD->getBody();
     $route = GlobalSystem::routeConfig();
     $currentRoute = $routeMD->getRoute();
-    $body = (array) json_decode($body, true);
     $newRoute = ($currentRoute == GlobalSystem::ExpTranslateRequestRoutesRoute);
+	  $bodyFormat = $routes = Cache::getDocument(CoreConfig::CACHE_TRANSLATE_ROUTES);
+
+	  if(key_exists($method, $routes[$name][GlobalSystem::ExpTranslateMethodsRoute])){
+		  $newBody = array_merge($routes[$name][GlobalSystem::ExpTranslateMethodsRoute], json_decode($body, true));
+		  $routes[$name][GlobalSystem::ExpTranslateMethodsRoute][$method][strtolower(GlobalSystem::ExpMethodPost)] = $newBody;
+	  }
 
     if($route && !count($bodyFormat)){
     	if(key_exists(GlobalSystem::ExpFormatMethods, $route)){

@@ -32,11 +32,13 @@ class Routes
    * @return bool
    * @throws Exception
    */
-	public function postRoute(string $name, string $method = null, string $action = null)
+	public function postRoute(string $name, string $method, string $action)
 	{
     Input::validate($name, GlobalSystem::ExpFormatChar);
-
+		Input::validate($method, GlobalSystem::ExpFormatChar);
+		Input::validate($action, GlobalSystem::ExpFormatChar);
     $routes = Cache::getDocument(CoreConfig::CACHE_TRANSLATE_ROUTES);
+
 		if(!is_array($routes) || !key_exists($name, $routes)){
 			$route = [
 				$name => [
@@ -51,24 +53,19 @@ class Routes
 			}
 		}
 
-    if($method){
-      Input::validate($method, GlobalSystem::ExpFormatChar);
-      Input::validate($action, GlobalSystem::ExpFormatChar);
+		if(!is_array($routes) || !key_exists($action, $routes[$name][GlobalSystem::ExpTranslateMethodsRoute][$method])){
+			$model = Model::getInstance();
+			$routeMD = $model->getRouteInstance;
 
-      if(!is_array($routes) || !key_exists($action, $routes[$name][GlobalSystem::ExpTranslateMethodsRoute][$method])){
-        $model = Model::getInstance();
-        $routeMD = $model->getRouteInstance;
+			$body = $routeMD->getBody();
+			if(strtoupper($action) == GlobalSystem::ExpMethodGet && $body){
+				$errorMessage = "Method GET not need body input structure, please remove this";
+				ErrorManager::errorMessage($errorMessage, ErrorCodes::HttpParamsExc);
+			}
 
-        $body = $routeMD->getBody();
-        if(strtoupper($action) == GlobalSystem::ExpMethodGet && $body){
-          $errorMessage = "Method GET not need body input structure, please remove this";
-          ErrorManager::errorMessage($errorMessage, ErrorCodes::HttpParamsExc);
-        }
-
-        $route = ($routes) ? $routes : $route;
-        $route[$name][GlobalSystem::ExpTranslateMethodsRoute][$method][$action] = json_decode($body, true);
-      }
-    }
+			$route = ($routes) ? $routes : $route;
+			$route[$name][GlobalSystem::ExpTranslateMethodsRoute][$method][$action] = json_decode($body, true);
+		}
 
     return Cache::loadDocument(CoreConfig::CACHE_TRANSLATE_ROUTES, $route, false);
 	}
