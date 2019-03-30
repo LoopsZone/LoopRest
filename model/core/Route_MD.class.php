@@ -71,7 +71,6 @@ class Route_MD
 
   /**
    * @param $request
-   * @throws Exception
    */
 	public function setRequest($request)
 	{

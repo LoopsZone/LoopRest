@@ -28,7 +28,9 @@ class ClientServer_MD
     $this->redirectURL = $_SERVER['REDIRECT_URL'];
     $this->protocol = $_SERVER['SERVER_PROTOCOL'];
 		$this->userAgent = $_SERVER['HTTP_USER_AGENT'];
-		$this->request = (array) json_decode(file_get_contents('php://input'));
+
+		$input = file_get_contents('php://input');
+		$this->request = ($input) ? json_decode($input, true) : $_REQUEST;
 
 		$this->route = $this->setRoute();
 

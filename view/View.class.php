@@ -51,6 +51,7 @@ class View extends Expected_Views
 	 */
 	private function render ($component, $parent)
 	{
+		$parent = ucfirst($parent);
 		$findIn = ($parent) ? DS . $component : $parent;
 		$target = ($parent) ? "{$parent}." . self::EXT : $component;
 		$components = scandir(self::COMPS_DIR . $findIn);
