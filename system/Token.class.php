@@ -45,8 +45,7 @@ class Token
    */
 	public static function audString()
   {
-    $model = Model::getInstance();
-    $server = $model->clientServerInstance();
+    $server = Model::clientServerInstance();
 
     $aud = $server->getIp();
     $aud .= $server->getHostName();

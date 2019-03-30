@@ -137,8 +137,7 @@ class ModelDB extends AccessDB
     if(count($properties)){
 	    $modelManage->row = parent::queryRegistry($this->schema->modelManage, $properties);
     }else{
-	    $model = Model::getInstance();
-	    $routeMD = $model->routeInstance();
+	    $routeMD = Model::routeInstance();
 	    if($this->schema->modelManage == CoreConfig::DB_USER_TB){
 		    $properties = [CoreConfig::DB_USER_COLUMN => $routeMD->getUserLogin()];
 		    $modelManage->row = parent::queryRegistry($this->schema->modelManage, $properties);

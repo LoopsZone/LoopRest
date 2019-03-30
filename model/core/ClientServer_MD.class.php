@@ -212,7 +212,7 @@ class ClientServer_MD
   /**
    * @return string
    */
-  public function getHostName(): string
+  public function getHostName()
   {
     return $this->hostName;
   }

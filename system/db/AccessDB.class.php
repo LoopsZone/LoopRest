@@ -9,8 +9,7 @@ class AccessDB extends DB
 {
 	public function __construct()
 	{
-		$model = Model::getInstance();
-		$dbMD = $model->dataBaseInstance();
+		$dbMD = Model::dataBaseInstance();
 
     parent::__construct(
       Encrypt::passwordDecode($dbMD->getDataBaseEngine()),

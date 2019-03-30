@@ -16,8 +16,7 @@ class Input extends Manager
 	{
 		try{
 			if($this->checkInput()){
-				$model = Model::getInstance();
-				$system = $model->systemInstance();
+				$system = Model::systemInstance();
 				return $system->runInitialSystemSettings();
 			}
 		}catch(Exception $error){
@@ -36,8 +35,7 @@ class Input extends Manager
    */
 	private function checkInput()
 	{
-		$model = Model::getInstance();
-		$clientServerMD = $model->clientServerInstance();
+		$clientServerMD = Model::clientServerInstance();
 
 		$httpAction = $clientServerMD->getMethod();
 		$availableMethod = GlobalSystem::validateData($httpAction, GlobalSystem::ExpFormatMethods);
@@ -61,9 +59,8 @@ class Input extends Manager
    */
 	private function validRoute()
 	{
-		$model = Model::getInstance();
-		$routeMD = $model->routeInstance();
-    $clientServerMD = $model->clientServerInstance();
+		$routeMD = Model::routeInstance();
+    $clientServerMD = Model::clientServerInstance();
 
 		$route = (array) $clientServerMD->getRoute();
 		$currentRoute = array_shift($route);
@@ -137,9 +134,8 @@ class Input extends Manager
 	 */
 	private function integrationRoute()
 	{
-		$model = Model::getInstance();
-		$routeMD = $model->routeInstance();
-		$clientServerMD = $model->clientServerInstance();
+		$routeMD = Model::routeInstance();
+		$clientServerMD = Model::clientServerInstance();
     $translateRoute = GlobalSystem::translateSystemRoute();
 
 		$systemRoute = RequestRoute::$routes;
@@ -234,9 +230,8 @@ class Input extends Manager
    */
 	private function washParams()
   {
-    $model = Model::getInstance();
-    $routeMD = $model->routeInstance();
-    $clientServerMD = $model->clientServerInstance();
+    $routeMD = Model::routeInstance();
+    $clientServerMD = Model::clientServerInstance();
 
     $params = $clientServerMD->getRequest();
     if(key_exists(GlobalSystem::CallbackKey, $params)){
@@ -275,10 +270,9 @@ class Input extends Manager
 	 */
   private function validateFormatFieldsBodyActionMethod()
   {
-	  $model = Model::getInstance();
 	  $route = GlobalSystem::routeConfig();
-	  $routeMD = $model->routeInstance();
-	  $clientServerMD = $model->clientServerInstance();
+	  $routeMD = Model::routeInstance();
+	  $clientServerMD = Model::clientServerInstance();
 
 	  $body = $routeMD->getBody();
 	  $method = $routeMD->getMethod();

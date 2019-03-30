@@ -7,9 +7,8 @@ class View extends Expected_Views
 
 	function __construct()
 	{
-		$model = Model::getInstance();
-		$viewMD = $model->viewsInstance();
-		$routeMD = $model->routeInstance();
+		$viewMD = Model::viewsInstance();
+		$routeMD = Model::routeInstance();
 
 		$view = $routeMD->getRequest(GlobalSystem::ExpView);
 		$target = ($view) ? ucfirst($view) : CoreConfig::PRINCIPAL_VIEW;
@@ -24,8 +23,7 @@ class View extends Expected_Views
    */
 	public function routingView($dataModel = [])
 	{
-		$model = Model::getInstance();
-		$viewMD = $model->viewsInstance();
+		$viewMD = Model::viewsInstance();
 		$view = $viewMD->getView();
 
 		$component = $view;

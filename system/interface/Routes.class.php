@@ -54,8 +54,7 @@ class Routes
 		}
 
 		if(!is_array($routes) || !key_exists($action, $routes[$name][GlobalSystem::ExpTranslateMethodsRoute][$method])){
-			$model = Model::getInstance();
-			$routeMD = $model->routeInstance();
+			$routeMD = Model::routeInstance();
 
 			$body = $routeMD->getBody();
 			if(strtoupper($action) == GlobalSystem::ExpMethodGet && $body){
@@ -82,8 +81,7 @@ class Routes
   {
     Input::validate($name, GlobalSystem::ExpFormatChar);
 
-    $model = Model::getInstance();
-    $routeMD = $model->routeInstance();
+    $routeMD = Model::routeInstance();
     $routes = Cache::getDocument(CoreConfig::CACHE_TRANSLATE_ROUTES);
 
     if(key_exists($name, $routes)){

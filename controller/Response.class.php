@@ -15,8 +15,7 @@ class Response
 	function __construct($response)
 	{
 	  $this->responseContentType();
-		$model = Model::getInstance();
-		$routeMD = $model->routeInstance();
+		$routeMD = Model::routeInstance();
 
     $route = $routeMD->getRoute();
     $translateRoute = GlobalSystem::translateSystemRoute();
@@ -60,9 +59,8 @@ class Response
    * Setting current header response code
    */
 	private function headersResponse(){
-    $model = Model::getInstance();
-    $routeMD = $model->routeInstance();
-    $clientServerMD = $model->clientServerInstance();
+    $routeMD = Model::routeInstance();
+    $clientServerMD = Model::clientServerInstance();
 
     $code = $routeMD->getCodeResponse();
     $protocol = $clientServerMD->getProtocol();
@@ -84,9 +82,8 @@ class Response
    */
 	private function responseContentType()
   {
-    $model = Model::getInstance();
-    $routeMD = $model->routeInstance();
-    $clientServerMD = $model->clientServerInstance();
+    $routeMD = Model::routeInstance();
+    $clientServerMD = Model::clientServerInstance();
 
     $accept = $clientServerMD->getHeader(GlobalSystem::ExpHeaderAccept);
     $contentAccepting = explode(',', $accept);

@@ -11,8 +11,7 @@ class ErrorManager extends ExecutionStepsErrors
 	{
 		if(!Response::ready()){
 			$request = [];
-			$model = Model::getInstance();
-			$routeMD = $model->routeInstance();
+			$routeMD = Model::routeInstance();
 			$routeMD->setRoute(GlobalSystem::ExpRouteError);
 
 			if(!$error){
@@ -76,8 +75,8 @@ class ErrorManager extends ExecutionStepsErrors
    */
 	public static function errorMessage($message, array $errorCode)
   {
-    $model = Model::getInstance();
-    $routeMD = $model->routeInstance();
+    
+    $routeMD = Model::routeInstance();
     $errorCode[GlobalSystem::ExpErrorDesc] = json_encode($message);
     $routeMD->setRequest([GlobalSystem::ExpRouteError => $message]);
 

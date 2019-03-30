@@ -138,8 +138,7 @@ class GlobalSystem extends GlobalConstants
    */
 	public static function routeConfig(string $route = null)
   {
-    $model = Model::getInstance();
-    $routeMD = $model->routeInstance();
+    $routeMD = Model::routeInstance();
 
     $route = ($route) ? $route : $routeMD->getRoute();
     if(!key_exists($route, RequestRoute::$routes)){
@@ -162,8 +161,7 @@ class GlobalSystem extends GlobalConstants
    */
   public static function translateSystemRoute()
   {
-    $model = Model::getInstance();
-    $routeMD = $model->routeInstance();
+    $routeMD = Model::routeInstance();
 
     $route = $routeMD->getRoute();
     if(!key_exists($route, RequestRoute::$routes)){
@@ -186,9 +184,8 @@ class GlobalSystem extends GlobalConstants
    */
   public static function translatedRouteMethod()
   {
-    $model = Model::getInstance();
-    $routeMD = $model->routeInstance();
-    $clientServerMD = $model->clientServerInstance();
+    $routeMD = Model::routeInstance();
+    $clientServerMD = Model::clientServerInstance();
     $method = ($routeMD->getMethod()) ? $routeMD->getMethod() : false;
 
     $action = $clientServerMD->getMethod();
@@ -238,9 +235,8 @@ class GlobalSystem extends GlobalConstants
    */
   public static function validateFormatFieldsBodyActionMethod()
   {
-    $model = Model::getInstance();
-    $routeMD = $model->routeInstance();
-    $clientServerMD = $model->clientServerInstance();
+    $routeMD = Model::routeInstance();
+    $clientServerMD = Model::clientServerInstance();
 
 	  $body = $routeMD->getBody();
     $route = GlobalSystem::routeConfig();

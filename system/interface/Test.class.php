@@ -4,9 +4,8 @@ class Test
 {
   public function testo()
   {
-  	$model = Model::getInstance();
-  	$projectsMD = $model->projectsInstance();
-    $issuesMD = $model->issuesInstance();
+  	$projectsMD = Model::projectsInstance();
+    $issuesMD = Model::issuesInstance();
 
     $projects = $projectsMD->query();
     $issue = $issuesMD->query()->registry();
@@ -16,9 +15,8 @@ class Test
 
   public function postTesto()
   {
-    $model = Model::getInstance();
-    $projectsMD = $model->projectsInstance();
-    $issuesMD = $model->issuesInstance();
+    $projectsMD = Model::projectsInstance();
+    $issuesMD = Model::issuesInstance();
 
     $projects = $projectsMD->query();
     $issue = $issuesMD->query()->registry();
