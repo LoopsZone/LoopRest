@@ -17,7 +17,7 @@ class Input extends Manager
 		try{
 			if($this->checkInput()){
 				$model = Model::getInstance();
-				$system = $model->getSystemInstance;
+				$system = $model->systemInstance();
 				return $system->runInitialSystemSettings();
 			}
 		}catch(Exception $error){
@@ -37,7 +37,7 @@ class Input extends Manager
 	private function checkInput()
 	{
 		$model = Model::getInstance();
-		$clientServerMD = $model->getClientServerInstance;
+		$clientServerMD = $model->clientServerInstance();
 
 		$httpAction = $clientServerMD->getMethod();
 		$availableMethod = GlobalSystem::validateData($httpAction, GlobalSystem::ExpFormatMethods);
@@ -62,10 +62,10 @@ class Input extends Manager
 	private function validRoute()
 	{
 		$model = Model::getInstance();
-		$routeMD = $model->getRouteInstance;
-    $clientServerMD = $model->getClientServerInstance;
+		$routeMD = $model->routeInstance();
+    $clientServerMD = $model->clientServerInstance();
 
-		$route = $clientServerMD->getRoute();
+		$route = (array) $clientServerMD->getRoute();
 		$currentRoute = array_shift($route);
 
 		$this->washParams();
@@ -138,11 +138,11 @@ class Input extends Manager
 	private function integrationRoute()
 	{
 		$model = Model::getInstance();
-		$routeMD = $model->getRouteInstance;
-		$systemRoute = RequestRoute::$routes;
-		$clientServerMD = $model->getClientServerInstance;
+		$routeMD = $model->routeInstance();
+		$clientServerMD = $model->clientServerInstance();
     $translateRoute = GlobalSystem::translateSystemRoute();
 
+		$systemRoute = RequestRoute::$routes;
     $systemRoute = $systemRoute[$translateRoute];
 		$treatAsRoute = $systemRoute[GlobalSystem::ExpRoutesWithParams];
 
@@ -157,11 +157,11 @@ class Input extends Manager
 				if($methodIntegrated){
 					$reflector = new ReflectionMethod($integrated, $method);
 
-					$routeParams = $routeMD->getParams();
-					$routes = $clientServerMD->getRoute();
+					$routes = (array) $clientServerMD->getRoute();
           $routeConfig = GlobalSystem::routeConfig();
 					$systemParams = $reflector->getParameters();
 					$treatParamsAsRoutes = $routeConfig[GlobalSystem::ExpTranslateParamsMethodWithRoutes];
+					$routeParams = ($treatParamsAsRoutes) ? [] : $routeMD->getParams();
 
 					unset($routes[0]);
 					unset($routes[1]);
@@ -171,10 +171,8 @@ class Input extends Manager
                 $check = true;
 								$key = $param->name;
 								if($treatParamsAsRoutes){
-									if(!key_exists($key, $routeParams) && $routes){
-										$currentParamAsRoute = array_shift($routes);
-										$routeParams[$key] = $currentParamAsRoute;
-									}
+									$currentParamAsRoute = array_shift($routes);
+									$routeParams[$key] = $currentParamAsRoute;
 								}
 
 								if($param->isOptional()){
@@ -213,11 +211,8 @@ class Input extends Manager
 
 					$request[$translateRoute] = array_merge($routeParams, $routes);
 					if(count($request[$translateRoute]) == count($systemParams)){
-            $body = file_get_contents('php://input');
-
-						$routeMD->setBody($body);
 						$routeMD->setRequest($request);
-            $this->validateFormatFieldsBodyActionMethod();
+						$routeMD->setBody($routeMD->getParams());
 
 						return true;
 					}
@@ -240,8 +235,8 @@ class Input extends Manager
 	private function washParams()
   {
     $model = Model::getInstance();
-    $routeMD = $model->getRouteInstance;
-    $clientServerMD = $model->getClientServerInstance;
+    $routeMD = $model->routeInstance();
+    $clientServerMD = $model->clientServerInstance();
 
     $params = $clientServerMD->getRequest();
     if(key_exists(GlobalSystem::CallbackKey, $params)){
@@ -282,8 +277,8 @@ class Input extends Manager
   {
 	  $model = Model::getInstance();
 	  $route = GlobalSystem::routeConfig();
-	  $routeMD = $model->getRouteInstance;
-	  $clientServerMD = $model->getClientServerInstance;
+	  $routeMD = $model->routeInstance();
+	  $clientServerMD = $model->clientServerInstance();
 
 	  $body = $routeMD->getBody();
 	  $method = $routeMD->getMethod();
@@ -306,7 +301,7 @@ class Input extends Manager
 	  if(!$body && $bodyFormat){
 		  $errorMessage['message'] = 'Empty body structure, the action needs the following body format';
 		  $errorMessage['structure'] = $bodyFormat;
-		
+
 		  ErrorManager::errorMessage($errorMessage, ErrorCodes::HttpParamsExc);
 	  }
 

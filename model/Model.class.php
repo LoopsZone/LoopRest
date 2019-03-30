@@ -1,13 +1,10 @@
 <?php
 
-class Model extends ModelsTracking
+class Model
 {
+	private static $order = 0;
 	private static $singleton;
-
-	function __construct()
-	{
-		$this->getSystemInstance;
-	}
+	private static $executionSteps;
 
 	/**
 	 * @return Model
@@ -23,17 +20,48 @@ class Model extends ModelsTracking
 	}
 
 	/**
+	 * @return mixed
+	 */
+	public static function getExecutionSteps()
+	{
+		return self::$executionSteps;
+	}
+
+	/**
+	 * Track current execution steps in system
+	 *
+	 * @param $model
+	 * @param $method
+	 */
+	public static function TrackExecution($model, $method)
+	{
+		if(method_exists($model, $method)){
+			try{
+				throw new Exception('Current execution track', 10);
+			}catch(Exception $e){
+				self::$executionSteps[$model][++self::$order][$method] = $e->getTrace();
+			}
+		}
+	}
+
+	/**
 	 * Start tracking model mode
 	 *
-	 * @param $method
-	 * @return mixed
+	 * @param $model
+	 * @return ReflectionClass | boolean
 	 * @throws Exception
 	 */
-	public function __get($method)
+	public static function __call($model, $arguments)
 	{
-		self::TrackExecution(get_class(), $method);
+		$className = ucfirst($model) . '_MD';
+		$path = SystemPath::loadFile($className, DIRECTORY . 'model');
 
-		return $this->$method();
+		if($path){
+			self::TrackExecution($className, 'getInstance');
+			return $className::getInstance();
+		}
+
+		return false;
 	}
 
 	/**
@@ -42,7 +70,7 @@ class Model extends ModelsTracking
 	 *
 	 * @return ClientServer_MD
 	 */
-	private function getClientServerInstance()
+	private function clientServerInstance()
 	{
 		return ClientServer_MD::getInstance();
 	}
@@ -53,7 +81,7 @@ class Model extends ModelsTracking
 	 *
 	 * @return Route_MD
 	 */
-	private function getRouteInstance()
+	private function routeInstance()
 	{
 		return Route_MD::getInstance();
 	}
@@ -64,7 +92,7 @@ class Model extends ModelsTracking
 	 *
 	 * @return View_MD
 	 */
-	private function getViewsInstance()
+	private function viewsInstance()
 	{
 		return View_MD::getInstance();
 	}
@@ -75,7 +103,7 @@ class Model extends ModelsTracking
 	 *
 	 * @return DataBase_MD
 	 */
-	private function getDataBaseInstance()
+	private function dataBaseInstance()
 	{
 		return DataBase_MD::getInstance();
 	}
@@ -83,38 +111,38 @@ class Model extends ModelsTracking
 	/**
 	 * Model
 	 * get a singleton instance of System_MD
-	 * 
+	 *
 	 * @return System_MD
 	 */
-	private function getSystemInstance()
+	private function systemInstance()
 	{
 		return System_MD::getInstance();
 	}
 
-  /**
-   * Model
-   * get a singleton instance of UserModel_DB
-   *
-   * @return ModelDB
-   */
-	private function getUserInstance()
+	/**
+	 * Model
+	 * get a singleton instance of UserModel_DB
+	 *
+	 * @return ModelDB
+	 */
+	private function userInstance()
 	{
 		return User_MD::getInstance();
 	}
 
-  /**
-   * Model
-   * get a singleton instance of ProjectsModel_DB
-   *
-   * @return ModelDB
-   */
-  private function getProjectsInstance()
-  {
-    return Projects_MD::getInstance();
-  }
+	/**
+	 * Model
+	 * get a singleton instance of ProjectsModel_DB
+	 *
+	 * @return ModelDB
+	 */
+	private function projectsInstance()
+	{
+		return Projects_MD::getInstance();
+	}
 
-  private function getIssuesInstance()
-  {
-    return Issues_MD::getInstance();
-  }
+	private function issuesInstance()
+	{
+		return Issues_MD::getInstance();
+	}
 }

@@ -29,7 +29,8 @@ class System_MD
   public function runInitialSystemSettings()
   {
     $model = Model::getInstance();
-    $routeMD = $model->getRouteInstance;
+    $routeMD = $model->routeInstance();
+
     $route = $routeMD->getRoute();
     if($route != GlobalSystem::ExpTranslatedRequestStartupRoute){
       try{

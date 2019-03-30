@@ -34,7 +34,7 @@ class ExecutionStep
   public static function stepErrorView()
   {
     $model = Model::getInstance();
-    $routeMD = $model->getRouteInstance;
+    $routeMD = $model->routeInstance();
     $errorRequest = $routeMD->getRequest();
 
     $exception = ExecutionStepsErrors::$errorCodesSteps;
@@ -106,7 +106,7 @@ class ExecutionStep
 	private function checkAccessSystemDB()
 	{
 	  $model = Model::getInstance();
-		$dataBaseMD = $model->getDataBaseInstance;
+		$dataBaseMD = $model->dataBaseInstance();
 		$dataBaseMD->setDataBase(CoreConfig::DB_SYSTEM);
 
 		try{

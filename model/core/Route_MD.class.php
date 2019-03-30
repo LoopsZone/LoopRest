@@ -189,7 +189,7 @@ class Route_MD
 	/**
 	 * @param $responseObject
 	 */
-	public  function setResponseObject($responseObject)
+	public function setResponseObject($responseObject)
 	{
 		$this->responseObject = $responseObject;
 	}

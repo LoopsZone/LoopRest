@@ -163,8 +163,9 @@ class connectorService {
             $.ajax({
                 url: action,
                 type: method,
-                data: request,
-                dataType: 'jsonp'
+                dataType: 'json',
+                data: JSON.stringify(request),
+                contentType: 'application/json'
             }).done(function(response){
                 resolve(response);
             }).fail(function(response){
@@ -181,6 +182,7 @@ class connectorService {
 }
 
 let ConnectorService = new connectorService();
+
 
 /***/ }),
 

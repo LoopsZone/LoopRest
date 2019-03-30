@@ -15,8 +15,8 @@ class Auth
 	protected static function checkClient()
 	{
 		$model = Model::getInstance();
-		$routeMD = $model->getRouteInstance;
-		$clientServerMD = $model->getClientServerInstance;
+		$routeMD = $model->routeInstance();
+		$clientServerMD = $model->clientServerInstance();
 
 		//TODO Add BlackList customers
 
@@ -58,7 +58,7 @@ class Auth
 	private static function routeNeedTK()
 	{
 	  $model = Model::getInstance();
-	  $routeMD = $model->getRouteInstance;
+	  $routeMD = $model->routeInstance();
 
 	  $route = $routeMD->getRoute();
 	  if(!GlobalSystem::TranslatedRequestRoutes[$route][GlobalSystem::ExpTranslatePublicRoute]){
@@ -78,8 +78,8 @@ class Auth
 	protected function giveAccess()
 	{
 		$model = Model::getInstance();
-		$routeMD = $model->getRouteInstance;
-		$clientServerMD = $model->getClientServerInstance;
+		$routeMD = $model->routeInstance();
+		$clientServerMD = $model->clientServerInstance();
 		$authHeader = $clientServerMD->getHeader(GlobalSystem::ExpHeaderAuth);
 		$auth = (!$authHeader) ? 0 : 1;/*Zero value get user access to principal system and one value get structure merchant access*/
 

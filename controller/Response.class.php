@@ -16,7 +16,7 @@ class Response
 	{
 	  $this->responseContentType();
 		$model = Model::getInstance();
-		$routeMD = $model->getRouteInstance;
+		$routeMD = $model->routeInstance();
 
     $route = $routeMD->getRoute();
     $translateRoute = GlobalSystem::translateSystemRoute();
@@ -61,8 +61,8 @@ class Response
    */
 	private function headersResponse(){
     $model = Model::getInstance();
-    $routeMD = $model->getRouteInstance;
-    $clientServerMD = $model->getClientServerInstance;
+    $routeMD = $model->routeInstance();
+    $clientServerMD = $model->clientServerInstance();
 
     $code = $routeMD->getCodeResponse();
     $protocol = $clientServerMD->getProtocol();
@@ -85,8 +85,8 @@ class Response
 	private function responseContentType()
   {
     $model = Model::getInstance();
-    $routeMD = $model->getRouteInstance;
-    $clientServerMD = $model->getClientServerInstance;
+    $routeMD = $model->routeInstance();
+    $clientServerMD = $model->clientServerInstance();
 
     $accept = $clientServerMD->getHeader(GlobalSystem::ExpHeaderAccept);
     $contentAccepting = explode(',', $accept);
@@ -120,6 +120,6 @@ class Response
 	 */
 	public function __destruct()
 	{
-		Log::custom('ExecuteModels', json_encode(ModelsTracking::$executionSteps, JSON_PRETTY_PRINT));
+		Log::custom('ExecuteModels', json_encode(Model::getExecutionSteps(), JSON_PRETTY_PRINT));
 	}
 }

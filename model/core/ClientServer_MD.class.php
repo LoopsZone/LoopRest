@@ -19,7 +19,6 @@ class ClientServer_MD
 	private function __construct()
 	{
 		$this->ip = $this->setIp();
-		$this->request = $_REQUEST;
     $this->hostName = gethostname();
 		$this->host = $_SERVER['HTTP_HOST'];
 		$this->url = $_SERVER['REQUEST_URI'];
@@ -29,6 +28,7 @@ class ClientServer_MD
     $this->redirectURL = $_SERVER['REDIRECT_URL'];
     $this->protocol = $_SERVER['SERVER_PROTOCOL'];
 		$this->userAgent = $_SERVER['HTTP_USER_AGENT'];
+		$this->request = (array) json_decode(file_get_contents('php://input'));
 
 		$this->route = $this->setRoute();
 

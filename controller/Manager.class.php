@@ -23,7 +23,7 @@ class Manager extends Auth
 	private function route()
 	{
 		$model = Model::getInstance();
-		$routeMD = $model->getRouteInstance;
+		$routeMD = $model->routeInstance();
 
 		try{
 			switch($routeMD->getTrigger()){
@@ -71,8 +71,8 @@ class Manager extends Auth
   private function integratedRoute()
   {
     $model = Model::getInstance();
-    $routeMD = $model->getRouteInstance;
-    $clientServerMD = $model->getClientServerInstance;
+    $routeMD = $model->routeInstance();
+    $clientServerMD = $model->clientServerInstance();
 
     $route = $routeMD->getRoute();
     $class = ucfirst($route);
@@ -106,8 +106,8 @@ class Manager extends Auth
 	private function auth()
 	{
 		$model = Model::getInstance();
-    $userMD = $model->getUserInstance;
-		$routeMD = $model->getRouteInstance;
+    $userMD = $model->userInstance();
+		$routeMD = $model->routeInstance();
 
 		$name = $routeMD->getRequest(RequestRoute::ExpAuthName);
 		$email = $routeMD->getRequest(RequestRoute::ExpAuthEmail);
@@ -144,7 +144,7 @@ class Manager extends Auth
 	private function error()
 	{
 		$model = Model::getInstance();
-		$routeMD = $model->getRouteInstance;
+		$routeMD = $model->routeInstance();
 		$errorRequest = $routeMD->getRequest();
     $executionStepNeedStart = ExecutionStep::stepErrorView();
 
