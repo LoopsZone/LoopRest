@@ -1,6 +1,6 @@
 <?php
 
-require_once 'config/GlobalConstants.class.php';
+require_once DIRECTORY . 'system/config/GlobalConstants.class.php';
 
 /**
  * Class globalSystem
