@@ -60,7 +60,7 @@ class Auth
 
 	  $route = $routeMD->getRoute();
 	  if(!GlobalSystem::TranslatedRequestRoutes[$route][GlobalSystem::ExpTranslatePublicRoute]){
-      $route = GlobalSystem::translateSystemRoute();
+      $route = GlobalSystem::routeType();
       if(key_exists($route, RequestRoute::$routes)){
         $routeExecuting = RequestRoute::$routes[$route];
         return $routeExecuting[GlobalSystem::ExpRouteNeedTK];

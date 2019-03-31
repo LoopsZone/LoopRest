@@ -18,7 +18,7 @@ class Response
 		$routeMD = Model::routeInstance();
 
     $route = $routeMD->getRoute();
-    $translateRoute = GlobalSystem::translateSystemRoute();
+    $translateRoute = GlobalSystem::routeType();
 
 		if($routeMD->getResponseObject()){
       $callback = $routeMD->getCallback();

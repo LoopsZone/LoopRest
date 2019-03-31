@@ -20,7 +20,7 @@ class RequestRoute extends Expected
 			],
 			self::ExpRouteKeyTrigger => self::ExpRequestTrigger,
 			self::ExpRouteNeedTK => true,
-			self::ExpRoutesWithParams => true
+			self::ExpFriendlyURL => true
 		],
 
 		//VIEWS Action
@@ -30,7 +30,7 @@ class RequestRoute extends Expected
 			],
 			self::ExpRouteKeyTrigger => self::ExpViewTrigger,
 			self::ExpRouteNeedTK => false,
-			self::ExpRoutesWithParams => false
+			self::ExpFriendlyURL => false
 		],
 
 		//AUTH action
@@ -43,7 +43,7 @@ class RequestRoute extends Expected
 			],
 			self::ExpRouteKeyTrigger => self::ExpAuthTrigger,
 			self::ExpRouteNeedTK => false,
-			self::ExpRoutesWithParams => false
+			self::ExpFriendlyURL => false
 		],
 
 		//ERROR Action
@@ -58,7 +58,7 @@ class RequestRoute extends Expected
 			],
 			self::ExpRouteKeyTrigger => self::ExpErrorTrigger,
 			self::ExpRouteNeedTK => false,
-			self::ExpRoutesWithParams => false
+			self::ExpFriendlyURL => false
 		]
 	];
 }

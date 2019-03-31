@@ -124,8 +124,25 @@ class Model
 		return Projects_MD::getInstance();
 	}
 
+	/**
+	 * Model
+	 * get a singleton instance of Issues_MD
+	 *
+	 * @return ModelDB
+	 */
 	private static function issuesInstance()
 	{
 		return Issues_MD::getInstance();
+	}
+
+	/**
+	 * Model
+	 * get a singleton instance of Routes_MD
+	 *
+	 * @return ModelDB
+	 */
+	private static function routesInstance()
+	{
+		return Routes_MD::getInstance();
 	}
 }

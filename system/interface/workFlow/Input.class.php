@@ -41,8 +41,8 @@ class Input extends Manager
 		$availableMethod = GlobalSystem::validateData($httpAction, GlobalSystem::ExpFormatMethods);
 
 		if($availableMethod){
-			$this->validRoute();
 			$this->giveAccess();
+			$this->validateModel();
 			$this->integrationRoute();
 
 			return true;
@@ -57,7 +57,7 @@ class Input extends Manager
    * @return bool
    * @throws Exception
    */
-	private function validRoute()
+	private function validateModel()
 	{
 		$routeMD = Model::routeInstance();
     $clientServerMD = Model::clientServerInstance();
@@ -70,15 +70,15 @@ class Input extends Manager
 
 		if($currentRoute){
       $routeMD->setRoute($currentRoute);
-      $systemRoute = RequestRoute::$routes;
-      $translatedRoute = GlobalSystem::translateSystemRoute();
+			$systemRoute = RequestRoute::$routes;
+      $translatedRoute = GlobalSystem::routeType();
       $systemParams = @$systemRoute[$translatedRoute][GlobalSystem::ExpRouteKeyParams];
 
       if(key_exists($translatedRoute, $systemRoute)){
         $systemRoute = $systemRoute[$translatedRoute];
-        $treatAsRoutes = $systemRoute[GlobalSystem::ExpRoutesWithParams];
+        $friendlyURL = $systemRoute[GlobalSystem::ExpFriendlyURL];
 
-        if($treatAsRoutes){
+        if($friendlyURL){
           $routeMethod = $systemRoute[GlobalSystem::ExpRouteMethod];
 	        $format  = current($routeMethod);
 	        $nextMethod = array_shift($route);
@@ -136,11 +136,11 @@ class Input extends Manager
 	{
 		$routeMD = Model::routeInstance();
 		$clientServerMD = Model::clientServerInstance();
-    $translateRoute = GlobalSystem::translateSystemRoute();
+    $translateRoute = GlobalSystem::routeType();
 
 		$systemRoute = RequestRoute::$routes;
     $systemRoute = $systemRoute[$translateRoute];
-		$treatAsRoute = $systemRoute[GlobalSystem::ExpRoutesWithParams];
+		$treatAsRoute = $systemRoute[GlobalSystem::ExpFriendlyURL];
 
 		if($treatAsRoute){
 			$currentRoute = $routeMD->getRoute();
@@ -263,65 +263,5 @@ class Input extends Manager
       $errorMessage = "Invalid value '{$input}', expected data type: {$format}, required for this parameter";
       ErrorManager::errorMessage($errorMessage, ErrorCodes::HttpParamsExc);
     }
-  }
-	
-	/**
-	 * @throws Exception
-	 */
-  private function validateFormatFieldsBodyActionMethod()
-  {
-	  $route = GlobalSystem::routeConfig();
-	  $routeMD = Model::routeInstance();
-	  $clientServerMD = Model::clientServerInstance();
-
-	  $body = $routeMD->getBody();
-	  $method = $routeMD->getMethod();
-	  $currentRoute = $routeMD->getRoute();
-	  $newRoute = ($currentRoute == GlobalSystem::ExpTranslateRequestRoutesRoute);
-	  $bodyFormat = $routes = Cache::getDocument(CoreConfig::CACHE_TRANSLATE_ROUTES);
-
-	  if(key_exists($method, $routes[$currentRoute][GlobalSystem::ExpTranslateMethodsRoute])){
-		  $bodyFormat = @$route[GlobalSystem::ExpFormatMethods][$routeMD->getMethod()][strtolower($clientServerMD->getMethod())];
-		  $newBody = array_merge($routes[$currentRoute][GlobalSystem::ExpTranslateMethodsRoute], json_decode($body, true));
-		  $routes[$currentRoute][GlobalSystem::ExpTranslateMethodsRoute][$method][strtolower(GlobalSystem::ExpMethodPost)] = $newBody;
-	  }
-
-	  if($route && !count($bodyFormat)){
-		  if(key_exists(GlobalSystem::ExpFormatMethods, $route)){
-			 
-		  }
-	  }
-	
-	  if(!$body && $bodyFormat){
-		  $errorMessage['message'] = 'Empty body structure, the action needs the following body format';
-		  $errorMessage['structure'] = $bodyFormat;
-
-		  ErrorManager::errorMessage($errorMessage, ErrorCodes::HttpParamsExc);
-	  }
-
-	  foreach($body as $field => $value){
-		  if(is_array($value)){
-			  $bodyFormat = ($bodyFormat) ? $bodyFormat[$field] : [];
-			  $routeMD->setBody($body[$field]);
-			  $this->validateFormatFieldsBodyActionMethod();
-			  $routeMD->setBody($body);
-		  }else{
-			  if($newRoute && !$bodyFormat){
-				  if($clientServerMD->getMethod() != GlobalSystem::ExpMethodPut){
-					  if(!in_array($value, GlobalSystem::BodyFieldsFormatAccepts)){
-						  $errorMessage = "Invalid format selected: '{$value}', expected a input format from system";
-						  ErrorManager::errorMessage($errorMessage, ErrorCodes::HttpParamsExc);
-					  }
-				  }
-			  }else{
-				  $result = GlobalSystem::validateData($value, $bodyFormat[$field]);
-
-				  if(!$result){
-					  $errorMessage = "Invalid value '{$value}', expected data type: {$bodyFormat[$field]}, required for this parameter";
-					  ErrorManager::errorMessage($errorMessage, ErrorCodes::HttpParamsExc);
-				  }
-			  }
-		  }
-	  }
   }
 }

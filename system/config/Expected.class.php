@@ -91,7 +91,7 @@ class Expected
 	const ExpRouteKeyParams = 'params';
 	const ExpRouteKeyTrigger = 'trigger';
 	const ExpErrorKeyException = 'exception';
-	const ExpRoutesWithParams = 'routesWithParams';
+	const ExpFriendlyURL = 'routesWithParams';
 
 	//Model keys name to expected modelDB
   const ExpType = 'type';

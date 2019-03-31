@@ -159,7 +159,7 @@ class GlobalSystem extends GlobalConstants
    * @param $route
    * @return string
    */
-  public static function translateSystemRoute()
+  public static function routeType()
   {
     $routeMD = Model::routeInstance();
 
