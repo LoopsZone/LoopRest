@@ -17,7 +17,6 @@ class Input extends Manager
 		try{
 			if($this->checkInput()){
 				$system = Model::systemInstance();
-
 				if($system->runInitialSystemSettings()) {
 					$this->integrationRoute();
 				}
@@ -98,6 +97,7 @@ class Input extends Manager
 
 	        $systemParams = @$systemRoute[$translatedRoute][GlobalSystem::ExpRouteKeyParams];
 
+          $request = [];
           foreach($systemParams as $param => $format){
             $value = $routeParams[$param];
             $request[$translatedRoute][$param] = GlobalSystem::validateData($value, $format);
@@ -209,7 +209,7 @@ class Input extends Manager
 					$request[$translateRoute] = array_merge($routeParams, $routes);
 					if(count($request[$translateRoute]) == count($systemParams)){
 						$routeMD->setRequest($request);
-						$routeMD->setBody($routeMD->getParams());
+						$routeMD->setBody();
 
 						return true;
 					}

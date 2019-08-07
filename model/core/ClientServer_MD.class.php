@@ -29,8 +29,7 @@ class ClientServer_MD
         $this->protocol = $_SERVER['SERVER_PROTOCOL'];
         $this->userAgent = $_SERVER['HTTP_USER_AGENT'];
 
-        $input = file_get_contents('php://input');
-        $this->request = ($input) ? json_decode($input, true) : $_REQUEST;
+		    $this->request = $_REQUEST;
 
         $this->route = $this->setRoute();
 

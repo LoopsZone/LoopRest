@@ -85,6 +85,11 @@ class Expected
     const ExpView = 'vw';
     const ExpViewTrigger = 'VIEW';
 
+		//Set Error routes expected names
+		const ExpRoutes = 'route';
+		const ExpRouteRoutes = 'routes';
+		const ExpRoutesTrigger = 'ROUTES';
+
     //Set Keys name to expected routes params
     const ExpRouteNeedTK = 'needTK';
     const ExpRouteMethod = 'method';

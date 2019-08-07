@@ -298,10 +298,10 @@ class Route_MD
   }
 
   /**
-   * @param mixed $body
+   * Set body
    */
-  public function setBody($body)
+  public function setBody()
   {
-    $this->body = $body;
+    $this->body = file_get_contents('php://input');;
   }
 }
