@@ -17,19 +17,22 @@ class Input extends Manager
 		try{
 			if($this->checkInput()){
 				$system = Model::systemInstance();
-				return $system->runInitialSystemSettings();
+
+				if($system->runInitialSystemSettings()) {
+					$this->integrationRoute();
+				}
 			}
 		}catch(Exception $error){
 			ErrorManager::onErrorRoute($error);
 		}
 
-		return false;
+		return true;
 	}
 
   /**
    * Validate the incoming route, verify the corresponding access and integrate the route with the necessary parameters
    *
-   * @return bool
+   * @return bool|void
    * @throws Exception
    * @throws ReflectionException
    */
@@ -43,7 +46,6 @@ class Input extends Manager
 		if($availableMethod){
 			$this->giveAccess();
 			$this->validateModel();
-			$this->integrationRoute();
 
 			return true;
 		}
@@ -52,9 +54,9 @@ class Input extends Manager
 	}
 
   /**
-   * Valid route
+   * Validate Model
    *
-   * @return bool
+   * @return bool|void
    * @throws Exception
    */
 	private function validateModel()
@@ -62,17 +64,16 @@ class Input extends Manager
 		$routeMD = Model::routeInstance();
     $clientServerMD = Model::clientServerInstance();
 
-		$route = (array) $clientServerMD->getRoute();
-		$currentRoute = array_shift($route);
+		$model = (array) $clientServerMD->getRoute();
+		$currentModel = array_shift($model);
 
 		$this->washParams();
     $params = $routeMD->getParams();
 
-		if($currentRoute){
-      $routeMD->setRoute($currentRoute);
+		if($currentModel){
+      $routeMD->setRoute($currentModel);
 			$systemRoute = RequestRoute::$routes;
       $translatedRoute = GlobalSystem::routeType();
-      $systemParams = @$systemRoute[$translatedRoute][GlobalSystem::ExpRouteKeyParams];
 
       if(key_exists($translatedRoute, $systemRoute)){
         $systemRoute = $systemRoute[$translatedRoute];
@@ -81,7 +82,7 @@ class Input extends Manager
         if($friendlyURL){
           $routeMethod = $systemRoute[GlobalSystem::ExpRouteMethod];
 	        $format  = current($routeMethod);
-	        $nextMethod = array_shift($route);
+	        $nextMethod = array_shift($model);
 	        $method = GlobalSystem::validateData($nextMethod, $format);
 	        if($method){
 		        $routeMD->setMethod($method);
@@ -92,8 +93,10 @@ class Input extends Manager
 
           $routeParams = $clientServerMD->getRequest();
           if($translatedRoute == GlobalSystem::ExpRouteView){
-            $routeParams[GlobalSystem::ExpView] = array_shift($route);
+            $routeParams[GlobalSystem::ExpView] = array_shift($model);
           }
+
+	        $systemParams = @$systemRoute[$translatedRoute][GlobalSystem::ExpRouteKeyParams];
 
           foreach($systemParams as $param => $format){
             $value = $routeParams[$param];
@@ -103,7 +106,7 @@ class Input extends Manager
           }
 
           $routeMD->setRequest($request);
-          $params = array_merge($route, $routeParams);
+          $params = array_merge($model, $routeParams);
           if(count($params)){
             ErrorManager::throwException(ErrorCodes::HttpParamsExc);
           }
@@ -111,16 +114,14 @@ class Input extends Manager
 
         return true;
       }
-    }
+    } else {
+			if(!count($params)){
+				$routeMD->setRoute(GlobalSystem::ExpRouteView);
+				return true;
+			}
 
-		if(!$currentRoute){
-		  if(!count($params)){
-        $routeMD->setRoute(GlobalSystem::ExpRouteView);
-        return true;
-      }
-
-      ErrorManager::throwException(ErrorCodes::HttpParamsExc);
-    }
+			ErrorManager::throwException(ErrorCodes::HttpParamsExc);
+		}
 
     ErrorManager::throwException(ErrorCodes::MetHodExc);
 	}

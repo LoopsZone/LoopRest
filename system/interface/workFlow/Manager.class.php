@@ -18,7 +18,7 @@ class Manager extends Auth
 	/**
    * Switching the type of the corresponding core route
    *
-	 * @return array|mixed|string
+	 * @return mixed|void
 	 */
 	private function route()
 	{
@@ -45,7 +45,7 @@ class Manager extends Auth
 	/**
    * Route core request integration
    *
-	 * @return array|bool|mixed
+	 * @return mixed|void
 	 * @throws Exception
 	 */
 	private function request()

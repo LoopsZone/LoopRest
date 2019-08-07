@@ -2,83 +2,84 @@
 
 class DB
 {
-  public $connect;
-	protected $dbInstance;
+    public $connect;
+    protected $dbInstance;
 
-	const INT = 'int';
-	const BIT = 'bit';
-  const DATE = 'date';
-	const VARCHAR = 'varchar';
+    const INT = 'int';
+    const BIT = 'bit';
+    const DATE = 'date';
+    const VARCHAR = 'varchar';
 
-	protected function __construct($engine, $host, $user, $password, $db = false)
-	{
-		if($engine && $host && $user && $password){
-			$db = ($db) ? ";dbname={$db}" : '';
-			$this->dbInstance = new PDO("{$engine}:host={$host}{$db}", $user, $password);
-			$this->connect = true;
-		}
-	}
-
-  /**
-   * Get data types sql
-   *
-   * @return array|bool
-   */
-  public static function getDataTypes(){
-    try{
-      $dbClass = new ReflectionClass(__CLASS__);
-      return $dbClass->getConstants();
-    }catch(ReflectionException $error){
-      ErrorManager::onErrorRoute($error);
-      return false;
+    protected function __construct ($engine, $host, $user, $password, $db = false)
+    {
+        if($engine && $host && $user && $password) {
+            $db = ($db) ? ";dbname={$db}" : '';
+            $this->dbInstance = new PDO("{$engine}:host={$host}{$db}", $user, $password);
+            $this->connect = true;
+        }
     }
-  }
 
-  /**
-   * Execute sql query
-   *
-   * @param $select
-   * @return array|bool
-   */
-	protected function query($select)
-	{
-		try{
-			$this->dbInstance->beginTransaction();
-			$modelDB = $this->dbInstance->prepare($select);
-			$modelDB->execute();
+    /**
+     * Get data types sql
+     *
+     * @return array|bool
+     */
+    public static function getDataTypes ()
+    {
+        try {
+            $dbClass = new ReflectionClass(__CLASS__);
+            return $dbClass->getConstants();
+        } catch(ReflectionException $error) {
+            ErrorManager::onErrorRoute($error);
+            return false;
+        }
+    }
 
-			$result = $modelDB->fetchAll(PDO::FETCH_ASSOC);
-			$this->dbInstance->commit();
+    /**
+     * Execute sql query
+     *
+     * @param $select
+     * @return array|bool
+     */
+    protected function query ($select)
+    {
+        try {
+            $this->dbInstance->beginTransaction();
+            $modelDB = $this->dbInstance->prepare($select);
+            $modelDB->execute();
 
-			return $result;
+            $result = $modelDB->fetchAll(PDO::FETCH_ASSOC);
+            $this->dbInstance->commit();
 
-		}catch(PDOException $error){
-			$this->dbInstance->rollBack();
+            return $result;
 
-			ErrorManager::onErrorRoute($error);
-			return false;
-		}
-	}
+        } catch(PDOException $error) {
+            $this->dbInstance->rollBack();
 
-	/**
-	 * Execute sql statement
-	 *
-	 * @return bool
-	 */
-	protected function execute($sql)
-	{
-		try{
-			$this->dbInstance->beginTransaction();
-			$result = $this->dbInstance->exec($sql);
-			$this->dbInstance->commit();
+            ErrorManager::onErrorRoute($error);
+            return false;
+        }
+    }
 
-			return $result;
+    /**
+     * Execute sql statement
+     *
+     * @return bool
+     */
+    protected function execute ($sql)
+    {
+        try {
+            $this->dbInstance->beginTransaction();
+            $result = $this->dbInstance->exec($sql);
+            $this->dbInstance->commit();
 
-		}catch(PDOException $error){
-			$this->dbInstance->rollBack();
+            return $result;
 
-			ErrorManager::onErrorRoute($error);
-			return false;
-		}
-	}
+        } catch(PDOException $error) {
+            $this->dbInstance->rollBack();
+
+            ErrorManager::onErrorRoute($error);
+            return false;
+        }
+    }
 }
